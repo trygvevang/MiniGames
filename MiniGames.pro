@@ -18,9 +18,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-        main.cpp \
+
+    main.cpp \
     board.cpp
 HEADERS += \  
     board.h
+    main.cpp
+HEADERS += \  
+    tile.h
+
 
 Forms +=
