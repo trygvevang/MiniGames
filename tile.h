@@ -2,7 +2,13 @@
 #define TILE_H
 #include <vector>
 #include <QGraphicsItem>
-#include <QPoint>
+
+struct Point {
+    int x;
+    int y;
+    Point(int x, int y) : x(x), y(y)
+    {}
+};
 
 using namespace std;
 class Tile : public QGraphicsItem
@@ -12,7 +18,7 @@ public:
     virtual ~Tile();
     virtual vector<vector<int>> rotate();
     virtual vector<vector<int>> getShape();
-    QPoint getCenterPoint();
+    Point getCenterPoint();
     int getXPos();
     int getYPos();
     virtual void setShape();
@@ -21,7 +27,7 @@ public:
 
 private:
     vector<vector<int>> shape;
-    QPoint * CENTER_POINT;
+    Point CENTER_POINT;
     int xPos;
     int yPos;
 }
