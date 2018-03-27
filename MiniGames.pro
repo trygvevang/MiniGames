@@ -23,8 +23,6 @@ SOURCES += \
     board.cpp
 HEADERS += \  
     board.h
-    main.cpp
-HEADERS += \  
     tile.h
 
 
