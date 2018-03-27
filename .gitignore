@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# Misc
+*.autosave
+*.pro
+*.pro.user
+*.pro.user.31ab448
