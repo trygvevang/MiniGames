@@ -18,11 +18,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-
     main.cpp \
     board.cpp
-HEADERS += \  
-    board.h
+
+HEADERS += \
+    board.h \
     tile.h
 
 
