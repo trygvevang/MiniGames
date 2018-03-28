@@ -24,13 +24,15 @@ SOURCES += \
     ltile.cpp \
     otile.cpp \
     ttile.cpp \
-    ztile.cpp
+    ztile.cpp \
+    stile.cpp
 HEADERS += \  
     tile.h \
     jtile.h \
     ltile.h \
     otile.h \
     ttile.h \
-    ztile.h
+    ztile.h \
+    stile.h
 
 Forms +=
