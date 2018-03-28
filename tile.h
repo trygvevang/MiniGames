@@ -1,5 +1,6 @@
 #ifndef TILE_H
 #define TILE_H
+#include <iostream>
 #include <vector>
 #include <QGraphicsItem>
 
@@ -8,6 +9,7 @@ private:
     int x;
     int y;
 public:
+    Point(){}
     Point(int x, int y) : x(x), y(y)
     {}
     int& getX();
@@ -17,14 +19,15 @@ public:
 };
 
 using namespace std;
-class Tile : public QGraphicsItem
+class Tile
 {
 public:
     Tile();
     virtual ~Tile();
-    virtual vector<vector<int>> rotate() = 0;
-    virtual vector<vector<int>> getShape();
+    virtual void rotate() = 0;
+    virtual vector<vector<int>> getShape() const;
     Point getCenterPoint();
+    virtual void setCenterPoint(Point center);
     int getXPos();
     int getYPos();
     virtual void setShape(vector<vector<int>> shape);
@@ -33,8 +36,8 @@ public:
 
 private:
     vector<vector<int>> shape;
-    Point CENTER_POINT; // Center point on tile. Determines what point rotation is to revolve around.
-    Point position; // Position of tile on board
+    Point CENTER_POINT{}; // Center point on tile. Determines what point rotation is to revolve around.
+    Point position{}; // Position of tile on board
 };
 
 #endif // TILE_H
