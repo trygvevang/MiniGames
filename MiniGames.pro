@@ -18,12 +18,25 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-    main.cpp \
+        main.cpp \
+    tile.cpp \
+    jtile.cpp \
+    ltile.cpp \
+    otile.cpp \
+    ttile.cpp \
+    ztile.cpp \
+    stile.cpp \
+    itile.cpp \
     board.cpp
-
-HEADERS += \
+HEADERS += \  
+    tile.h \
+    jtile.h \
+    ltile.h \
+    otile.h \
+    ttile.h \
+    ztile.h \
+    stile.h \
+    itile.h
     board.h \
-    tile.h
-
 
 Forms +=
