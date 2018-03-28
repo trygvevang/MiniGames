@@ -1,10 +1,11 @@
 #ifndef TTILE_H
 #define TTILE_H
+#include "tile.h"
 #include <vector>
 
 using namespace std;
 
-class TTile
+class TTile : public Tile
 {
 public:
     TTile();
