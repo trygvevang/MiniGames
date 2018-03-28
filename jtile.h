@@ -2,7 +2,7 @@
 #define JTILE_H
 #include "tile.h"
 #include "vector"
-#include <iostream>
+
 using namespace std;
 
 class JTile : public Tile
