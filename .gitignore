@@ -31,5 +31,7 @@
 *.out
 *.app
 
-# Autosaves
+# Misc
 *.autosave
+*.pro.user
+*.pro.user.31ab448

@@ -26,7 +26,8 @@ SOURCES += \
     ttile.cpp \
     ztile.cpp \
     stile.cpp \
-    itile.cpp
+    itile.cpp \
+    board.cpp
 HEADERS += \  
     tile.h \
     jtile.h \
@@ -36,5 +37,6 @@ HEADERS += \
     ztile.h \
     stile.h \
     itile.h
+    board.h \
 
 Forms +=
