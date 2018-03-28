@@ -1,8 +1,6 @@
 #ifndef TILE_H
 #define TILE_H
-#include <iostream>
 #include <vector>
-#include <QGraphicsItem>
 
 struct Point {
 private:

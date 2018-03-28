@@ -21,10 +21,12 @@ SOURCES += \
         main.cpp \
     tile.cpp \
     jtile.cpp \
-    ltile.cpp
+    ltile.cpp \
+    otile.cpp
 HEADERS += \  
     tile.h \
     jtile.h \
-    ltile.h
+    ltile.h \
+    otile.h
 
 Forms +=
