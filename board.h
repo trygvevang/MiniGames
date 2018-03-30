@@ -1,6 +1,6 @@
 #ifndef BOARD_H
 #define BOARD_H
-
+#import "tile.h"
 #include <vector>
 
 using namespace std;
@@ -17,10 +17,10 @@ public:
     ~Board();
 
     //Member functions to be implemented
-    int updateBoard();                  //TODO: import Tile.h and pass in as param
-    bool isHorizontalMoveValid();       //TODO: import Tile.h and pass in as param
-    bool isVerticalMoveValid();         //TODO: import Tile.h and pass in as param
-    bool isRotationValid();             //TODO: import Tile.h and pass in as param
+    int updateBoard(Tile * tile);
+    bool isHorizontalMoveValid(Tile * tile, int direction);
+    bool isVerticalMoveValid(Tile * tile);
+    bool isRotationValid(Tile * tile);             //TODO: fix member function. It is not properly working yet
 
     //Getters and setters
     vector<vector<int>> getBoard();
@@ -31,8 +31,8 @@ private:
     vector<vector<int>> board;
 
     bool isGameOver();
-    bool setTileOnBoard();              //TODO: import Tile.h and pass in as param
-    vector<int> checkFullRows();        //TODO: param should be int row(?)
+    bool setTileOnBoard(Tile * tile);
+    vector<int> checkFullRows(Tile * tile);
     void deleteRows(vector<int> rowNumbers);
 };
 

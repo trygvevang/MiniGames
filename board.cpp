@@ -1,21 +1,74 @@
 #include "board.h"
-#include <vector>
 
 using namespace std;
 
 
-//Constructor
+// Constructor
 Board::Board()
 {
     //TODO: find a better way to initialize the vector
-    this->board.resize(ROWS);
-    for(unsigned r = 0; r < this->board.size(); r++){
-        this->board[r].resize(COLS);
+    board(ROWS);
+    for(unsigned r = 0; r < board.size(); r++){
+        board[r].resize(COLS);
     }
 }
 
+// Public member functions
+bool Board::isHorizontalMoveValid(Tile * tile, int direction) // if positive direction move right, else left
+{
+    int yPos = tile->getYPos();
+    int xPosToCheck = direction > 0 ? tile->getXPos() + tile->getShape()[0].size() : tile->getXPos() - 1;
+    if (xPosToCheck < COLS && xPosToCheck >= 0) // Check if next X-position is valid on the board
+    {
+        for (int i = yPos; i < yPos + tile->getShape().size(); i++)
+        {
+            if (board[i][xPosToCheck] != 0)
+            {return false;}
+        }
+        return true;
+    }
+    return false;
+}
+bool Board::isVerticalMoveValid(Tile * tile)
+{
+    int yPosToCheck = tile->getYPos() + tile->getShape().size();
+    if (yPosToCheck < ROWS)
+    {
+        int xPos = tile->getXPos();
+        for (int i = xPos; i < xPos + tile->getShape()[0].size(); i++)
+        {
+            if (board[yPosToCheck][i] != 0)
+            {return false;}
+        }
+        return true;
+    }
+    return false;
+}
 
-//Private helper methods
+// This method will not work yet. If tile is on edge of board and rotates, what then?
+bool Board::isRotationValid(Tile * tile)
+{
+    vector<vector<int>> rotatedShape = tile->getRotatedShape();
+    for (int i = tile->getYPos(); i < tile->getYPos() + rotatedShape.size(); i++)
+    {
+        for (int j = tile->getXPos(); i < tile->getXPos() + rotatedShape[0].size(); j++)
+        {
+            if (board[i][j] != 0)
+            {return false;}
+        }
+    }
+    return true;
+}
+
+int Board::updateBoard(Tile * tile)
+{
+    setTileOnBoard(tile);
+    vector<int> fullRows = checkFullRows(tile);
+    deleteRows(fullRows);
+    return 0; // Should return score to add based on how many rows where deleted
+}
+
+// Private helper methods
 bool Board::isGameOver()
 {
     for(unsigned int r = 0; r < this->board.size(); r++) {
@@ -28,14 +81,27 @@ bool Board::isGameOver()
     return true;
 }
 
-vector<int> Board::checkFullRows()
+bool Board::setTileOnBoard(Tile * tile)
+{
+    for (int r = 0; r < tile->getShape().size(); r++)
+    {
+        for (int c = 0; c < tile->getShape()[0].size(); c++)
+        {
+            // Should there be any check on value of baord?
+            board[r + tile->getYPos()][c + tile->getXPos()] = tile->getShape()[r][c];
+        }
+    }
+    return true;
+}
+
+vector<int> Board::checkFullRows(Tile * tile)
 {
     bool isRowFull;
     vector<int> fullRows;
-    for(unsigned int r = 0; r < this->board.size(); r++){
+    for(unsigned int r = tile->getYPos(); r < tile->getYPos() + tile->getShape().size(); r++){
         isRowFull = true;
-        for (unsigned int c = 0; c < this->board[r].size(); c++) {
-            if (c == 0) {
+        for (unsigned int c = 0; c < board[r].size(); c++) {
+            if (board[r][c] == 0) {
                 isRowFull = false;
             }
         }

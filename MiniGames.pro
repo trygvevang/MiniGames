@@ -36,7 +36,7 @@ HEADERS += \
     ttile.h \
     ztile.h \
     stile.h \
-    itile.h
-    board.h \
+    itile.h \
+    board.h
 
 Forms +=

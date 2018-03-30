@@ -8,7 +8,7 @@ private:
     int y;
 public:
     Point(){}
-    Point(int x, int y) : x(x), y(y)
+    Point(int y, int x) : y(y), x(x)
     {}
     int& getX();
     int& getY();

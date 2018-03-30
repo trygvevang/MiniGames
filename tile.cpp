@@ -2,9 +2,6 @@
 /*
     Define member functions of struct Point
 */
-Tile::Tile()
-{
-}
 
 int& Point::getX()
 {
@@ -30,6 +27,10 @@ void Point::setY(int y)
 /*
     Define non-abstract member functions of class Tile
 */
+
+Tile::Tile()
+{
+}
 
 void Tile::rotate()
 {
@@ -87,6 +88,28 @@ void Tile::setYPos(int column)
 vector<vector<int>> Tile::getShape() const
 {
     return shape;
+}
+
+vector<vector<int>> Tile::getRotatedShape() const
+{
+    vector<vector<int>> shape = getShape();
+    vector<vector<int>> rotatedShape (0);
+
+    // Fill rotatedShape with as many rows as there are columns in shape
+    for (unsigned int i = 0; i < shape[0].size(); i++)
+    {
+        rotatedShape.push_back({});
+    }
+
+    // Rotate clockwise
+    for (int i = shape.size() - 1; i >= 0; i--)
+    {
+        for (unsigned int j = 0; j < shape[0].size(); j++)
+        {
+            rotatedShape[j].push_back(shape[i][j]);
+        }
+    }
+    return rotatedShape;
 }
 
 void Tile::setShape(vector<vector<int>> shape)
