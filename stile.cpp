@@ -12,7 +12,7 @@ STile::STile()
     setCenterPoint(center);
 }
 
-void TTile::rotate()
+void STile::rotate()
 {
     Tile::rotate();
     vector<vector<int>> rotatedShape = getShape();

@@ -5,13 +5,12 @@ ITile::ITile()
     vector<vector<int>> shape = {
         {1, 1, 1, 1}
     };
-
     Point center(0, 2);
     setShape(shape);
     setCenterPoint(center);
 }
 
-void JTile::rotate()
+void ITile::rotate()
 {
     Tile::rotate();
     vector<vector<int>> rotatedShape = getShape();

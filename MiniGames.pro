@@ -27,7 +27,8 @@ SOURCES += \
     ztile.cpp \
     stile.cpp \
     itile.cpp \
-    board.cpp
+    board.cpp \
+    gamecontroller.cpp
 HEADERS += \  
     tile.h \
     jtile.h \
@@ -37,6 +38,7 @@ HEADERS += \
     ztile.h \
     stile.h \
     itile.h \
-    board.h
+    board.h \
+    gamecontroller.h
 
 Forms +=

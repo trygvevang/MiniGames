@@ -4,16 +4,16 @@
 
 struct Point {
 private:
-    int x;
     int y;
+    int x;
 public:
     Point(){}
     Point(int y, int x) : y(y), x(x)
     {}
-    int& getX();
     int& getY();
-    void setX(int x);
+    int& getX();
     void setY(int y);
+    void setX(int x);
 };
 
 using namespace std;
@@ -24,6 +24,7 @@ public:
     virtual ~Tile();
     virtual void rotate() = 0;
     virtual vector<vector<int>> getShape() const;
+    vector<vector<int>> getRotatedShape() const;
     Point getCenterPoint();
     virtual void setCenterPoint(Point center);
     int getXPos();

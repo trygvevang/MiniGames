@@ -1,13 +1,9 @@
 #include "board.h"
 
-using namespace std;
-
-
 // Constructor
 Board::Board()
 {
-    //TODO: find a better way to initialize the vector
-    board(ROWS);
+    board.resize(ROWS);
     for(unsigned r = 0; r < board.size(); r++){
         board[r].resize(COLS);
     }
@@ -20,7 +16,7 @@ bool Board::isHorizontalMoveValid(Tile * tile, int direction) // if positive dir
     int xPosToCheck = direction > 0 ? tile->getXPos() + tile->getShape()[0].size() : tile->getXPos() - 1;
     if (xPosToCheck < COLS && xPosToCheck >= 0) // Check if next X-position is valid on the board
     {
-        for (int i = yPos; i < yPos + tile->getShape().size(); i++)
+        for (unsigned int i = yPos; i < yPos + tile->getShape().size(); i++)
         {
             if (board[i][xPosToCheck] != 0)
             {return false;}
@@ -35,7 +31,7 @@ bool Board::isVerticalMoveValid(Tile * tile)
     if (yPosToCheck < ROWS)
     {
         int xPos = tile->getXPos();
-        for (int i = xPos; i < xPos + tile->getShape()[0].size(); i++)
+        for (unsigned int i = xPos; i < xPos + tile->getShape()[0].size(); i++)
         {
             if (board[yPosToCheck][i] != 0)
             {return false;}

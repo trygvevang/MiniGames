@@ -12,7 +12,7 @@ ZTile::ZTile()
     setCenterPoint(center);
 }
 
-void TTile::rotate()
+void ZTile::rotate()
 {
     Tile::rotate();
     vector<vector<int>> rotatedShape = getShape();
