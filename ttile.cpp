@@ -3,8 +3,8 @@
 TTile::TTile()
 {
     vector<vector<int>> shape = {
-        {1, 1, 1},
-        {0, 1, 0}
+        {6, 6, 6},
+        {0, 6, 0}
     };
 
     Point center(0, 1);

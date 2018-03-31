@@ -3,8 +3,8 @@
 ZTile::ZTile()
 {
     vector<vector<int>> shape = {
-        {1, 1, 0},
-        {0, 1, 1}
+        {7, 7, 0},
+        {0, 7, 7}
     };
 
     Point center(0, 1);

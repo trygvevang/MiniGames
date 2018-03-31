@@ -3,8 +3,8 @@
 LTile::LTile()
 {
     vector<vector<int>> shape = {
-        {0, 0, 1},
-        {1, 1, 1}
+        {0, 0, 3},
+        {3, 3, 3}
     };
 
     Point center(1, 1);

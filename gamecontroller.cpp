@@ -1,69 +1,143 @@
 #include "gamecontroller.h"
-
-GameController::GameController()
+#include <QDebug>
+GameController::GameController(QWidget *parent) : QWidget(parent), ui(new Ui::Tetris)
 {
+    board = new Board();
+    ui->setupUi(this);
+    boardScene = new QGraphicsScene(this);
+    nextTileScene = new QGraphicsScene(this);
+    ui->graphicsView->setScene(boardScene);
+    ui->graphicsView_2->setScene(nextTileScene);
+
+    boardScene->setSceneRect(0, 0, 300, 600);
+    nextTileScene->setSceneRect(0, 0, 150, 150);
+
+    ui->graphicsView->setSceneRect(boardScene->sceneRect());
+    ui->graphicsView_2->setSceneRect(nextTileScene->sceneRect());
+
+    initGame();
 }
 
 void GameController::drawNextTile()
 {
+    int boardLength = ui->graphicsView_2->width()/5;
+    double middleOfWidth = ui->graphicsView_2->width()/8;
+    double middleOfHeight = ui->graphicsView_2->height()/4;
 
+    for (unsigned int i = 0; i < activeTile->getShape().size(); i++)
+        {
+            for (unsigned int j = 0; j < activeTile->getShape()[0].size(); j++)
+            {
+                if (activeTile->getShape()[i][j] != 0)
+                {
+                    QGraphicsRectItem * rect = new QGraphicsRectItem();
+                    rect->setRect(j * boardLength + middleOfWidth, i * boardLength + middleOfHeight, boardLength, boardLength);
+
+                    QBrush brush(Qt::SolidPattern);
+                    const QColor color(setRectColor(activeTile->getShape()[i][j]));
+                    brush.setColor(color);
+                    rect->setBrush(brush);
+
+                    nextTileScene->addItem(rect);
+                }
+            }
+        }
 }
 
 void GameController::drawBoard()
 {
+    int boardWidth = ui->graphicsView->width()/board->COLS;
+    int boardHeight = ui->graphicsView->height()/board->ROWS;
+    for (int i = 0; i < board->ROWS; i++)
+    {
+        for (int j = 0; j < board->COLS; j++)
+        {
+            QGraphicsRectItem * rect = new QGraphicsRectItem();
+            rect->setRect(j * boardWidth, i * boardHeight, boardWidth, boardHeight);
 
+            if (board->getBoard()[i][j] != 0)
+            {
+                QBrush brush(Qt::SolidPattern);
+                const QColor color(setRectColor(board->getBoard()[i][j]));
+                brush.setColor(color);
+                rect->setBrush(brush);
+            }
+
+            boardScene->addItem(rect);
+
+        }
+    }
 }
 
-Tile * GameController::chooseNextTile()
+QString GameController::setRectColor(int value)
+{
+    QString color;
+    switch (value) {
+    case 1:
+        color = "#00ffff";
+        break;
+    case 2:
+        color = "#0000ff";
+        break;
+    case 3:
+        color = "#ffa500";
+        break;
+    case 4:
+        color = "#ffff00";
+        break;
+    case 5:
+        color = "#00ff00";
+        break;
+    case 6:
+        color = "#551A8B";
+        break;
+    default:
+        color = "#ff0000";
+        break;
+    }
+    return color;
+}
+
+Tile* GameController::chooseNextTile()
 {
     random_device random;
     int randomIndex = random.operator ()() % 7; // mod number of different tiles
-    Tile * tile;
-    switch (randomIndex) {
-    case 0:
+
+    if (randomIndex == 0)
     {
-        ITile iTile;
-        tile = &iTile;
-        break;
+        ITile * iTile = new ITile();
+        return iTile;
     }
-    case 1:
+    else if (randomIndex == 1)
     {
-        JTile jTile;
-        tile = &jTile;
-        break;
+        JTile * jTile = new JTile();
+        return jTile;
     }
-    case 2:
+    else if (randomIndex == 2)
     {
-        LTile lTile;
-        tile = &lTile;
-        break;
+        LTile * lTile = new LTile();
+        return lTile;
     }
-    case 3:
+    else if (randomIndex == 3)
     {
-        OTile oTile;
-        tile = &oTile;
-        break;
+        OTile * oTile = new OTile();
+        return oTile;
     }
-    case 4:
+    else if (randomIndex == 4)
     {
-        STile sTile;
-        tile = &sTile;
-        break;
+        STile * sTile = new STile();
+        return sTile;
     }
-    case 5:
+    else if (randomIndex == 5)
     {
-        TTile tTile;
-        tile = &tTile;
-        break;
+        TTile * tTile = new TTile();
+        return tTile;
     }
-    default:
+    else
     {
-        ZTile zTile;
-        tile = &zTile;
-        break;
+        ZTile * zTile = new ZTile();
+        return zTile;
     }
-    }
-    return tile;
 }
 
 void GameController::initGame()
@@ -71,8 +145,8 @@ void GameController::initGame()
     // resetBoard()
     activeTile = chooseNextTile();
     nextTile = chooseNextTile();
-    // drawNextTile();
-    // drawBoard();
+    drawNextTile();
+    drawBoard();
     // init timer
 }
 
@@ -90,12 +164,12 @@ void GameController::keyPressEvent(QKeyEvent * event)
 {
     switch (event->key()) {
     case Qt::Key_Right:
-        if (board.isHorizontalMoveValid(activeTile, 1))
+        if (board->isHorizontalMoveValid(activeTile, 1))
             activeTile->setXPos(activeTile->getXPos() + 1);
         drawBoard();
         break;
     case Qt::Key_Left:
-        if (board.isHorizontalMoveValid(activeTile, -1))
+        if (board->isHorizontalMoveValid(activeTile, -1))
             activeTile->setXPos(activeTile->getXPos() - 1);
         drawBoard();
         break;
@@ -104,7 +178,7 @@ void GameController::keyPressEvent(QKeyEvent * event)
         drawBoard();
         break;
     case Qt::Key_Up:
-        if (board.isRotationValid(activeTile))
+        if (board->isRotationValid(activeTile))
             activeTile->rotate();
         drawBoard();
         break;

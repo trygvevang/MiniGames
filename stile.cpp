@@ -3,8 +3,8 @@
 STile::STile()
 {
     vector<vector<int>> shape = {
-        {0, 1, 1},
-        {1, 1, 0}
+        {0, 5, 5},
+        {5, 5, 0}
     };
 
     Point center(0, 1);

@@ -1,9 +1,15 @@
 #ifndef GAMECONTROLLER_H
 #define GAMECONTROLLER_H
-#include <QObject>
 #include <QTimer> // one "generation" in active game should last one second
 #include <QKeyEvent>
+#include <QGraphicsScene>
+#include <QGraphicsRectItem>
+#include <QTimer>
+#include <QBrush>
+#include <QColor>
+#include <QString>
 #include <random>
+#include "ui_tetris.h"
 #include "tile.h"
 #include "itile.h"
 #include "jtile.h"
@@ -14,11 +20,16 @@
 #include "ztile.h"
 #include "board.h"
 
-class GameController : public QObject
+namespace Ui
 {
-    Q_OBJECT
+class Tetris;
+}
+using namespace std;
+
+class GameController : public QWidget
+{
 public:
-    GameController();
+    GameController(QWidget *parent = 0);
     ~GameController();
     void drawNextTile(); // draws the board with next tile
     void drawBoard(); // draws the gameboard
@@ -26,13 +37,20 @@ public:
     void initGame();
     void parseProps();
     void writeProps();
-    void keyPressEvent(); // Handling key input from user
+    void keyPressEvent(QKeyEvent * event); // Handling key input from user
 private:
-    Board board;
+    Ui::Tetris * ui;
+    QGraphicsScene * boardScene;
+    QGraphicsScene * nextTileScene;
+    QTimer * timer;
+
+    Board * board;
     Tile * activeTile;
     Tile * nextTile;
     int score;
     int highScore;
+
+    QString setRectColor(int value);
 };
 
 #endif // GAMECONTROLLER_H

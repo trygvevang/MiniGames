@@ -45,7 +45,7 @@ bool Board::isVerticalMoveValid(Tile * tile)
 bool Board::isRotationValid(Tile * tile)
 {
     vector<vector<int>> rotatedShape = tile->getRotatedShape();
-    for (int i = tile->getYPos(); i < tile->getYPos() + rotatedShape.size(); i++)
+    for (unsigned int i = tile->getYPos(); i < tile->getYPos() + rotatedShape.size(); i++)
     {
         for (int j = tile->getXPos(); i < tile->getXPos() + rotatedShape[0].size(); j++)
         {
@@ -79,9 +79,9 @@ bool Board::isGameOver()
 
 bool Board::setTileOnBoard(Tile * tile)
 {
-    for (int r = 0; r < tile->getShape().size(); r++)
+    for (unsigned int r = 0; r < tile->getShape().size(); r++)
     {
-        for (int c = 0; c < tile->getShape()[0].size(); c++)
+        for (unsigned int c = 0; c < tile->getShape()[0].size(); c++)
         {
             // Should there be any check on value of baord?
             board[r + tile->getYPos()][c + tile->getXPos()] = tile->getShape()[r][c];
@@ -119,7 +119,6 @@ void Board::deleteRows(vector<int> rowNumbers)
         board.insert(board.begin(),vector<int>(Board::COLS,0));
     }
 }
-
 
 //Getters
 vector<vector<int>> Board::getBoard(){
