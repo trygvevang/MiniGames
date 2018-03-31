@@ -1,6 +1,6 @@
 #include "jtile.h"
 
-JTile::JTile()
+JTile::JTile() : Tile()
 {
     vector<vector<int>> shape = {
         {2, 2, 2},
@@ -10,6 +10,7 @@ JTile::JTile()
     Point center(0, 1);
     setShape(shape);
     setCenterPoint(center);
+    setXPos(getXPos() - 2);
 }
 void JTile::rotate()
 {

@@ -1,6 +1,6 @@
 #include "stile.h"
 
-STile::STile()
+STile::STile() : Tile()
 {
     vector<vector<int>> shape = {
         {0, 5, 5},
@@ -10,6 +10,7 @@ STile::STile()
     Point center(0, 1);
     setShape(shape);
     setCenterPoint(center);
+    setXPos(getXPos() - 2);
 }
 
 void STile::rotate()

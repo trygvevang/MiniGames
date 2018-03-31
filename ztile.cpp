@@ -1,6 +1,6 @@
 #include "ztile.h"
 
-ZTile::ZTile()
+ZTile::ZTile() : Tile()
 {
     vector<vector<int>> shape = {
         {7, 7, 0},
@@ -10,6 +10,7 @@ ZTile::ZTile()
     Point center(0, 1);
     setShape(shape);
     setCenterPoint(center);
+    setXPos(getXPos() - 2);
 }
 
 void ZTile::rotate()

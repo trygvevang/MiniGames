@@ -33,6 +33,7 @@ public:
     ~GameController();
     void drawNextTile(); // draws the board with next tile
     void drawBoard(); // draws the gameboard
+    void drawActiveTileOnBoard();
     Tile * chooseNextTile();
     void initGame();
     void parseProps();

@@ -24,17 +24,17 @@ void GameController::drawNextTile()
     double middleOfWidth = ui->graphicsView_2->width()/8;
     double middleOfHeight = ui->graphicsView_2->height()/4;
 
-    for (unsigned int i = 0; i < activeTile->getShape().size(); i++)
+    for (unsigned int i = 0; i < nextTile->getShape().size(); i++)
         {
-            for (unsigned int j = 0; j < activeTile->getShape()[0].size(); j++)
+            for (unsigned int j = 0; j < nextTile->getShape()[0].size(); j++)
             {
-                if (activeTile->getShape()[i][j] != 0)
+                if (nextTile->getShape()[i][j] != 0)
                 {
                     QGraphicsRectItem * rect = new QGraphicsRectItem();
                     rect->setRect(j * boardLength + middleOfWidth, i * boardLength + middleOfHeight, boardLength, boardLength);
 
                     QBrush brush(Qt::SolidPattern);
-                    const QColor color(setRectColor(activeTile->getShape()[i][j]));
+                    const QColor color(setRectColor(nextTile->getShape()[i][j]));
                     brush.setColor(color);
                     rect->setBrush(brush);
 
@@ -65,6 +65,30 @@ void GameController::drawBoard()
 
             boardScene->addItem(rect);
 
+        }
+    }
+}
+
+void GameController::drawActiveTileOnBoard()
+{
+    int boardWidth = ui->graphicsView->width()/board->COLS;
+    int boardHeight = ui->graphicsView->height()/board->ROWS;
+    for (unsigned int i = 0; i < activeTile->getShape().size(); i++)
+    {
+        for (unsigned int j = 0; j < activeTile->getShape()[0].size(); j++)
+        {
+            if (activeTile->getShape()[i][j] != 0)
+            {
+                QGraphicsRectItem * rect = new QGraphicsRectItem();
+                rect->setRect((j + activeTile->getXPos()) * boardWidth , (i + activeTile->getYPos()) * boardHeight, boardWidth, boardHeight);
+
+                QBrush brush(Qt::SolidPattern);
+                const QColor color(setRectColor(activeTile->getShape()[i][j]));
+                brush.setColor(color);
+                rect->setBrush(brush);
+
+                boardScene->addItem(rect);
+            }
         }
     }
 }
@@ -147,6 +171,7 @@ void GameController::initGame()
     nextTile = chooseNextTile();
     drawNextTile();
     drawBoard();
+    drawActiveTileOnBoard();
     // init timer
 }
 

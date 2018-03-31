@@ -1,6 +1,6 @@
 #include "ttile.h"
 
-TTile::TTile()
+TTile::TTile() : Tile()
 {
     vector<vector<int>> shape = {
         {6, 6, 6},
@@ -10,6 +10,7 @@ TTile::TTile()
     Point center(0, 1);
     setShape(shape);
     setCenterPoint(center);
+    setXPos(getXPos() - 2);
 }
 
 void TTile::rotate()

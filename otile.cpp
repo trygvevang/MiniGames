@@ -1,6 +1,6 @@
 #include "otile.h"
 
-OTile::OTile()
+OTile::OTile() : Tile()
 {
     vector<vector<int>> shape = {
         {4, 4},
@@ -10,6 +10,7 @@ OTile::OTile()
     Point center(0, 0);
     setShape(shape);
     setCenterPoint(center);
+    setXPos(getXPos() - 1);
 }
 
 void OTile::rotate()

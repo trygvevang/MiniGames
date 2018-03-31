@@ -30,6 +30,8 @@ void Point::setY(int y)
 
 Tile::Tile()
 {
+    Point point(0, 5);
+    position = point;
 }
 
 void Tile::rotate()
