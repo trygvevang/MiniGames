@@ -1,4 +1,5 @@
 #include "board.h"
+#include <QDebug>
 
 // Constructor
 Board::Board()
@@ -27,19 +28,40 @@ bool Board::isHorizontalMoveValid(Tile * tile, int direction) // if positive dir
 }
 bool Board::isVerticalMoveValid(Tile * tile)
 {
-    int yPosToCheck = tile->getYPos() + tile->getShape().size();
-    if (yPosToCheck < ROWS)
+    vector<vector<int>> shape = tile->getShape();
+    int lowestYToCheck = tile->getYPos() + shape.size();
+    if (lowestYToCheck >= ROWS)
     {
-        int xPos = tile->getXPos();
-        for (unsigned int i = xPos; i < xPos + tile->getShape()[0].size(); i++)
-        {
-            if (board[yPosToCheck][i] != 0)
-            {return false;}
-        }
-        return true;
+        return false;
     }
-    return false;
+    int xPos;
+    int yPos;
+    bool isValid = true;
+    for(int c = 0; c < shape[0].size(); c++)
+    {
+        for(int a = shape.size()-1; a >= 0; a--)
+        {
+            if (shape[a][c] != 0)
+            {
+                yPos = tile->getYPos() + a;
+                xPos = tile->getXPos() + c;
+                if (board[yPos+1][xPos] != 0)
+                {
+                    isValid = false;
+                    break;
+                }
+            }
+        }
+    }
+    return isValid;
 }
+
+void Board::quickPlace(Tile * tile){
+    while(isVerticalMoveValid(tile)){
+        tile->setYPos(tile->getYPos() + 1);
+    }
+}
+
 
 // This method will not work yet. If tile is on edge of board and rotates, what then?
 bool Board::isRotationValid(Tile * tile)
@@ -47,12 +69,13 @@ bool Board::isRotationValid(Tile * tile)
     vector<vector<int>> rotatedShape = tile->getRotatedShape();
     for (unsigned int i = tile->getYPos(); i < tile->getYPos() + rotatedShape.size(); i++)
     {
-        for (int j = tile->getXPos(); i < tile->getXPos() + rotatedShape[0].size(); j++)
+        for (unsigned int j = tile->getXPos(); j < tile->getXPos() + rotatedShape[0].size(); j++)
         {
             if (board[i][j] != 0)
             {return false;}
         }
     }
+
     return true;
 }
 
@@ -61,7 +84,20 @@ int Board::updateBoard(Tile * tile)
     setTileOnBoard(tile);
     vector<int> fullRows = checkFullRows(tile);
     deleteRows(fullRows);
-    return 0; // Should return score to add based on how many rows where deleted
+    switch (fullRows.size()) {
+    case 0:
+        return 0;
+    case 1:
+        return 40;
+    case 2:
+        return 100;
+    case 3:
+        return 300;
+    case 4:
+        return 1200;
+    default:
+        return 0;
+    }
 }
 
 // Private helper methods
@@ -84,6 +120,7 @@ bool Board::setTileOnBoard(Tile * tile)
         for (unsigned int c = 0; c < tile->getShape()[0].size(); c++)
         {
             // Should there be any check on value of baord?
+            if(tile->getShape()[r][c] == 0) continue;
             board[r + tile->getYPos()][c + tile->getXPos()] = tile->getShape()[r][c];
         }
     }
@@ -114,7 +151,7 @@ void Board::deleteRows(vector<int> rowNumbers)
         unsigned rowToDelete = rowNumbers[i];
         if (board.size() > rowToDelete)
         {
-          board.erase(board.begin() + rowToDelete );
+            board.erase(board.begin() + rowToDelete );
         }
         board.insert(board.begin(),vector<int>(Board::COLS,0));
     }
