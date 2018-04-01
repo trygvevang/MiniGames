@@ -60,8 +60,6 @@ private:
     int level;
     int genInLevel;
 
-    random_device random;
-
     QString setRectColor(int value);
 };
 
