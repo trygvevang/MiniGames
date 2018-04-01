@@ -35,3 +35,4 @@
 *.autosave
 *.pro.user
 *.pro.user.31ab448
+.DS_Store

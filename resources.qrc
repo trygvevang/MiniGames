@@ -2,7 +2,8 @@
     <qresource prefix="/sounds">
         <file>Sound/background-music.wav</file>
         <file>Sound/Credit.txt</file>
-        <file>Sound/full-row.ogg</file>
         <file>Sound/slam-tile.wav</file>
+        <file>Sound/tetris_ukulele.mp3</file>
+        <file>Sound/full-row.mp3</file>
     </qresource>
 </RCC>

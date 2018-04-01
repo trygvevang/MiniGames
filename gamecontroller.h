@@ -54,6 +54,8 @@ private:
     QTimer * timer;
     QMediaPlaylist * playlist;
     QMediaPlayer * player;
+    QMediaPlayer * rowDeletedSound;
+    QMediaPlayer * slamTileSound;
 
     Board * board;
     Tile * activeTile;

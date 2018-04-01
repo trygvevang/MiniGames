@@ -174,10 +174,14 @@ void GameController::initGame()
     timer = new QTimer(this);
     playlist = new QMediaPlaylist();
     player = new QMediaPlayer();
+    rowDeletedSound = new QMediaPlayer();
+    slamTileSound = new QMediaPlayer();
 
-    playlist->addMedia(QUrl("qrc:/sounds/Sound/background-music.wav"));
+    playlist->addMedia(QUrl("qrc:/sounds/Sound/tetris_ukulele.mp3"));
     playlist->setPlaybackMode(QMediaPlaylist::Loop);
     player->setPlaylist(playlist);
+    rowDeletedSound->setMedia(QUrl("qrc:/sounds/Sound/full-row.mp3"));
+    slamTileSound->setMedia(QUrl("qrc:/sounds/Sound/slam-tile.wav"));
 
     drawNextTile();
     drawBoard();
@@ -221,6 +225,15 @@ void GameController::generation()
             if(genInLevel > 20){
                 level++;
                 genInLevel = 0;
+            }
+
+            if (rowDeletedSound->state() == QMediaPlayer::PlayingState)
+            {
+                rowDeletedSound->setPosition(0);
+            }
+            else if (rowDeletedSound->state() == QMediaPlayer::PausedState || rowDeletedSound->state() == QMediaPlayer::StoppedState)
+            {
+                rowDeletedSound->play();
             }
         }
         activeTile = nextTile;
@@ -266,6 +279,14 @@ void GameController::keyPressEvent(QKeyEvent * event)
         // set tile on the lowest possible y pos
         board->quickPlace(activeTile);
         generation();
+        if (slamTileSound->state() == QMediaPlayer::PlayingState)
+        {
+            slamTileSound->setPosition(0);
+        }
+        else if (slamTileSound->state() == QMediaPlayer::PausedState || slamTileSound->state() == QMediaPlayer::StoppedState)
+        {
+            slamTileSound->play();
+        }
     }
     else if (event->key() == Qt::Key_Up || event->key() == Qt::Key_W)
     {
