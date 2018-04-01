@@ -172,6 +172,12 @@ void GameController::initGame()
     nextTile = chooseNextTile();
     board = new Board();
     timer = new QTimer(this);
+    playlist = new QMediaPlaylist();
+    player = new QMediaPlayer();
+
+    playlist->addMedia(QUrl("qrc:/sounds/Sound/background-music.wav"));
+    playlist->setPlaybackMode(QMediaPlaylist::Loop);
+    player->setPlaylist(playlist);
 
     drawNextTile();
     drawBoard();
@@ -185,12 +191,15 @@ void GameController::handleGame()
         timer->start(1000);
         isPlaying = true;
         ui->playButton->setText("Pause");
+        if (ui->playGameMusic->isChecked())
+            player->play();
     }
     else
     {
         timer->stop();
         isPlaying = false;
         ui->playButton->setText("Resume");
+        player->pause();
     }
 }
 

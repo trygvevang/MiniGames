@@ -174,11 +174,48 @@
     <string>Play</string>
    </property>
   </widget>
+  <widget class="QCheckBox" name="playGameMusic">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>330</y>
+     <width>131</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Enable music</string>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="playGameSounds">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>350</y>
+     <width>151</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Enable game sounds</string>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+  </widget>
   <zorder>highscoreLabel</zorder>
   <zorder>playButton</zorder>
   <zorder>nextTileBoard</zorder>
   <zorder>board</zorder>
   <zorder>scoreLabel</zorder>
+  <zorder>playGameMusic</zorder>
+  <zorder>playGameSounds</zorder>
  </widget>
  <resources/>
  <connections/>

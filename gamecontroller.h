@@ -8,6 +8,8 @@
 #include <QBrush>
 #include <QColor>
 #include <QString>
+#include <QMediaPlaylist>
+#include <QMediaPlayer>
 #include <random>
 #include "ui_tetris.h"
 #include "tile.h"
@@ -50,6 +52,8 @@ private:
     QGraphicsScene * boardScene;
     QGraphicsScene * nextTileScene;
     QTimer * timer;
+    QMediaPlaylist * playlist;
+    QMediaPlayer * player;
 
     Board * board;
     Tile * activeTile;

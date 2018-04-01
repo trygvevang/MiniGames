@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/sounds">
+        <file>Sound/background-music.wav</file>
+        <file>Sound/Credit.txt</file>
+        <file>Sound/full-row.ogg</file>
+        <file>Sound/slam-tile.wav</file>
+    </qresource>
+</RCC>
