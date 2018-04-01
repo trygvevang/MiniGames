@@ -161,7 +161,7 @@
     <string>Highscore:</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="playButton">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -175,7 +175,7 @@
    </property>
   </widget>
   <zorder>highscoreLabel</zorder>
-  <zorder>pushButton</zorder>
+  <zorder>playButton</zorder>
   <zorder>nextTileBoard</zorder>
   <zorder>board</zorder>
   <zorder>scoreLabel</zorder>

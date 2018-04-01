@@ -2,8 +2,8 @@
 #include <QDebug>
 GameController::GameController(QWidget *parent) : QWidget(parent), ui(new Ui::Tetris)
 {
-    board = new Board();
     ui->setupUi(this);
+    ui->graphicsView->setFocus();
     boardScene = new QGraphicsScene(this);
     nextTileScene = new QGraphicsScene(this);
     ui->graphicsView->setScene(boardScene);
@@ -14,8 +14,10 @@ GameController::GameController(QWidget *parent) : QWidget(parent), ui(new Ui::Te
 
     ui->graphicsView->setSceneRect(boardScene->sceneRect());
     ui->graphicsView_2->setSceneRect(nextTileScene->sceneRect());
-
     initGame();
+
+    connect(ui->playButton, SIGNAL(clicked()), this, SLOT(handleGame()));
+    connect(timer, SIGNAL(timeout()), this, SLOT(generation()));
 }
 
 void GameController::drawNextTile()
@@ -166,13 +168,49 @@ Tile* GameController::chooseNextTile()
 
 void GameController::initGame()
 {
-    // resetBoard()
     activeTile = chooseNextTile();
     nextTile = chooseNextTile();
+    board = new Board();
+    timer = new QTimer(this);
+
     drawNextTile();
     drawBoard();
     drawActiveTileOnBoard();
-    // init timer
+}
+
+void GameController::handleGame()
+{
+    if (!isPlaying)
+    {
+        timer->start(1000);
+        isPlaying = true;
+        ui->playButton->setText("Pause");
+    }
+    else
+    {
+        timer->stop();
+        isPlaying = false;
+        ui->playButton->setText("Resume");
+    }
+}
+
+void GameController::generation()
+{
+    // Next genereation
+    // TODO: Handle if game over
+    if (board->isVerticalMoveValid(activeTile))
+    {
+        activeTile->setYPos(activeTile->getYPos() + 1);
+    }
+    else
+    {
+        board->updateBoard(activeTile);
+        activeTile = nextTile;
+        nextTile = chooseNextTile();
+        nextTileScene->clear();
+        drawNextTile();
+    }
+    updateView();
 }
 
 void GameController::parseProps()
@@ -185,31 +223,36 @@ void GameController::writeProps()
 
 }
 
+
+void GameController::updateView()
+{
+    boardScene->clear();
+    drawBoard();
+    drawActiveTileOnBoard();
+}
+
 void GameController::keyPressEvent(QKeyEvent * event)
 {
-    switch (event->key()) {
-    case Qt::Key_Right:
+    if (event->key() == Qt::Key_Right || event->key() == Qt::Key_D)
+    {
         if (board->isHorizontalMoveValid(activeTile, 1))
             activeTile->setXPos(activeTile->getXPos() + 1);
-        drawBoard();
-        break;
-    case Qt::Key_Left:
+    }
+    else if (event->key() == Qt::Key_Left || event->key() == Qt::Key_A)
+    {
         if (board->isHorizontalMoveValid(activeTile, -1))
             activeTile->setXPos(activeTile->getXPos() - 1);
-        drawBoard();
-        break;
-    case Qt::Key_Down:
+    }
+    else if (event->key() ==  Qt::Key_Down || event->key() == Qt::Key_S)
+    {
         // set tile on the lowest possible y pos
-        drawBoard();
-        break;
-    case Qt::Key_Up:
+    }
+    else if (event->key() == Qt::Key_Up || event->key() == Qt::Key_W)
+    {
         if (board->isRotationValid(activeTile))
             activeTile->rotate();
-        drawBoard();
-        break;
-    default:
-        break;
     }
+    updateView();
 }
 
 GameController::~GameController()
