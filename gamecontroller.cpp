@@ -227,11 +227,11 @@ void GameController::generation()
                 genInLevel = 0;
             }
 
-            if (rowDeletedSound->state() == QMediaPlayer::PlayingState)
+            if (rowDeletedSound->state() == QMediaPlayer::PlayingState && ui->playGameSounds->isChecked())
             {
                 rowDeletedSound->setPosition(0);
             }
-            else if (rowDeletedSound->state() == QMediaPlayer::PausedState || rowDeletedSound->state() == QMediaPlayer::StoppedState)
+            else if ((rowDeletedSound->state() == QMediaPlayer::PausedState || rowDeletedSound->state() == QMediaPlayer::StoppedState) && ui->playGameSounds->isChecked())
             {
                 rowDeletedSound->play();
             }
@@ -279,11 +279,11 @@ void GameController::keyPressEvent(QKeyEvent * event)
         // set tile on the lowest possible y pos
         board->quickPlace(activeTile);
         generation();
-        if (slamTileSound->state() == QMediaPlayer::PlayingState)
+        if (slamTileSound->state() == QMediaPlayer::PlayingState && ui->playGameSounds->isChecked())
         {
             slamTileSound->setPosition(0);
         }
-        else if (slamTileSound->state() == QMediaPlayer::PausedState || slamTileSound->state() == QMediaPlayer::StoppedState)
+        else if ((slamTileSound->state() == QMediaPlayer::PausedState || slamTileSound->state() == QMediaPlayer::StoppedState) && ui->playGameSounds->isChecked())
         {
             slamTileSound->play();
         }
