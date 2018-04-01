@@ -57,6 +57,10 @@ private:
     int score;
     int highScore;
     bool isPlaying;
+    int level;
+    int genInLevel;
+
+    random_device random;
 
     QString setRectColor(int value);
 };

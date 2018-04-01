@@ -126,7 +126,7 @@ QString GameController::setRectColor(int value)
 
 Tile* GameController::chooseNextTile()
 {
-    random_device random;
+
     int randomIndex = random.operator ()() % 7; // mod number of different tiles
 
     if (randomIndex == 0)
@@ -196,6 +196,7 @@ void GameController::handleGame()
 
 void GameController::generation()
 {
+
     // Next genereation
     // TODO: Handle if game over
     if (board->isVerticalMoveValid(activeTile))
@@ -204,7 +205,15 @@ void GameController::generation()
     }
     else
     {
-        board->updateBoard(activeTile);
+        int genScore = board->updateBoard(activeTile);
+        if (genScore > 0){
+            score += (level+1)*genScore;
+            genInLevel++;
+            if(genInLevel > 20){
+                level++;
+                genInLevel = 0;
+            }
+        }
         activeTile = nextTile;
         nextTile = chooseNextTile();
         nextTileScene->clear();
@@ -246,6 +255,8 @@ void GameController::keyPressEvent(QKeyEvent * event)
     else if (event->key() ==  Qt::Key_Down || event->key() == Qt::Key_S)
     {
         // set tile on the lowest possible y pos
+        board->quickPlace(activeTile);
+        generation();
     }
     else if (event->key() == Qt::Key_Up || event->key() == Qt::Key_W)
     {
