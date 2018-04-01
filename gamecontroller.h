@@ -61,6 +61,8 @@ private:
     int score;
     int highScore;
     bool isPlaying;
+    int level;
+    int genInLevel;
 
     QString setRectColor(int value);
 };

@@ -1,6 +1,6 @@
 #ifndef BOARD_H
 #define BOARD_H
-#import "tile.h"
+#include "tile.h"
 #include <vector>
 #include <QWidget>
 #include <QPainter>
@@ -23,7 +23,8 @@ public:
     int updateBoard(Tile * tile);
     bool isHorizontalMoveValid(Tile * tile, int direction);
     bool isVerticalMoveValid(Tile * tile);
-    bool isRotationValid(Tile * tile);             //TODO: fix member function. It is not properly working yet
+    bool isRotationValid(Tile * tile);
+    void quickPlace(Tile * tile);
 
     //Getters and setters
     vector<vector<int>> getBoard();
