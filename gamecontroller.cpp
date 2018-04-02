@@ -185,6 +185,9 @@ void GameController::initGame()
     slamTileSound->setMedia(QUrl("qrc:/sounds/Sound/slam-tile.wav"));
     rotateSound->setMedia(QUrl("qrc:/sounds/Sound/rotate.wav"));
 
+    QString scoreText = QStringLiteral("Score: %1").arg(score);
+    ui->scoreLabel->setText(scoreText);
+
     drawNextTile();
     drawBoard();
     drawActiveTileOnBoard();
@@ -221,13 +224,17 @@ void GameController::generation()
     else
     {
         int genScore = board->updateBoard(activeTile);
-        if (genScore > 0){
+        if (genScore > 0)
+        {
             score += (level+1)*genScore;
             genInLevel++;
             if(genInLevel > 20){
                 level++;
                 genInLevel = 0;
             }
+
+            QString scoreText = QStringLiteral("Score: %1").arg(score);
+            ui->scoreLabel->setText(scoreText);
 
             if (rowDeletedSound->state() == QMediaPlayer::PlayingState && ui->playGameSounds->isChecked())
             {
