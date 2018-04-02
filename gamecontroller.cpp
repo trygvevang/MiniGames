@@ -176,12 +176,14 @@ void GameController::initGame()
     player = new QMediaPlayer();
     rowDeletedSound = new QMediaPlayer();
     slamTileSound = new QMediaPlayer();
+    rotateSound = new QMediaPlayer();
 
     playlist->addMedia(QUrl("qrc:/sounds/Sound/tetris_ukulele.mp3"));
     playlist->setPlaybackMode(QMediaPlaylist::Loop);
     player->setPlaylist(playlist);
     rowDeletedSound->setMedia(QUrl("qrc:/sounds/Sound/full-row.mp3"));
     slamTileSound->setMedia(QUrl("qrc:/sounds/Sound/slam-tile.wav"));
+    rotateSound->setMedia(QUrl("qrc:/sounds/Sound/rotate.wav"));
 
     drawNextTile();
     drawBoard();
@@ -291,7 +293,18 @@ void GameController::keyPressEvent(QKeyEvent * event)
     else if (event->key() == Qt::Key_Up || event->key() == Qt::Key_W)
     {
         if (board->isRotationValid(activeTile))
+        {
             activeTile->rotate();
+
+            if (rotateSound->state() == QMediaPlayer::PlayingState && ui->playGameSounds->isChecked())
+            {
+                rotateSound->setPosition(0);
+            }
+            else if ((rotateSound->state() == QMediaPlayer::PausedState || rotateSound->state() == QMediaPlayer::StoppedState) && ui->playGameSounds->isChecked())
+            {
+                rotateSound->play();
+            }
+        }
     }
     updateView();
 }
