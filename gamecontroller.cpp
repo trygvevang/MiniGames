@@ -172,6 +172,18 @@ void GameController::initGame()
     nextTile = chooseNextTile();
     board = new Board();
     timer = new QTimer(this);
+    playlist = new QMediaPlaylist();
+    player = new QMediaPlayer();
+    rowDeletedSound = new QMediaPlayer();
+    slamTileSound = new QMediaPlayer();
+    rotateSound = new QMediaPlayer();
+
+    playlist->addMedia(QUrl("qrc:/sounds/Sound/tetris_ukulele.mp3"));
+    playlist->setPlaybackMode(QMediaPlaylist::Loop);
+    player->setPlaylist(playlist);
+    rowDeletedSound->setMedia(QUrl("qrc:/sounds/Sound/full-row.mp3"));
+    slamTileSound->setMedia(QUrl("qrc:/sounds/Sound/slam-tile.wav"));
+    rotateSound->setMedia(QUrl("qrc:/sounds/Sound/rotate.wav"));
 
     drawNextTile();
     drawBoard();
@@ -185,12 +197,15 @@ void GameController::handleGame()
         timer->start(1000);
         isPlaying = true;
         ui->playButton->setText("Pause");
+        if (ui->playGameMusic->isChecked())
+            player->play();
     }
     else
     {
         timer->stop();
         isPlaying = false;
         ui->playButton->setText("Resume");
+        player->pause();
     }
 }
 
@@ -212,6 +227,15 @@ void GameController::generation()
             if(genInLevel > 20){
                 level++;
                 genInLevel = 0;
+            }
+
+            if (rowDeletedSound->state() == QMediaPlayer::PlayingState && ui->playGameSounds->isChecked())
+            {
+                rowDeletedSound->setPosition(0);
+            }
+            else if ((rowDeletedSound->state() == QMediaPlayer::PausedState || rowDeletedSound->state() == QMediaPlayer::StoppedState) && ui->playGameSounds->isChecked())
+            {
+                rowDeletedSound->play();
             }
         }
         activeTile = nextTile;
@@ -257,11 +281,30 @@ void GameController::keyPressEvent(QKeyEvent * event)
         // set tile on the lowest possible y pos
         board->quickPlace(activeTile);
         generation();
+        if (slamTileSound->state() == QMediaPlayer::PlayingState && ui->playGameSounds->isChecked())
+        {
+            slamTileSound->setPosition(0);
+        }
+        else if ((slamTileSound->state() == QMediaPlayer::PausedState || slamTileSound->state() == QMediaPlayer::StoppedState) && ui->playGameSounds->isChecked())
+        {
+            slamTileSound->play();
+        }
     }
     else if (event->key() == Qt::Key_Up || event->key() == Qt::Key_W)
     {
         if (board->isRotationValid(activeTile))
+        {
             activeTile->rotate();
+
+            if (rotateSound->state() == QMediaPlayer::PlayingState && ui->playGameSounds->isChecked())
+            {
+                rotateSound->setPosition(0);
+            }
+            else if ((rotateSound->state() == QMediaPlayer::PausedState || rotateSound->state() == QMediaPlayer::StoppedState) && ui->playGameSounds->isChecked())
+            {
+                rotateSound->play();
+            }
+        }
     }
     updateView();
 }
