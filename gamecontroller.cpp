@@ -18,6 +18,22 @@ GameController::GameController(QWidget *parent) : QWidget(parent), ui(new Ui::Te
 
     connect(ui->playButton, SIGNAL(clicked()), this, SLOT(handleGame()));
     connect(timer, SIGNAL(timeout()), this, SLOT(generation()));
+
+    playlist = new QMediaPlaylist();
+    player = new QMediaPlayer();
+    rowDeletedSound = new QMediaPlayer();
+    slamTileSound = new QMediaPlayer();
+    rotateSound = new QMediaPlayer();
+
+    playlist->addMedia(QUrl("qrc:/sounds/Sound/tetris_ukulele.mp3"));
+    playlist->setPlaybackMode(QMediaPlaylist::Loop);
+    player->setPlaylist(playlist);
+    rowDeletedSound->setMedia(QUrl("qrc:/sounds/Sound/full-row.mp3"));
+    slamTileSound->setMedia(QUrl("qrc:/sounds/Sound/slam-tile.wav"));
+    rotateSound->setMedia(QUrl("qrc:/sounds/Sound/rotate.wav"));
+
+
+
 }
 
 void GameController::drawNextTile()
@@ -168,22 +184,13 @@ Tile* GameController::chooseNextTile()
 
 void GameController::initGame()
 {
+    score = 0;
+    isGameOver = false;
     activeTile = chooseNextTile();
     nextTile = chooseNextTile();
     board = new Board();
     timer = new QTimer(this);
-    playlist = new QMediaPlaylist();
-    player = new QMediaPlayer();
-    rowDeletedSound = new QMediaPlayer();
-    slamTileSound = new QMediaPlayer();
-    rotateSound = new QMediaPlayer();
 
-    playlist->addMedia(QUrl("qrc:/sounds/Sound/tetris_ukulele.mp3"));
-    playlist->setPlaybackMode(QMediaPlaylist::Loop);
-    player->setPlaylist(playlist);
-    rowDeletedSound->setMedia(QUrl("qrc:/sounds/Sound/full-row.mp3"));
-    slamTileSound->setMedia(QUrl("qrc:/sounds/Sound/slam-tile.wav"));
-    rotateSound->setMedia(QUrl("qrc:/sounds/Sound/rotate.wav"));
 
     QString scoreText = QStringLiteral("Score: %1").arg(score);
     ui->scoreLabel->setText(scoreText);
@@ -195,7 +202,7 @@ void GameController::initGame()
 
 void GameController::handleGame()
 {
-    if (!isPlaying)
+    if (!isPlaying && !isGameOver)
     {
         timer->start(1000);
         isPlaying = true;
@@ -203,12 +210,22 @@ void GameController::handleGame()
         if (ui->playGameMusic->isChecked())
             player->play();
     }
-    else
+    else if(isPlaying && !isGameOver)
     {
         timer->stop();
         isPlaying = false;
         ui->playButton->setText("Resume");
         player->pause();
+    }else{
+        timer->start(1000);
+        isPlaying = true;
+        isGameOver = false;
+        ui->playButton->setText("Pause");
+        if (ui->playGameMusic->isChecked())
+            player->play();
+        nextTileScene->clear();
+        boardScene->clear();
+        initGame();
     }
 }
 
@@ -216,41 +233,47 @@ void GameController::generation()
 {
 
     // Next genereation
-    // TODO: Handle if game over
-    if (board->isVerticalMoveValid(activeTile))
-    {
-        activeTile->setYPos(activeTile->getYPos() + 1);
-    }
-    else
-    {
-        int genScore = board->updateBoard(activeTile);
-        if (genScore > 0)
+    if (!board->isGameOver(activeTile)){
+        if (board->isVerticalMoveValid(activeTile))
         {
-            score += (level+1)*genScore;
-            genInLevel++;
-            if(genInLevel > 20){
-                level++;
-                genInLevel = 0;
-            }
-
-            QString scoreText = QStringLiteral("Score: %1").arg(score);
-            ui->scoreLabel->setText(scoreText);
-
-            if (rowDeletedSound->state() == QMediaPlayer::PlayingState && ui->playGameSounds->isChecked())
-            {
-                rowDeletedSound->setPosition(0);
-            }
-            else if ((rowDeletedSound->state() == QMediaPlayer::PausedState || rowDeletedSound->state() == QMediaPlayer::StoppedState) && ui->playGameSounds->isChecked())
-            {
-                rowDeletedSound->play();
-            }
+            activeTile->setYPos(activeTile->getYPos() + 1);
         }
-        activeTile = nextTile;
-        nextTile = chooseNextTile();
-        nextTileScene->clear();
-        drawNextTile();
+        else
+        {
+            int genScore = board->updateBoard(activeTile);
+            if (genScore > 0)
+            {
+                score += (level+1)*genScore;
+                genInLevel++;
+                if(genInLevel > 20){
+                    level++;
+                    genInLevel = 0;
+                }
+
+                QString scoreText = QStringLiteral("Score: %1").arg(score);
+                ui->scoreLabel->setText(scoreText);
+
+                if (rowDeletedSound->state() == QMediaPlayer::PlayingState && ui->playGameSounds->isChecked())
+                {
+                    rowDeletedSound->setPosition(0);
+                }
+                else if ((rowDeletedSound->state() == QMediaPlayer::PausedState || rowDeletedSound->state() == QMediaPlayer::StoppedState) && ui->playGameSounds->isChecked())
+                {
+                    rowDeletedSound->play();
+                }
+            }
+            activeTile = nextTile;
+            nextTile = chooseNextTile();
+            nextTileScene->clear();
+            drawNextTile();
+        }
+        updateView();
+    }else{
+        //TODO: Finish game
+        isPlaying = false;
+        isGameOver = true;
+        ui->playButton->setText("Restart");
     }
-    updateView();
 }
 
 void GameController::parseProps()

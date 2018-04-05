@@ -25,6 +25,7 @@ public:
     bool isVerticalMoveValid(Tile * tile);
     bool isRotationValid(Tile * tile);
     void quickPlace(Tile * tile);
+    bool isGameOver(Tile * tile);
 
     //Getters and setters
     vector<vector<int>> getBoard();
@@ -35,7 +36,7 @@ private:
     //Which means that ROWS is always the first loop
     vector<vector<int>> board;
 
-    bool isGameOver();
+
     bool setTileOnBoard(Tile * tile);
     vector<int> checkFullRows(Tile * tile);
     void deleteRows(vector<int> rowNumbers);

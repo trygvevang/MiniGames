@@ -64,6 +64,7 @@ private:
     int score;
     int highScore;
     bool isPlaying;
+    bool isGameOver;
     int level;
     int genInLevel;
 

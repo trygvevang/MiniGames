@@ -42,10 +42,11 @@ HEADERS += \
     board.h \
     gamecontroller.h
 
-Forms +=
-
 FORMS += \
     tetris.ui
 
 RESOURCES += \
     resources.qrc
+
+CONFIG += \
+    resources_big

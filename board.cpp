@@ -26,6 +26,7 @@ bool Board::isHorizontalMoveValid(Tile * tile, int direction) // if positive dir
     }
     return false;
 }
+
 bool Board::isVerticalMoveValid(Tile * tile)
 {
     vector<vector<int>> shape = tile->getShape();
@@ -37,7 +38,7 @@ bool Board::isVerticalMoveValid(Tile * tile)
     int xPos;
     int yPos;
     bool isValid = true;
-    for(int c = 0; c < shape[0].size(); c++)
+    for(unsigned c = 0; c < shape[0].size(); c++)
     {
         for(int a = shape.size()-1; a >= 0; a--)
         {
@@ -67,9 +68,9 @@ void Board::quickPlace(Tile * tile){
 bool Board::isRotationValid(Tile * tile)
 {
     vector<vector<int>> rotatedShape = tile->getRotatedShape();
-    for (unsigned int i = tile->getYPos(); i < tile->getYPos() + rotatedShape.size(); i++)
+    for (unsigned i = tile->getYPos(); i < tile->getYPos() + rotatedShape.size(); i++)
     {
-        for (unsigned int j = tile->getXPos(); j < tile->getXPos() + rotatedShape[0].size(); j++)
+        for (unsigned j = tile->getXPos(); j < tile->getXPos() + rotatedShape[0].size(); j++)
         {
             if (board[i][j] != 0)
             {return false;}
@@ -100,19 +101,29 @@ int Board::updateBoard(Tile * tile)
     }
 }
 
-// Private helper methods
-bool Board::isGameOver()
+bool Board::isGameOver(Tile * tile)
 {
-    for(unsigned int r = 0; r < this->board.size(); r++) {
-        for (unsigned int c = 0; c < this->board[r].size();c++) {
-            if (this->board[r][c] >= 1 && this->board[r+1][c] < 1) { //TODO: probably too basic condition
-                return false;
+    int xPos;
+    int yPos;
+    for(unsigned c = 0; c < tile->getShape()[0].size(); c++)
+    {
+        for(int r = tile->getShape().size()-1; r >= 0; r--)
+        {
+            if (tile->getShape()[r][c] != 0)
+            {
+                yPos = tile->getYPos() + r;
+                xPos = tile->getXPos() + c;
+                if (board[yPos][xPos] != 0)
+                {
+                    return true;
+                }
             }
         }
     }
-    return true;
+    return false;
 }
 
+// Private helper methods
 bool Board::setTileOnBoard(Tile * tile)
 {
     for (unsigned int r = 0; r < tile->getShape().size(); r++)
