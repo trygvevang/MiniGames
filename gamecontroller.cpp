@@ -245,6 +245,7 @@ void GameController::generation()
                 rowDeletedSound->play();
             }
         }
+        delete activeTile;
         activeTile = nextTile;
         nextTile = chooseNextTile();
         nextTileScene->clear();
