@@ -267,12 +267,20 @@ void GameController::generation()
             nextTileScene->clear();
             drawNextTile();
         }
+<<<<<<< HEAD
         updateView();
     }else{
         //TODO: Finish game
         isPlaying = false;
         isGameOver = true;
         ui->playButton->setText("Restart");
+=======
+        delete activeTile;
+        activeTile = nextTile;
+        nextTile = chooseNextTile();
+        nextTileScene->clear();
+        drawNextTile();
+>>>>>>> a16d8989bf62aa187a7906502fed3dd9e661bd7b
     }
 }
 
