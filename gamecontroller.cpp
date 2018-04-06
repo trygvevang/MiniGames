@@ -389,8 +389,6 @@ void GameController::keyPressEvent(QKeyEvent * event)
 
 void GameController::calculateScore(int rows){
     int genScore;
-    qDebug() << "Rows deleted: " << rows << ", Level: " << level;
-
     switch (rows) {
     case 1:
         genScore = 40;
