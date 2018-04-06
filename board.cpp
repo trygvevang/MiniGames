@@ -104,20 +104,7 @@ int Board::updateBoard(Tile * tile)
     setTileOnBoard(tile);
     vector<int> fullRows = checkFullRows(tile);
     deleteRows(fullRows);
-    switch (fullRows.size()) {
-    case 0:
-        return 0;
-    case 1:
-        return 40;
-    case 2:
-        return 100;
-    case 3:
-        return 300;
-    case 4:
-        return 1200;
-    default:
-        return 0;
-    }
+    return fullRows.size();
 }
 
 bool Board::isGameOver(Tile * tile)

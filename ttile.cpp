@@ -47,6 +47,7 @@ void TTile::rotate()
     }
 }
 
+
 TTile::~TTile()
 {
 
