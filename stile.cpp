@@ -31,6 +31,7 @@ void STile::rotate()
     }
 }
 
+
 STile::~STile()
 {
 

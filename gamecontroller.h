@@ -37,6 +37,7 @@ public:
     void drawNextTile(); // draws the board with next tile
     void drawBoard(); // draws the gameboard
     void drawActiveTileOnBoard();
+    void drawGhostTile();
     void updateView();
     Tile * chooseNextTile();
     void initGame();
@@ -61,14 +62,19 @@ private:
     Board * board;
     Tile * activeTile;
     Tile * nextTile;
+    Tile * ghostTile;
+    Tile * nextGhostTile;
     int score;
     int highScore;
     bool isPlaying;
     bool isGameOver;
     int level;
-    int genInLevel;
+    int rowsCompleted;
+
+    //random_device random; //For Jesper to get psuedorandom tiles
 
     QString setRectColor(int value);
+    void calculateScore(int rows);
 };
 
 #endif // GAMECONTROLLER_H

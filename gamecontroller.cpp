@@ -87,6 +87,31 @@ void GameController::drawBoard()
     }
 }
 
+void GameController::drawGhostTile(){
+    int boardWidth = ui->graphicsView->width()/board->COLS;
+    int boardHeight = ui->graphicsView->height()/board->ROWS;
+    ghostTile->setYPos(activeTile->getYPos());
+    board->quickPlace(ghostTile); //Move ghost tile to final position
+    for (unsigned int i = 0; i < ghostTile->getShape().size(); i++)
+    {
+        for (unsigned int j = 0; j < ghostTile->getShape()[0].size(); j++)
+        {
+            if (ghostTile->getShape()[i][j] != 0)
+            {
+                QGraphicsRectItem * rect = new QGraphicsRectItem();
+                rect->setRect((j + ghostTile->getXPos()) * boardWidth , (i + ghostTile->getYPos()) * boardHeight, boardWidth, boardHeight);
+
+                QBrush brush(Qt::DiagCrossPattern);
+                const QColor color(setRectColor(ghostTile->getShape()[i][j]));
+                brush.setColor(color);
+                rect->setBrush(brush);
+
+                boardScene->addItem(rect);
+            }
+        }
+    }
+}
+
 void GameController::drawActiveTileOnBoard()
 {
     int boardWidth = ui->graphicsView->width()/board->COLS;
@@ -148,36 +173,48 @@ Tile* GameController::chooseNextTile()
     if (randomIndex == 0)
     {
         ITile * iTile = new ITile();
+        nextGhostTile = new ITile();
         return iTile;
     }
     else if (randomIndex == 1)
     {
         JTile * jTile = new JTile();
+        nextGhostTile = new JTile();
         return jTile;
     }
     else if (randomIndex == 2)
     {
         LTile * lTile = new LTile();
+        nextGhostTile = new LTile();
+
         return lTile;
     }
     else if (randomIndex == 3)
     {
         OTile * oTile = new OTile();
+        nextGhostTile = new OTile();
+
         return oTile;
     }
     else if (randomIndex == 4)
     {
         STile * sTile = new STile();
+        nextGhostTile = new STile();
+
         return sTile;
     }
     else if (randomIndex == 5)
     {
         TTile * tTile = new TTile();
+        nextGhostTile = new TTile();
+
         return tTile;
     }
     else
     {
         ZTile * zTile = new ZTile();
+        nextGhostTile = new ZTile();
+
         return zTile;
     }
 }
@@ -185,8 +222,11 @@ Tile* GameController::chooseNextTile()
 void GameController::initGame()
 {
     score = 0;
+    level = 0;
+    rowsCompleted = 0;
     isGameOver = false;
     activeTile = chooseNextTile();
+    ghostTile = nextGhostTile;
     nextTile = chooseNextTile();
     board = new Board();
     timer = new QTimer(this);
@@ -198,6 +238,7 @@ void GameController::initGame()
     drawNextTile();
     drawBoard();
     drawActiveTileOnBoard();
+    drawGhostTile();
 }
 
 void GameController::handleGame()
@@ -231,7 +272,6 @@ void GameController::handleGame()
 
 void GameController::generation()
 {
-
     // Next genereation
     if (!board->isGameOver(activeTile)){
         if (board->isVerticalMoveValid(activeTile))
@@ -240,15 +280,10 @@ void GameController::generation()
         }
         else
         {
-            int genScore = board->updateBoard(activeTile);
-            if (genScore > 0)
+            int rows = board->updateBoard(activeTile);
+            if (rows > 0)
             {
-                score += (level+1)*genScore;
-                genInLevel++;
-                if(genInLevel > 20){
-                    level++;
-                    genInLevel = 0;
-                }
+                calculateScore(rows);
 
                 QString scoreText = QStringLiteral("Score: %1").arg(score);
                 ui->scoreLabel->setText(scoreText);
@@ -262,8 +297,10 @@ void GameController::generation()
                     rowDeletedSound->play();
                 }
             }
+            delete ghostTile;
             delete activeTile;
             activeTile = nextTile;
+            ghostTile = nextGhostTile;
             nextTile = chooseNextTile();
             nextTileScene->clear();
             drawNextTile();
@@ -273,6 +310,7 @@ void GameController::generation()
         //TODO: Finish game
         isPlaying = false;
         isGameOver = true;
+        timer->stop();
         ui->playButton->setText("Restart");
     }
 }
@@ -293,19 +331,27 @@ void GameController::updateView()
     boardScene->clear();
     drawBoard();
     drawActiveTileOnBoard();
+    drawGhostTile();
 }
 
 void GameController::keyPressEvent(QKeyEvent * event)
 {
+    if(!isPlaying){
+        return;
+    }
     if (event->key() == Qt::Key_Right || event->key() == Qt::Key_D)
     {
-        if (board->isHorizontalMoveValid(activeTile, 1))
+        if (board->isHorizontalMoveValid(activeTile, 1)){
             activeTile->setXPos(activeTile->getXPos() + 1);
+            ghostTile->setXPos((activeTile->getXPos()));
+        }
     }
     else if (event->key() == Qt::Key_Left || event->key() == Qt::Key_A)
     {
-        if (board->isHorizontalMoveValid(activeTile, -1))
+        if (board->isHorizontalMoveValid(activeTile, -1)){
             activeTile->setXPos(activeTile->getXPos() - 1);
+            ghostTile->setXPos(activeTile->getXPos());
+        }
     }
     else if (event->key() ==  Qt::Key_Down || event->key() == Qt::Key_S)
     {
@@ -326,6 +372,7 @@ void GameController::keyPressEvent(QKeyEvent * event)
         if (board->isRotationValid(activeTile))
         {
             activeTile->rotate();
+            ghostTile->setShape(activeTile->getShape());
 
             if (rotateSound->state() == QMediaPlayer::PlayingState && ui->playGameSounds->isChecked())
             {
@@ -338,6 +385,36 @@ void GameController::keyPressEvent(QKeyEvent * event)
         }
     }
     updateView();
+}
+
+void GameController::calculateScore(int rows){
+    int genScore;
+    qDebug() << "Rows deleted: " << rows << ", Level: " << level;
+
+    switch (rows) {
+    case 1:
+        genScore = 40;
+        break;
+    case 2:
+        genScore = 100;
+        break;
+    case 3:
+        genScore = 300;
+        break;
+    case 4:
+        genScore = 1200;
+        break;
+    default:
+        genScore = 0;
+        break;
+    }
+    score += (level+1)*genScore;
+    rowsCompleted += rows;
+    if(rowsCompleted >= 10){
+        level++;
+        rowsCompleted = rowsCompleted - 10;
+    }
+
 }
 
 GameController::~GameController()
