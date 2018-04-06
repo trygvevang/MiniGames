@@ -13,18 +13,37 @@ Board::Board()
 // Public member functions
 bool Board::isHorizontalMoveValid(Tile * tile, int direction) // if positive direction move right, else left
 {
-    int yPos = tile->getYPos();
-    int xPosToCheck = direction > 0 ? tile->getXPos() + tile->getShape()[0].size() : tile->getXPos() - 1;
-    if (xPosToCheck < COLS && xPosToCheck >= 0) // Check if next X-position is valid on the board
-    {
-        for (unsigned int i = yPos; i < yPos + tile->getShape().size(); i++)
-        {
-            if (board[i][xPosToCheck] != 0)
-            {return false;}
+//    int yPos = tile->getYPos();
+//    int xPosToCheck = direction > 0 ? tile->getXPos() + tile->getShape()[0].size() : tile->getXPos() - 1;
+//    if (xPosToCheck < COLS && xPosToCheck >= 0) // Check if next X-position is valid on the board
+//    {
+//        for (unsigned int i = yPos; i < yPos + tile->getShape().size(); i++)
+//        {
+//            if (board[i][xPosToCheck] != 0)
+//            {return false;}
+//        }
+//        return true;
+//    }
+//    return false;
+    int xPos;
+    int yPos;
+    vector<vector<int>> shape = tile->getShape();
+    for(unsigned r = 0; r < shape.size(); r++){
+        for(unsigned c = 0; c < shape[r].size(); c++){
+            if(shape[r][c] != 0){
+                xPos = tile->getXPos() + c;
+                yPos = tile->getYPos() + r;
+                if(direction > 0){
+                    xPos++;
+                }else{
+                    xPos--;
+                }
+                if(board[yPos][xPos] != 0)
+                    return false;
+            }
         }
-        return true;
     }
-    return false;
+    return true;
 }
 
 bool Board::isVerticalMoveValid(Tile * tile)
