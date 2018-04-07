@@ -2,30 +2,23 @@
 #define IOGAME_H
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <string>
 #include <list>
+#include <vector>
 #include <QString>
 
 using namespace std;
-using namespace chrono;
 
 struct Game
 {
-private:
     string playername;
-    string score;
-public:
-    Game(string playername, string score): playername(playername), score(score) {}
+    int score;
+    Game(string playername, int score): playername(playername), score(score) {}
 };
 
-class IOgame
-{
-public:
-    IOgame();
-    void saveGame(QString playername, int score);
-    list<Game> loadScores(); // Should return highscores in a list or something
-    ~IOGame();
-private:
-};
+void saveGame(QString playername, int score);
+list<Game> loadScores();
 
 #endif // IOGAME_H

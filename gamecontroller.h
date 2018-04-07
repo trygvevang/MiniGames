@@ -11,7 +11,9 @@
 #include <QMediaPlaylist>
 #include <QMediaPlayer>
 #include <random>
+#include <list>
 #include "ui_tetris.h"
+#include "iogame.h"
 #include "tile.h"
 #include "itile.h"
 #include "jtile.h"
@@ -66,6 +68,7 @@ private:
     bool isPlaying;
     int level;
     int genInLevel;
+    list<Game> highscores; // struct Game is defined in IOgame
 
     QString setRectColor(int value);
 };

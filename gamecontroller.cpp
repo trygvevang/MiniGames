@@ -177,6 +177,7 @@ void GameController::initGame()
     rowDeletedSound = new QMediaPlayer();
     slamTileSound = new QMediaPlayer();
     rotateSound = new QMediaPlayer();
+    highscores = loadScores();
 
     playlist->addMedia(QUrl("qrc:/sounds/Sound/tetris_ukulele.mp3"));
     playlist->setPlaybackMode(QMediaPlaylist::Loop);
@@ -186,7 +187,9 @@ void GameController::initGame()
     rotateSound->setMedia(QUrl("qrc:/sounds/Sound/rotate.wav"));
 
     QString scoreText = QStringLiteral("Score: %1").arg(score);
+    QString highscoreText = QStringLiteral("Highscore: %1").arg(highscores.front().score);
     ui->scoreLabel->setText(scoreText);
+    ui->highscoreLabel->setText(highscoreText);
 
     drawNextTile();
     drawBoard();
