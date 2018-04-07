@@ -13,18 +13,6 @@ Board::Board()
 // Public member functions
 bool Board::isHorizontalMoveValid(Tile * tile, int direction) // if positive direction move right, else left
 {
-//    int yPos = tile->getYPos();
-//    int xPosToCheck = direction > 0 ? tile->getXPos() + tile->getShape()[0].size() : tile->getXPos() - 1;
-//    if (xPosToCheck < COLS && xPosToCheck >= 0) // Check if next X-position is valid on the board
-//    {
-//        for (unsigned int i = yPos; i < yPos + tile->getShape().size(); i++)
-//        {
-//            if (board[i][xPosToCheck] != 0)
-//            {return false;}
-//        }
-//        return true;
-//    }
-//    return false;
     int xPos;
     int yPos;
     vector<vector<int>> shape = tile->getShape();
