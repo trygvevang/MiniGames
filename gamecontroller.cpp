@@ -18,6 +18,22 @@ GameController::GameController(QWidget *parent) : QWidget(parent), ui(new Ui::Te
 
     connect(ui->playButton, SIGNAL(clicked()), this, SLOT(handleGame()));
     connect(timer, SIGNAL(timeout()), this, SLOT(generation()));
+
+    playlist = new QMediaPlaylist();
+    player = new QMediaPlayer();
+    rowDeletedSound = new QMediaPlayer();
+    slamTileSound = new QMediaPlayer();
+    rotateSound = new QMediaPlayer();
+
+    playlist->addMedia(QUrl("qrc:/sounds/Sound/tetris_ukulele.mp3"));
+    playlist->setPlaybackMode(QMediaPlaylist::Loop);
+    player->setPlaylist(playlist);
+    rowDeletedSound->setMedia(QUrl("qrc:/sounds/Sound/full-row.mp3"));
+    slamTileSound->setMedia(QUrl("qrc:/sounds/Sound/slam-tile.wav"));
+    rotateSound->setMedia(QUrl("qrc:/sounds/Sound/rotate.wav"));
+
+
+
 }
 
 void GameController::drawNextTile()
@@ -67,6 +83,31 @@ void GameController::drawBoard()
 
             boardScene->addItem(rect);
 
+        }
+    }
+}
+
+void GameController::drawGhostTile(){
+    int boardWidth = ui->graphicsView->width()/board->COLS;
+    int boardHeight = ui->graphicsView->height()/board->ROWS;
+    ghostTile->setYPos(activeTile->getYPos());
+    board->quickPlace(ghostTile); //Move ghost tile to final position
+    for (unsigned int i = 0; i < ghostTile->getShape().size(); i++)
+    {
+        for (unsigned int j = 0; j < ghostTile->getShape()[0].size(); j++)
+        {
+            if (ghostTile->getShape()[i][j] != 0)
+            {
+                QGraphicsRectItem * rect = new QGraphicsRectItem();
+                rect->setRect((j + ghostTile->getXPos()) * boardWidth , (i + ghostTile->getYPos()) * boardHeight, boardWidth, boardHeight);
+
+                QBrush brush(Qt::DiagCrossPattern);
+                const QColor color(setRectColor(ghostTile->getShape()[i][j]));
+                brush.setColor(color);
+                rect->setBrush(brush);
+
+                boardScene->addItem(rect);
+            }
         }
     }
 }
@@ -132,73 +173,83 @@ Tile* GameController::chooseNextTile()
     if (randomIndex == 0)
     {
         ITile * iTile = new ITile();
+        nextGhostTile = new ITile();
         return iTile;
     }
     else if (randomIndex == 1)
     {
         JTile * jTile = new JTile();
+        nextGhostTile = new JTile();
         return jTile;
     }
     else if (randomIndex == 2)
     {
         LTile * lTile = new LTile();
+        nextGhostTile = new LTile();
+
         return lTile;
     }
     else if (randomIndex == 3)
     {
         OTile * oTile = new OTile();
+        nextGhostTile = new OTile();
+
         return oTile;
     }
     else if (randomIndex == 4)
     {
         STile * sTile = new STile();
+        nextGhostTile = new STile();
+
         return sTile;
     }
     else if (randomIndex == 5)
     {
         TTile * tTile = new TTile();
+        nextGhostTile = new TTile();
+
         return tTile;
     }
     else
     {
         ZTile * zTile = new ZTile();
+        nextGhostTile = new ZTile();
+
         return zTile;
     }
 }
 
 void GameController::initGame()
 {
+    score = 0;
+    level = 0;
+    rowsCompleted = 0;
+    isGameOver = false;
     activeTile = chooseNextTile();
+    ghostTile = nextGhostTile;
     nextTile = chooseNextTile();
     board = new Board();
     timer = new QTimer(this);
-    playlist = new QMediaPlaylist();
-    player = new QMediaPlayer();
-    rowDeletedSound = new QMediaPlayer();
-    slamTileSound = new QMediaPlayer();
-    rotateSound = new QMediaPlayer();
     highscores = loadScores();
 
-    playlist->addMedia(QUrl("qrc:/sounds/Sound/tetris_ukulele.mp3"));
-    playlist->setPlaybackMode(QMediaPlaylist::Loop);
-    player->setPlaylist(playlist);
-    rowDeletedSound->setMedia(QUrl("qrc:/sounds/Sound/full-row.mp3"));
-    slamTileSound->setMedia(QUrl("qrc:/sounds/Sound/slam-tile.wav"));
-    rotateSound->setMedia(QUrl("qrc:/sounds/Sound/rotate.wav"));
-
     QString scoreText = QStringLiteral("Score: %1").arg(score);
-    QString highscoreText = QStringLiteral("Highscore: %1").arg(highscores.front().score);
+    QString highscoreText;
+    if (highscores.size() > 0)
+        highscoreText = QStringLiteral("Highscore: %1").arg(highscores.front().score);
+    else
+        highscoreText = "Highscore: 0";
     ui->scoreLabel->setText(scoreText);
     ui->highscoreLabel->setText(highscoreText);
 
     drawNextTile();
     drawBoard();
     drawActiveTileOnBoard();
+    drawGhostTile();
 }
 
 void GameController::handleGame()
 {
-    if (!isPlaying)
+    if (!isPlaying && !isGameOver)
     {
         timer->start(1000);
         isPlaying = true;
@@ -206,55 +257,68 @@ void GameController::handleGame()
         if (ui->playGameMusic->isChecked())
             player->play();
     }
-    else
+    else if(isPlaying && !isGameOver)
     {
         timer->stop();
         isPlaying = false;
         ui->playButton->setText("Resume");
         player->pause();
+    }else{
+        timer->start(1000);
+        isPlaying = true;
+        isGameOver = false;
+        ui->playButton->setText("Pause");
+        if (ui->playGameMusic->isChecked())
+            player->play();
+        nextTileScene->clear();
+        boardScene->clear();
+        initGame();
     }
 }
 
 void GameController::generation()
 {
-
     // Next genereation
-    // TODO: Handle if game over
-    if (board->isVerticalMoveValid(activeTile))
-    {
-        activeTile->setYPos(activeTile->getYPos() + 1);
-    }
-    else
-    {
-        int genScore = board->updateBoard(activeTile);
-        if (genScore > 0)
+    if (!board->isGameOver(activeTile)){
+        if (board->isVerticalMoveValid(activeTile))
         {
-            score += (level+1)*genScore;
-            genInLevel++;
-            if(genInLevel > 20){
-                level++;
-                genInLevel = 0;
-            }
-
-            QString scoreText = QStringLiteral("Score: %1").arg(score);
-            ui->scoreLabel->setText(scoreText);
-
-            if (rowDeletedSound->state() == QMediaPlayer::PlayingState && ui->playGameSounds->isChecked())
-            {
-                rowDeletedSound->setPosition(0);
-            }
-            else if ((rowDeletedSound->state() == QMediaPlayer::PausedState || rowDeletedSound->state() == QMediaPlayer::StoppedState) && ui->playGameSounds->isChecked())
-            {
-                rowDeletedSound->play();
-            }
+            activeTile->setYPos(activeTile->getYPos() + 1);
         }
-        delete activeTile;
-        activeTile = nextTile;
-        nextTile = chooseNextTile();
-        nextTileScene->clear();
-        drawNextTile();
+        else
+        {
+            int rows = board->updateBoard(activeTile);
+            if (rows > 0)
+            {
+                calculateScore(rows);
+
+                QString scoreText = QStringLiteral("Score: %1").arg(score);
+                ui->scoreLabel->setText(scoreText);
+
+                if (rowDeletedSound->state() == QMediaPlayer::PlayingState && ui->playGameSounds->isChecked())
+                {
+                    rowDeletedSound->setPosition(0);
+                }
+                else if ((rowDeletedSound->state() == QMediaPlayer::PausedState || rowDeletedSound->state() == QMediaPlayer::StoppedState) && ui->playGameSounds->isChecked())
+                {
+                    rowDeletedSound->play();
+                }
+            }
+            delete ghostTile;
+            delete activeTile;
+            activeTile = nextTile;
+            ghostTile = nextGhostTile;
+            nextTile = chooseNextTile();
+            nextTileScene->clear();
+            drawNextTile();
+        }
+        updateView();
+    }else{
+        //TODO: Finish game
+        isPlaying = false;
+        isGameOver = true;
+        timer->stop();
+        ui->playButton->setText("Restart");
     }
-    updateView();
 }
 
 void GameController::parseProps()
@@ -273,19 +337,27 @@ void GameController::updateView()
     boardScene->clear();
     drawBoard();
     drawActiveTileOnBoard();
+    drawGhostTile();
 }
 
 void GameController::keyPressEvent(QKeyEvent * event)
 {
+    if(!isPlaying){
+        return;
+    }
     if (event->key() == Qt::Key_Right || event->key() == Qt::Key_D)
     {
-        if (board->isHorizontalMoveValid(activeTile, 1))
+        if (board->isHorizontalMoveValid(activeTile, 1)){
             activeTile->setXPos(activeTile->getXPos() + 1);
+            ghostTile->setXPos((activeTile->getXPos()));
+        }
     }
     else if (event->key() == Qt::Key_Left || event->key() == Qt::Key_A)
     {
-        if (board->isHorizontalMoveValid(activeTile, -1))
+        if (board->isHorizontalMoveValid(activeTile, -1)){
             activeTile->setXPos(activeTile->getXPos() - 1);
+            ghostTile->setXPos(activeTile->getXPos());
+        }
     }
     else if (event->key() ==  Qt::Key_Down || event->key() == Qt::Key_S)
     {
@@ -306,6 +378,7 @@ void GameController::keyPressEvent(QKeyEvent * event)
         if (board->isRotationValid(activeTile))
         {
             activeTile->rotate();
+            ghostTile->setShape(activeTile->getShape());
 
             if (rotateSound->state() == QMediaPlayer::PlayingState && ui->playGameSounds->isChecked())
             {
@@ -320,7 +393,45 @@ void GameController::keyPressEvent(QKeyEvent * event)
     updateView();
 }
 
+void GameController::calculateScore(int rows){
+    int genScore;
+    switch (rows) {
+    case 1:
+        genScore = 40;
+        break;
+    case 2:
+        genScore = 100;
+        break;
+    case 3:
+        genScore = 300;
+        break;
+    case 4:
+        genScore = 1200;
+        break;
+    default:
+        genScore = 0;
+        break;
+    }
+    score += (level+1)*genScore;
+    rowsCompleted += rows;
+    if(rowsCompleted >= 10){
+        level++;
+        rowsCompleted = rowsCompleted - 10;
+    }
+
+}
+
 GameController::~GameController()
 {
+    if (highscores.size() == 0 || score > highscores.front().score)
+    {
+        string playername;
+        if (ui->playerName->text() == "")
+        {
+            playername = "Unnamed player";
+        }
+        else playername = ui->playerName->text().toStdString();
+        saveGame(playername, score);
+    }
 
 }

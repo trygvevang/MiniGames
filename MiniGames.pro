@@ -44,10 +44,11 @@ HEADERS += \
     gamecontroller.h \
     iogame.h
 
-Forms +=
-
 FORMS += \
     tetris.ui
 
 RESOURCES += \
     resources.qrc
+
+CONFIG += \
+    resources_big

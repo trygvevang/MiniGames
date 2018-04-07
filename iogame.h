@@ -18,7 +18,7 @@ struct Game
     Game(string playername, int score): playername(playername), score(score) {}
 };
 
-void saveGame(QString playername, int score);
+void saveGame(string playername, int score);
 list<Game> loadScores();
 
 #endif // IOGAME_H

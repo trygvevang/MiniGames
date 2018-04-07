@@ -18,6 +18,7 @@ void OTile::rotate()
     // OTile does not rotate
 }
 
+
 OTile::~OTile()
 {
 

@@ -39,6 +39,7 @@ public:
     void drawNextTile(); // draws the board with next tile
     void drawBoard(); // draws the gameboard
     void drawActiveTileOnBoard();
+    void drawGhostTile();
     void updateView();
     Tile * chooseNextTile();
     void initGame();
@@ -63,14 +64,18 @@ private:
     Board * board;
     Tile * activeTile;
     Tile * nextTile;
+    Tile * ghostTile;
+    Tile * nextGhostTile;
     int score;
     int highScore;
     bool isPlaying;
+    bool isGameOver;
     int level;
-    int genInLevel;
     list<Game> highscores; // struct Game is defined in IOgame
+    int rowsCompleted;
 
     QString setRectColor(int value);
+    void calculateScore(int rows);
 };
 
 #endif // GAMECONTROLLER_H
