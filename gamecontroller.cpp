@@ -328,6 +328,8 @@ void GameController::writeProps()
 
 void GameController::updateView()
 {
+    ghostTile->setXPos(activeTile->getXPos());
+    ghostTile->setShape(activeTile->getShape());
     boardScene->clear();
     drawBoard();
     drawActiveTileOnBoard();
@@ -343,14 +345,14 @@ void GameController::keyPressEvent(QKeyEvent * event)
     {
         if (board->isHorizontalMoveValid(activeTile, 1)){
             activeTile->setXPos(activeTile->getXPos() + 1);
-            ghostTile->setXPos((activeTile->getXPos()));
+
         }
     }
     else if (event->key() == Qt::Key_Left || event->key() == Qt::Key_A)
     {
         if (board->isHorizontalMoveValid(activeTile, -1)){
             activeTile->setXPos(activeTile->getXPos() - 1);
-            ghostTile->setXPos(activeTile->getXPos());
+
         }
     }
     else if (event->key() ==  Qt::Key_Down || event->key() == Qt::Key_S)
@@ -372,7 +374,7 @@ void GameController::keyPressEvent(QKeyEvent * event)
         if (board->isRotationValid(activeTile))
         {
             activeTile->rotate();
-            ghostTile->setShape(activeTile->getShape());
+
 
             if (rotateSound->state() == QMediaPlayer::PlayingState && ui->playGameSounds->isChecked())
             {
