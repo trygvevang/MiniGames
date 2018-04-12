@@ -44,9 +44,12 @@ GameController::GameController(QWidget *parent) : QWidget(parent), ui(new Ui::Te
 
 void GameController::drawNextTile()
 {
-    int boardLength = ui->graphicsView_2->width()/5;
-    double middleOfWidth = ui->graphicsView_2->width()/8;
-    double middleOfHeight = ui->graphicsView_2->height()/4;
+    int tileSize = ui->graphicsView_2->width()/5;
+    int viewHeight = ui->graphicsView_2->height();
+    int viewWidth = ui->graphicsView_2->width();
+    int tileHeightOffset = (viewHeight - (nextTile->getShape().size() * tileSize))/2;
+    int tileWidthOffset = (viewWidth - (nextTile->getShape()[0].size() * tileSize))/2;
+
 
     for (unsigned int i = 0; i < nextTile->getShape().size(); i++)
         {
@@ -55,7 +58,7 @@ void GameController::drawNextTile()
                 if (nextTile->getShape()[i][j] != 0)
                 {
                     QGraphicsRectItem * rect = new QGraphicsRectItem();
-                    rect->setRect(j * boardLength + middleOfWidth, i * boardLength + middleOfHeight, boardLength, boardLength);
+                    rect->setRect(j * tileSize + tileWidthOffset, i * tileSize + tileHeightOffset, tileSize, tileSize);
 
                     QBrush brush(Qt::SolidPattern);
                     const QColor color(setRectColor(nextTile->getShape()[i][j]));
@@ -493,7 +496,7 @@ void GameController::calculateScore(int rows){
         genScore = 0;
         break;
     }
-    score += (level+1)*genScore;
+    score += (level)*genScore;
     rowsCompleted += rows;
     if(rowsCompleted >= 10){
         level++;
