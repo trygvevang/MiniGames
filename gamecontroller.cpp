@@ -105,9 +105,11 @@ void GameController::drawGhostTile(){
                 QGraphicsRectItem * rect = new QGraphicsRectItem();
                 rect->setRect((j + ghostTile->getXPos()) * boardWidth , (i + ghostTile->getYPos()) * boardHeight, boardWidth, boardHeight);
 
-                QBrush brush(Qt::DiagCrossPattern);
-                const QColor color(setRectColor(ghostTile->getShape()[i][j]));
-                brush.setColor(color);
+                QBrush brush(Qt::SolidPattern);
+                QColor color(setRectColor(ghostTile->getShape()[i][j]));
+                color.setAlpha(100);
+                const QColor constColor = color;
+                brush.setColor(constColor);
                 rect->setBrush(brush);
 
                 boardScene->addItem(rect);
@@ -154,10 +156,10 @@ QString GameController::setRectColor(int value)
         color = "#ffa500";
         break;
     case 4:
-        color = "#ffff00";
+        color = "#FFF504";
         break;
     case 5:
-        color = "#00ff00";
+        color = "#00D11B";
         break;
     case 6:
         color = "#551A8B";
