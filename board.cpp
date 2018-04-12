@@ -26,7 +26,7 @@ bool Board::isHorizontalMoveValid(Tile * tile, int direction) // if positive dir
                 }else{
                     xPos--;
                 }
-                if(board[yPos][xPos] != 0)
+                if(xPos < 0 || xPos >= COLS || board[yPos][xPos] != 0)
                     return false;
             }
         }
@@ -80,15 +80,15 @@ bool Board::isRotationValid(Tile * tile)
     bool rotateLeft = true;
     for(unsigned r = tile->getYPos(); r < tile->getYPos() + rotatedShape.size(); r++)
     {
-        for(unsigned c = tile->getXPos(); c < tile->getXPos() + rotatedShape[0].size(); c++)
+        for(int c = tile->getXPos(); c < tile->getXPos() + rotatedShape[0].size(); c++)
         {
-            if(board[r][c] != 0){
+            if(c >= COLS || c < 0 || board[r][c] != 0){
                 rotateInPlace = false;
             }
-            if(board[r][c + 1] != 0){
+            if(c+1 >= COLS || board[r][c + 1] != 0){
                 rotateRight = false;
             }
-            if(board[r][c-1] != 0){
+            if(c-1 < 0 || board[r][c-1] != 0){
                 rotateLeft = false;
             }
         }
