@@ -66,6 +66,7 @@ private:
     QMediaPlayer * rowDeletedSound;
     QMediaPlayer * slamTileSound;
     QMediaPlayer * rotateSound;
+    QMediaPlayer * gameOverSound;
 
     Board * board;
     Tile * activeTile;

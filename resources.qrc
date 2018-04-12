@@ -6,5 +6,6 @@
         <file>Sound/tetris_ukulele.mp3</file>
         <file>Sound/full-row.mp3</file>
         <file>Sound/rotate.wav</file>
+        <file>Sound/game_over.wav</file>
     </qresource>
 </RCC>

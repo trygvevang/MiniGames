@@ -28,6 +28,7 @@ GameController::GameController(QWidget *parent) : QWidget(parent), ui(new Ui::Te
     rowDeletedSound = new QMediaPlayer();
     slamTileSound = new QMediaPlayer();
     rotateSound = new QMediaPlayer();
+    gameOverSound = new QMediaPlayer();
 
     playlist->addMedia(QUrl("qrc:/sounds/Sound/tetris_ukulele.mp3"));
     playlist->setPlaybackMode(QMediaPlaylist::Loop);
@@ -35,6 +36,7 @@ GameController::GameController(QWidget *parent) : QWidget(parent), ui(new Ui::Te
     rowDeletedSound->setMedia(QUrl("qrc:/sounds/Sound/full-row.mp3"));
     slamTileSound->setMedia(QUrl("qrc:/sounds/Sound/slam-tile.wav"));
     rotateSound->setMedia(QUrl("qrc:/sounds/Sound/rotate.wav"));
+    gameOverSound->setMedia(QUrl("qrc:/sounds/Sound/game_over.wav"));
 
 
 
@@ -160,8 +162,6 @@ void GameController::drawGameOver(){
     gameOverLabel->setFont(f);
     gameOverLabel->move((width/2)-(gameOverLabel->sizeHint().width()/2), (height/2)-(gameOverLabel->sizeHint().height()/2));
     boardScene->addWidget(gameOverLabel);
-    player->pause();
-
 }
 
 QString GameController::setRectColor(int value)
@@ -272,6 +272,12 @@ void GameController::setupGame(){
     isSoftDrop = false;
     highscores = loadScores();
 
+    if (gameOverSound->state() == QMediaPlayer::PlayingState)
+    {
+        gameOverSound->setPosition(0);
+        gameOverSound->stop();
+    }
+
     QString highscoreText;
     if (highscores.size() > 0)
         highscoreText = QStringLiteral("Highscore: %1").arg(highscores.front().score);
@@ -367,6 +373,8 @@ void GameController::generation()
         //TODO: Finish game
         isPlaying = false;
         isGameOver = true;
+        player->pause();
+        gameOverSound->play();
         drawGameOver();
         timer->stop();
         ui->playButton->setText("Restart");
