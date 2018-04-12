@@ -271,7 +271,6 @@ void GameController::handleGame()
     }
     else if(isPlaying && !isGameOver)
     {
-        qDebug() << "Pause was pressed";
         timer->stop();
         isPlaying = false;
         ui->playButton->setText("Resume");
@@ -390,8 +389,8 @@ void GameController::keyPressEvent(QKeyEvent * event)
     }
     else if (event->key() == Qt::Key_S || event->key() == Qt::Key_Down)
     {
+        if(!isSoftDrop) generation();
         isSoftDrop = true;
-        generation();
     }
     else if (event->key() == Qt::Key_Space)
     {
