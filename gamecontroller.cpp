@@ -245,7 +245,8 @@ void GameController::setupGame(){
     ghostTile = nextGhostTile;
     nextTile = chooseNextTile();
     board = new Board();
-
+    gameInterval = 1000;
+    softDropSpeed = 100;
     isSoftDrop = false;
     highscores = loadScores();
 
@@ -272,7 +273,7 @@ void GameController::handleGame()
 {
     if (!isPlaying && !isGameOver)
     {
-        timer->start(1000);
+        timer->start(gameInterval);
         ui->board->setFocus();
         isPlaying = true;
         ui->playButton->setText("Pause");
@@ -286,7 +287,7 @@ void GameController::handleGame()
         ui->playButton->setText("Resume");
         player->pause();
     }else{
-        timer->start(1000);
+        timer->start(gameInterval);
         isPlaying = true;
         isGameOver = false;
         ui->playButton->setText("Pause");
@@ -335,10 +336,10 @@ void GameController::generation()
             drawNextTile();
         }
         updateView();
-        if(isSoftDrop){
-            timer->start(100);
+        if(isSoftDrop && gameInterval > softDropSpeed){
+            timer->start(softDropSpeed);
         }else{
-            timer->start(1000);
+            timer->start(gameInterval);
         }
     }else{
         //TODO: Finish game
@@ -362,6 +363,7 @@ void GameController::writeProps()
 
 void GameController::updateView()
 {
+    ui->board->setFocus();
     ghostTile->setXPos(activeTile->getXPos());
     ghostTile->setShape(activeTile->getShape());
     boardScene->clear();
@@ -464,9 +466,11 @@ void GameController::calculateScore(int rows){
     rowsCompleted += rows;
     if(rowsCompleted >= 10){
         level++;
+        gameInterval -= 30;
+        rowsCompleted = rowsCompleted - 10;
+
         QString levelText = QStringLiteral("Level: %1").arg(level);
         ui->levelLabel->setText(levelText);
-        rowsCompleted = rowsCompleted - 10;
     }
 
 }
