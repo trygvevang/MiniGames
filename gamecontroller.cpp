@@ -150,7 +150,7 @@ void GameController::drawGameOver(){
     gameOverRect->setRect(0, 0, width, height);
     QBrush brush(Qt::SolidPattern);
     QColor color("#838584");
-    color.setAlpha(80);
+    color.setAlpha(212);
     brush.setColor(color);
     gameOverRect->setBrush(brush);
     boardScene->addItem(gameOverRect);
@@ -159,6 +159,7 @@ void GameController::drawGameOver(){
     gameOverLabel->setText("Game Over");
     gameOverLabel->setFont(f);
     gameOverLabel->move((width/2)-(gameOverLabel->sizeHint().width()/2), (height/2)-(gameOverLabel->sizeHint().height()/2));
+    gameOverLabel->setStyleSheet("background-color: rgba(255, 255, 255, 0); color: black;");
     boardScene->addWidget(gameOverLabel);
     player->pause();
 
