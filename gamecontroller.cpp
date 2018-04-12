@@ -142,6 +142,28 @@ void GameController::drawActiveTileOnBoard()
     }
 }
 
+void GameController::drawGameOver(){
+
+    int width = ui->graphicsView->width();
+    int height = ui->graphicsView->height();
+    QGraphicsRectItem * gameOverRect = new QGraphicsRectItem();
+    gameOverRect->setRect(0, 0, width, height);
+    QBrush brush(Qt::SolidPattern);
+    QColor color("#838584");
+    color.setAlpha(80);
+    brush.setColor(color);
+    gameOverRect->setBrush(brush);
+    boardScene->addItem(gameOverRect);
+    QLabel * gameOverLabel = new QLabel();
+    QFont f( "Arial", 40, QFont::Bold);
+    gameOverLabel->setText("Game Over");
+    gameOverLabel->setFont(f);
+    gameOverLabel->move((width/2)-(gameOverLabel->sizeHint().width()/2), (height/2)-(gameOverLabel->sizeHint().height()/2));
+    boardScene->addWidget(gameOverLabel);
+    player->pause();
+
+}
+
 QString GameController::setRectColor(int value)
 {
     QString color;
@@ -345,6 +367,7 @@ void GameController::generation()
         //TODO: Finish game
         isPlaying = false;
         isGameOver = true;
+        drawGameOver();
         timer->stop();
         ui->playButton->setText("Restart");
     }

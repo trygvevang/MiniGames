@@ -50,6 +50,7 @@ public:
     void keyPressEvent(QKeyEvent * event); // Handling key input from user
     void keyReleaseEvent(QKeyEvent *event); //Handling key releases from user
     void saveHighscore();
+    void drawGameOver();
     
 public slots:
     void handleGame();
