@@ -310,7 +310,6 @@ void GameController::generation()
         }
         else
         {
-            qDebug() << "game interval:" << gameInterval;
             int rows = board->updateBoard(activeTile);
             if (rows > 0)
             {
@@ -364,6 +363,7 @@ void GameController::writeProps()
 
 void GameController::updateView()
 {
+    ui->board->setFocus();
     ghostTile->setXPos(activeTile->getXPos());
     ghostTile->setShape(activeTile->getShape());
     boardScene->clear();
@@ -465,7 +465,6 @@ void GameController::calculateScore(int rows){
     score += (level+1)*genScore;
     rowsCompleted += rows;
     if(rowsCompleted >= 10){
-        qDebug() << gameInterval;
         level++;
         gameInterval -= 30;
         rowsCompleted = rowsCompleted - 10;

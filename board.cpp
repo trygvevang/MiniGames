@@ -78,17 +78,17 @@ bool Board::isRotationValid(Tile * tile)
     bool rotateInPlace = true;
     bool rotateRight = true;
     bool rotateLeft = true;
-    for(unsigned r = tile->getYPos(); r < tile->getYPos() + rotatedShape.size(); r++)
+    for(int r = tile->getYPos(); r < tile->getYPos() + rotatedShape.size(); r++)
     {
         for(int c = tile->getXPos(); c < tile->getXPos() + rotatedShape[0].size(); c++)
         {
-            if(c >= COLS || c < 0 || board[r][c] != 0){
+            if(r >= ROWS || c >= COLS || c < 0 || board[r][c] != 0){
                 rotateInPlace = false;
             }
-            if(c+1 >= COLS || board[r][c + 1] != 0){
+            if(r >= ROWS || c+1 >= COLS || board[r][c + 1] != 0){
                 rotateRight = false;
             }
-            if(c-1 < 0 || board[r][c-1] != 0){
+            if(r >= ROWS || c-1 < 0 || board[r][c-1] != 0){
                 rotateLeft = false;
             }
         }
