@@ -246,6 +246,7 @@ void GameController::setupGame(){
     nextTile = chooseNextTile();
     board = new Board();
     gameInterval = 1000;
+    softDropSpeed = 100;
     isSoftDrop = false;
     highscores = loadScores();
 
@@ -309,6 +310,7 @@ void GameController::generation()
         }
         else
         {
+            qDebug() << "game interval:" << gameInterval;
             int rows = board->updateBoard(activeTile);
             if (rows > 0)
             {
@@ -335,8 +337,8 @@ void GameController::generation()
             drawNextTile();
         }
         updateView();
-        if(isSoftDrop && gameInterval > 100){
-            timer->start(100);
+        if(isSoftDrop && gameInterval > softDropSpeed){
+            timer->start(softDropSpeed);
         }else{
             timer->start(gameInterval);
         }
@@ -463,6 +465,7 @@ void GameController::calculateScore(int rows){
     score += (level+1)*genScore;
     rowsCompleted += rows;
     if(rowsCompleted >= 10){
+        qDebug() << gameInterval;
         level++;
         gameInterval -= 30;
         rowsCompleted = rowsCompleted - 10;
