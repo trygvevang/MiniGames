@@ -230,10 +230,16 @@ void GameController::initGame()
     nextTile = chooseNextTile();
     board = new Board();
     timer = new QTimer(this);
-
+    highscores = loadScores();
 
     QString scoreText = QStringLiteral("Score: %1").arg(score);
+    QString highscoreText;
+    if (highscores.size() > 0)
+        highscoreText = QStringLiteral("Highscore: %1").arg(highscores.front().score);
+    else
+        highscoreText = "Highscore: 0";
     ui->scoreLabel->setText(scoreText);
+    ui->highscoreLabel->setText(highscoreText);
 
     drawNextTile();
     drawBoard();
@@ -417,7 +423,21 @@ void GameController::calculateScore(int rows){
 
 }
 
+void GameController::saveHighscore()
+{
+    if (highscores.size() == 0 || score > highscores.front().score)
+    {
+        string playername;
+        if (ui->playerName->text() == "")
+        {
+            playername = "Unnamed player";
+        }
+        else playername = ui->playerName->text().toStdString();
+        saveGame(playername, score);
+    }
+}
+
 GameController::~GameController()
 {
-
+    saveHighscore();
 }

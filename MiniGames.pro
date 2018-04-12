@@ -29,7 +29,8 @@ SOURCES += \
     stile.cpp \
     itile.cpp \
     board.cpp \
-    gamecontroller.cpp
+    gamecontroller.cpp \
+    iogame.cpp
 HEADERS += \  
     tile.h \
     jtile.h \
@@ -40,7 +41,8 @@ HEADERS += \
     stile.h \
     itile.h \
     board.h \
-    gamecontroller.h
+    gamecontroller.h \
+    iogame.h
 
 FORMS += \
     tetris.ui
