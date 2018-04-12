@@ -380,27 +380,32 @@ void GameController::keyReleaseEvent(QKeyEvent *event)
 
 void GameController::keyPressEvent(QKeyEvent * event)
 {
+    if(!isPlaying && event->key() == Qt::Key_P){
+        handleGame();
+        return;
+    }
     if(!isPlaying){
         return;
     }
-    if (event->key() == Qt::Key_Right || event->key() == Qt::Key_D)
+    else if (event->key() == Qt::Key_Right || event->key() == Qt::Key_D)
     {
         if (board->isHorizontalMoveValid(activeTile, 1)){
             activeTile->setXPos(activeTile->getXPos() + 1);
-
         }
     }
     else if (event->key() == Qt::Key_Left || event->key() == Qt::Key_A)
     {
         if (board->isHorizontalMoveValid(activeTile, -1)){
             activeTile->setXPos(activeTile->getXPos() - 1);
-
         }
     }
     else if (event->key() == Qt::Key_S || event->key() == Qt::Key_Down)
     {
         if(!isSoftDrop) generation();
         isSoftDrop = true;
+    }
+    else if (event->key() == Qt::Key_P){
+        handleGame();
     }
     else if (event->key() == Qt::Key_Space)
     {
