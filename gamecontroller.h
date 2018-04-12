@@ -43,10 +43,14 @@ public:
     void updateView();
     Tile * chooseNextTile();
     void initGame();
+    void reloadGame();
+    void setupGame();
     void parseProps();
     void writeProps();
     void keyPressEvent(QKeyEvent * event); // Handling key input from user
+    void keyReleaseEvent(QKeyEvent *event); //Handling key releases from user
     void saveHighscore();
+    
 public slots:
     void handleGame();
     void generation();
@@ -74,6 +78,7 @@ private:
     int level;
     list<Game> highscores; // struct Game is defined in IOgame
     int rowsCompleted;
+    bool isSoftDrop;
 
     QString setRectColor(int value);
     void calculateScore(int rows);
