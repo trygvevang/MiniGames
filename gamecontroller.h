@@ -11,7 +11,9 @@
 #include <QMediaPlaylist>
 #include <QMediaPlayer>
 #include <random>
+#include <list>
 #include "ui_tetris.h"
+#include "iogame.h"
 #include "tile.h"
 #include "itile.h"
 #include "jtile.h"
@@ -47,6 +49,8 @@ public:
     void writeProps();
     void keyPressEvent(QKeyEvent * event); // Handling key input from user
     void keyReleaseEvent(QKeyEvent *event); //Handling key releases from user
+    void saveHighscore();
+    
 public slots:
     void handleGame();
     void generation();
@@ -72,10 +76,9 @@ private:
     bool isPlaying;
     bool isGameOver;
     int level;
+    list<Game> highscores; // struct Game is defined in IOgame
     int rowsCompleted;
     bool isSoftDrop;
-
-    //random_device random; //For Jesper to get psuedorandom tiles
 
     QString setRectColor(int value);
     void calculateScore(int rows);

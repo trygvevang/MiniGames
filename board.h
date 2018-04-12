@@ -2,14 +2,11 @@
 #define BOARD_H
 #include "tile.h"
 #include <vector>
-#include <QWidget>
-#include <QPainter>
 
 using namespace std;
 
-class Board : public QWidget
+class Board
 {
-    Q_OBJECT
 public:
     //Size of the board.
     static const int ROWS = 20;
@@ -29,8 +26,6 @@ public:
 
     //Getters and setters
     vector<vector<int>> getBoard();
-protected:
-    //void paintEvent(QPaintEvent *event);
 private:
     //The board is created like this: [ROWS][COLS]
     //Which means that ROWS is always the first loop
