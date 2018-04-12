@@ -273,12 +273,6 @@ void GameController::setupGame(){
     isSoftDrop = false;
     highscores = loadScores();
 
-    if (gameOverSound->state() == QMediaPlayer::PlayingState)
-    {
-        gameOverSound->setPosition(0);
-        gameOverSound->stop();
-    }
-
     QString highscoreText;
     if (highscores.size() > 0)
         highscoreText = QStringLiteral("Highscore: %1").arg(highscores.front().score);
@@ -296,6 +290,11 @@ void GameController::setupGame(){
 
 void GameController::reloadGame(){
     setupGame();
+    if (gameOverSound->state() == QMediaPlayer::PlayingState)
+    {
+        gameOverSound->setPosition(0);
+        gameOverSound->stop();
+    }
     //TODO: prase/write to file
 }
 void GameController::handleGame()
@@ -374,7 +373,7 @@ void GameController::generation()
         //TODO: Finish game
         isPlaying = false;
         isGameOver = true;
-        player->pause();
+        player->stop();
         gameOverSound->play();
         drawGameOver();
         timer->stop();
