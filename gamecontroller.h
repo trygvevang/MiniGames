@@ -75,6 +75,7 @@ private:
     int highScore;
     bool isPlaying;
     bool isGameOver;
+    bool gameInterval;
     int level;
     list<Game> highscores; // struct Game is defined in IOgame
     int rowsCompleted;
