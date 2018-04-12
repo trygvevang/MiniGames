@@ -44,6 +44,7 @@ public:
     void parseProps();
     void writeProps();
     void keyPressEvent(QKeyEvent * event); // Handling key input from user
+    void keyReleaseEvent(QKeyEvent *event); //Handling key releases from user
 public slots:
     void handleGame();
     void generation();
@@ -70,6 +71,7 @@ private:
     bool isGameOver;
     int level;
     int rowsCompleted;
+    bool isSoftDrop;
 
     //random_device random; //For Jesper to get psuedorandom tiles
 

@@ -1,5 +1,9 @@
 #include "gamecontroller.h"
 #include <QDebug>
+#include <sys/time.h>
+#include <cmath>
+
+
 GameController::GameController(QWidget *parent) : QWidget(parent), ui(new Ui::Tetris)
 {
     ui->setupUi(this);
@@ -167,8 +171,14 @@ QString GameController::setRectColor(int value)
 
 Tile* GameController::chooseNextTile()
 {
-    random_device random;
-    int randomIndex = random.operator ()() % 7; // mod number of different tiles
+
+    struct timeval tp;
+    gettimeofday(&tp, NULL);
+    long int ms = tp.tv_sec * 1000 + tp.tv_usec / 1000;
+    int randomIndex = abs(ms % 7);
+    qDebug() << "Random piece number: " << randomIndex;
+    //random_device random;
+    //int randomIndex = random.operator ()() % 7; // mod number of different tiles
 
     if (randomIndex == 0)
     {
@@ -230,6 +240,7 @@ void GameController::initGame()
     nextTile = chooseNextTile();
     board = new Board();
     timer = new QTimer(this);
+    isSoftDrop = false;
 
 
     QString scoreText = QStringLiteral("Score: %1").arg(score);
@@ -246,6 +257,7 @@ void GameController::handleGame()
     if (!isPlaying && !isGameOver)
     {
         timer->start(1000);
+        ui->board->setFocus();
         isPlaying = true;
         ui->playButton->setText("Pause");
         if (ui->playGameMusic->isChecked())
@@ -272,6 +284,7 @@ void GameController::handleGame()
 
 void GameController::generation()
 {
+
     // Next genereation
     if (!board->isGameOver(activeTile)){
         if (board->isVerticalMoveValid(activeTile))
@@ -306,6 +319,11 @@ void GameController::generation()
             drawNextTile();
         }
         updateView();
+        if(isSoftDrop){
+            timer->start(100);
+        }else{
+            timer->start(1000);
+        }
     }else{
         //TODO: Finish game
         isPlaying = false;
@@ -336,6 +354,14 @@ void GameController::updateView()
     drawGhostTile();
 }
 
+void GameController::keyReleaseEvent(QKeyEvent *event)
+{
+    if(event->key() == Qt::Key_S || event->key() == Qt::Key_Down)
+    {
+        isSoftDrop = false;
+    }
+}
+
 void GameController::keyPressEvent(QKeyEvent * event)
 {
     if(!isPlaying){
@@ -355,7 +381,12 @@ void GameController::keyPressEvent(QKeyEvent * event)
 
         }
     }
-    else if (event->key() ==  Qt::Key_Down || event->key() == Qt::Key_S)
+    else if (event->key() == Qt::Key_S || event->key() == Qt::Key_Down)
+    {
+        isSoftDrop = true;
+        generation();
+    }
+    else if (event->key() == Qt::Key_Space)
     {
         // set tile on the lowest possible y pos
         board->quickPlace(activeTile);
