@@ -373,11 +373,11 @@ void GameController::generation()
             timer->start(gameInterval);
         }
     }else{
-        //TODO: Finish game
         isPlaying = false;
         isGameOver = true;
         player->stop();
-        gameOverSound->play();
+        if(ui->playGameSounds->isChecked())
+            gameOverSound->play();
         drawGameOver();
         timer->stop();
         ui->playButton->setText("Restart");
