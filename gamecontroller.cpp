@@ -176,7 +176,6 @@ Tile* GameController::chooseNextTile()
     gettimeofday(&tp, NULL);
     long int ms = tp.tv_sec * 1000 + tp.tv_usec / 1000;
     int randomIndex = abs(ms % 7);
-    qDebug() << "Random piece number: " << randomIndex;
     //random_device random;
     //int randomIndex = random.operator ()() % 7; // mod number of different tiles
 
@@ -231,6 +230,11 @@ Tile* GameController::chooseNextTile()
 
 void GameController::initGame()
 {
+    timer = new QTimer(this);
+    setupGame();
+}
+
+void GameController::setupGame(){
     score = 0;
     level = 0;
     rowsCompleted = 0;
@@ -239,9 +243,7 @@ void GameController::initGame()
     ghostTile = nextGhostTile;
     nextTile = chooseNextTile();
     board = new Board();
-    timer = new QTimer(this);
     isSoftDrop = false;
-
 
     QString scoreText = QStringLiteral("Score: %1").arg(score);
     ui->scoreLabel->setText(scoreText);
@@ -252,6 +254,10 @@ void GameController::initGame()
     drawGhostTile();
 }
 
+void GameController::reloadGame(){
+    setupGame();
+    //TODO: prase/write to file
+}
 void GameController::handleGame()
 {
     if (!isPlaying && !isGameOver)
@@ -265,6 +271,7 @@ void GameController::handleGame()
     }
     else if(isPlaying && !isGameOver)
     {
+        qDebug() << "Pause was pressed";
         timer->stop();
         isPlaying = false;
         ui->playButton->setText("Resume");
@@ -278,7 +285,7 @@ void GameController::handleGame()
             player->play();
         nextTileScene->clear();
         boardScene->clear();
-        initGame();
+        reloadGame();
     }
 }
 

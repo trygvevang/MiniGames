@@ -41,6 +41,8 @@ public:
     void updateView();
     Tile * chooseNextTile();
     void initGame();
+    void reloadGame();
+    void setupGame();
     void parseProps();
     void writeProps();
     void keyPressEvent(QKeyEvent * event); // Handling key input from user
