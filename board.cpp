@@ -13,18 +13,6 @@ Board::Board()
 // Public member functions
 bool Board::isHorizontalMoveValid(Tile * tile, int direction) // if positive direction move right, else left
 {
-//    int yPos = tile->getYPos();
-//    int xPosToCheck = direction > 0 ? tile->getXPos() + tile->getShape()[0].size() : tile->getXPos() - 1;
-//    if (xPosToCheck < COLS && xPosToCheck >= 0) // Check if next X-position is valid on the board
-//    {
-//        for (unsigned int i = yPos; i < yPos + tile->getShape().size(); i++)
-//        {
-//            if (board[i][xPosToCheck] != 0)
-//            {return false;}
-//        }
-//        return true;
-//    }
-//    return false;
     int xPos;
     int yPos;
     vector<vector<int>> shape = tile->getShape();
@@ -87,15 +75,40 @@ void Board::quickPlace(Tile * tile){
 bool Board::isRotationValid(Tile * tile)
 {
     vector<vector<int>> rotatedShape = tile->getRotatedShape();
-    for (unsigned i = tile->getYPos(); i < tile->getYPos() + rotatedShape.size(); i++)
+    bool rotateInPlace = true;
+    bool rotateRight = true;
+    bool rotateLeft = true;
+    for(unsigned r = tile->getYPos(); r < tile->getYPos() + rotatedShape.size(); r++)
     {
-        for (unsigned j = tile->getXPos(); j < tile->getXPos() + rotatedShape[0].size(); j++)
+        for(unsigned c = tile->getXPos(); c < tile->getXPos() + rotatedShape[0].size(); c++)
         {
-            if (board[i][j] != 0)
-            {return false;}
+            if(board[r][c] != 0){
+                rotateInPlace = false;
+            }
+            if(board[r][c + 1] != 0){
+                rotateRight = false;
+            }
+            if(board[r][c-1] != 0){
+                rotateLeft = false;
+            }
         }
     }
-
+    if(!rotateInPlace)
+    {
+        if(rotateRight)
+        {
+            tile->setXPos(tile->getXPos() + 1);
+            return true;
+        }
+        else if(rotateLeft)
+        {
+            tile->setXPos(tile->getXPos() - 1);
+            return true;
+        }else
+        {
+            return false;
+        }
+    }
     return true;
 }
 
