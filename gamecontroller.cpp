@@ -238,7 +238,7 @@ void GameController::initGame()
 
 void GameController::setupGame(){
     score = 0;
-    level = 0;
+    level = 1; // starting level = 1
     rowsCompleted = 0;
     isGameOver = false;
     activeTile = chooseNextTile();
@@ -249,14 +249,14 @@ void GameController::setupGame(){
     isSoftDrop = false;
     highscores = loadScores();
 
-    QString scoreText = QStringLiteral("Score: %1").arg(score);
     QString highscoreText;
     if (highscores.size() > 0)
         highscoreText = QStringLiteral("Highscore: %1").arg(highscores.front().score);
     else
         highscoreText = "Highscore: 0";
-    ui->scoreLabel->setText(scoreText);
+    ui->scoreLabel->setText("Score: 0");
     ui->highscoreLabel->setText(highscoreText);
+    ui->levelLabel->setText("Level: 1");
 
     drawNextTile();
     drawBoard();
@@ -464,6 +464,8 @@ void GameController::calculateScore(int rows){
     rowsCompleted += rows;
     if(rowsCompleted >= 10){
         level++;
+        QString levelText = QStringLiteral("Level: %1").arg(level);
+        ui->levelLabel->setText(levelText);
         rowsCompleted = rowsCompleted - 10;
     }
 
