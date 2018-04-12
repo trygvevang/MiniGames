@@ -421,7 +421,7 @@ void GameController::calculateScore(int rows){
 
 }
 
-GameController::~GameController()
+void GameController::saveHighscore()
 {
     if (highscores.size() == 0 || score > highscores.front().score)
     {
@@ -433,5 +433,9 @@ GameController::~GameController()
         else playername = ui->playerName->text().toStdString();
         saveGame(playername, score);
     }
+}
 
+GameController::~GameController()
+{
+    saveHighscore();
 }

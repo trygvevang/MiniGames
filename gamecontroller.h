@@ -46,6 +46,7 @@ public:
     void parseProps();
     void writeProps();
     void keyPressEvent(QKeyEvent * event); // Handling key input from user
+    void saveHighscore();
 public slots:
     void handleGame();
     void generation();
