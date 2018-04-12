@@ -55,6 +55,10 @@ public:
 public slots:
     void handleGame();
     void generation();
+    void toMainMenu();
+
+signals:
+    bool gameClosed();
 
 private:
     Ui::Tetris * ui;

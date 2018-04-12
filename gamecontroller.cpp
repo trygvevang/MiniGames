@@ -22,6 +22,7 @@ GameController::GameController(QWidget *parent) : QWidget(parent), ui(new Ui::Te
 
     connect(ui->playButton, SIGNAL(clicked()), this, SLOT(handleGame()));
     connect(timer, SIGNAL(timeout()), this, SLOT(generation()));
+    connect(ui->btnExit, SIGNAL(clicked()), this, SLOT(toMainMenu()));
 
     playlist = new QMediaPlaylist();
     player = new QMediaPlayer();
@@ -521,6 +522,16 @@ void GameController::saveHighscore()
         else playername = ui->playerName->text().toStdString();
         saveGame(playername, score);
     }
+}
+
+
+
+void GameController::toMainMenu()
+{
+    handleGame();
+    emit gameClosed();
+    this->close();
+
 }
 
 GameController::~GameController()

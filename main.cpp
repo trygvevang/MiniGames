@@ -2,6 +2,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include "gamecontroller.h"
+#include "mainmenu.h"
 
 using namespace std;
 
@@ -9,7 +10,10 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    GameController gc;
+//    GameController gc;
+//    gc.show();
+    MainMenu mainMenuWindow;
+    mainMenuWindow.show();
 /*
     QGraphicsScene * scene = new QGraphicsScene();
 
@@ -21,6 +25,5 @@ int main(int argc, char *argv[])
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->show();
 */
-    gc.show();
     return a.exec();
 }

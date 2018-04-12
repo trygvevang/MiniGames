@@ -30,7 +30,8 @@ SOURCES += \
     itile.cpp \
     board.cpp \
     gamecontroller.cpp \
-    iogame.cpp
+    iogame.cpp \
+    mainmenu.cpp
 HEADERS += \  
     tile.h \
     jtile.h \
@@ -42,10 +43,12 @@ HEADERS += \
     itile.h \
     board.h \
     gamecontroller.h \
-    iogame.h
+    iogame.h \
+    mainmenu.h
 
 FORMS += \
-    tetris.ui
+    tetris.ui \
+    mainmenu.ui
 
 RESOURCES += \
     resources.qrc
