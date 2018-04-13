@@ -136,7 +136,7 @@
    </property>
    <property name="font">
     <font>
-     <pointsize>18</pointsize>
+     <pointsize>16</pointsize>
     </font>
    </property>
    <property name="text">
@@ -235,16 +235,34 @@
     </rect>
    </property>
   </widget>
+  <widget class="QLabel" name="levelLabel">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>90</y>
+     <width>60</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Level:</string>
+   </property>
+  </widget>
   <zorder>highscoreLabel</zorder>
   <zorder>playButton</zorder>
   <zorder>nextTileBoard</zorder>
   <zorder>board</zorder>
   <zorder>scoreLabel</zorder>
-  <zorder>levelLabel</zorder>
   <zorder>menuSettingsButton</zorder>
   <zorder>label_2</zorder>
   <zorder>label_3</zorder>
   <zorder>graphicsView_hold</zorder>
+  <zorder>levelLabel</zorder>
  </widget>
  <resources/>
  <connections/>

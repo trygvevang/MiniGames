@@ -304,7 +304,6 @@ void GameController::setupGame(){
     softDropSpeed = 100;
     isSoftDrop = false;
     holdTileGen = false;
-    highscores = loadScores();
 
     QString highscoreText = QStringLiteral("Highscore: %1").arg(highScore);
     ui->scoreLabel->setText("Score: 0");
