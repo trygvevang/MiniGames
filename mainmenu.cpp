@@ -67,5 +67,5 @@ void MainMenu::setSettings()
 
 MainMenu::~MainMenu()
 {
-
+    delete tetrisGame;
 }

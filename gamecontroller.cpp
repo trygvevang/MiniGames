@@ -285,13 +285,12 @@ void GameController::setupGame(){
 }
 
 void GameController::reloadGame(){
+    saveHighscore();
     setupGame();
     if (gameOverSound->state() == QMediaPlayer::PlayingState)
     {
-        //gameOverSound->setPosition(0);
         gameOverSound->stop();
     }
-    //TODO: prase/write to file
 }
 void GameController::handleGame()
 {
@@ -507,6 +506,7 @@ void GameController::saveHighscore()
     if (score > highScore)
     {
         saveGame(playername, score);
+        highScore = score;
     }
 }
 
