@@ -79,7 +79,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>120</y>
+     <y>150</y>
      <width>150</width>
      <height>150</height>
     </rect>
@@ -90,6 +90,40 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
+   <widget class="QGraphicsView" name="graphicsView_2">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>150</width>
+      <height>150</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>150</width>
+      <height>150</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>150</width>
+      <height>150</height>
+     </size>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+   </widget>
   </widget>
   <widget class="QLabel" name="scoreLabel">
    <property name="geometry">
@@ -131,7 +165,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>280</y>
+     <y>310</y>
      <width>150</width>
      <height>32</height>
     </rect>
@@ -147,7 +181,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>410</y>
+     <y>570</y>
      <width>131</width>
      <height>20</height>
     </rect>
@@ -163,7 +197,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>430</y>
+     <y>550</y>
      <width>151</width>
      <height>20</height>
     </rect>
@@ -188,24 +222,6 @@
     <string/>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>490</y>
-     <width>150</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>18</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Player name:</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="levelLabel">
    <property name="geometry">
     <rect>
@@ -224,40 +240,6 @@
     <string>Level: </string>
    </property>
   </widget>
-  <widget class="QGraphicsView" name="graphicsView_2">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>120</y>
-     <width>150</width>
-     <height>150</height>
-    </rect>
-   </property>
-   <property name="sizePolicy">
-    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-     <horstretch>0</horstretch>
-     <verstretch>0</verstretch>
-    </sizepolicy>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>150</width>
-     <height>150</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>150</width>
-     <height>150</height>
-    </size>
-   </property>
-   <property name="verticalScrollBarPolicy">
-    <enum>Qt::ScrollBarAlwaysOff</enum>
-   </property>
-   <property name="horizontalScrollBarPolicy">
-    <enum>Qt::ScrollBarAlwaysOff</enum>
-   </property>
-  </widget>
   <widget class="QPushButton" name="menuSettingsButton">
    <property name="geometry">
     <rect>
@@ -271,6 +253,54 @@
     <string>Back to menu</string>
    </property>
   </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>350</y>
+     <width>250</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>Hold tile</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>120</y>
+     <width>250</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Next tile</string>
+   </property>
+  </widget>
+  <widget class="QGraphicsView" name="graphicsView_hold">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>370</y>
+     <width>150</width>
+     <height>150</height>
+    </rect>
+   </property>
+  </widget>
   <zorder>highscoreLabel</zorder>
   <zorder>playButton</zorder>
   <zorder>nextTileBoard</zorder>
@@ -279,10 +309,11 @@
   <zorder>playGameMusic</zorder>
   <zorder>playGameSounds</zorder>
   <zorder>playerName</zorder>
-  <zorder>label</zorder>
   <zorder>levelLabel</zorder>
-  <zorder>graphicsView_2</zorder>
   <zorder>menuSettingsButton</zorder>
+  <zorder>label_2</zorder>
+  <zorder>label_3</zorder>
+  <zorder>graphicsView_hold</zorder>
  </widget>
  <resources/>
  <connections/>
