@@ -27,6 +27,7 @@ public:
     MainMenu(QWidget *parent = 0);
     ~MainMenu();
     void setSettings();
+    void showTopTen();
 
 public slots:
     void handleTetris();

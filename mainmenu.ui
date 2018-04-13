@@ -235,7 +235,7 @@
       </property>
      </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="topTenTetris">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -252,8 +252,19 @@
      <property name="title">
       <string>Top ten Tetris games</string>
      </property>
+     <widget class="QWidget" name="verticalLayoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>271</width>
+        <height>321</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="topTenTetrisLayout"/>
+     </widget>
     </widget>
-    <widget class="QGroupBox" name="groupBox_2">
+    <widget class="QGroupBox" name="topTen2048">
      <property name="geometry">
       <rect>
        <x>300</x>
@@ -270,6 +281,17 @@
      <property name="title">
       <string>Top ten 2048 games</string>
      </property>
+     <widget class="QWidget" name="verticalLayoutWidget_2">
+      <property name="geometry">
+       <rect>
+        <x>9</x>
+        <y>29</y>
+        <width>271</width>
+        <height>321</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="topTen2048Layout"/>
+     </widget>
     </widget>
    </widget>
   </widget>
