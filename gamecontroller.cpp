@@ -1,5 +1,6 @@
 #include "gamecontroller.h"
 #include <QDebug>
+#include <QRandomGenerator>
 #include <sys/time.h>
 #include <cmath>
 
@@ -230,13 +231,8 @@ QString GameController::setRectColor(int value)
 Tile* GameController::chooseNextTile()
 {
 
-    struct timeval tp;
-    gettimeofday(&tp, NULL);
-    long int ms = tp.tv_sec * 1000 + tp.tv_usec / 1000;
-    int randomIndex = abs(ms % 7);
-    //random_device random;
-    //int randomIndex = random.operator ()() % 7; // mod number of different tiles
-
+    QRandomGenerator rand = QRandomGenerator::securelySeeded();
+    int randomIndex = (rand.operator ()() % 7);
     if (randomIndex == 0)
     {
         ITile * iTile = new ITile();
