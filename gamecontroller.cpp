@@ -565,7 +565,6 @@ void GameController::calculateScore(int rows){
 
         QString levelText = QStringLiteral("Level: %1").arg(level);
         ui->levelLabel->setText(levelText);
-        qDebug() << levelText;
     }
 
 }
