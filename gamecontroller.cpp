@@ -24,6 +24,7 @@ GameController::GameController(QWidget *parent) : QWidget(parent), ui(new Ui::Te
 
     connect(ui->playButton, SIGNAL(clicked()), this, SLOT(handleGame()));
     connect(timer, SIGNAL(timeout()), this, SLOT(generation()));
+    connect(ui->restartButton, SIGNAL(clicked()), this, SLOT(handleRestart()));
     connect(ui->menuSettingsButton, SIGNAL(clicked()), this, SLOT(handleMenuSettings()));
 
     playlist = new QMediaPlaylist();
@@ -326,6 +327,19 @@ void GameController::reloadGame(){
         gameOverSound->stop();
     }
 }
+
+void GameController::handleRestart()
+{
+    timer->stop();
+    player->stop();
+    isPlaying = false;
+    isGameOver = false;
+    ui->playButton->setText("Play");
+    nextTileScene->clear();
+    boardScene->clear();
+    reloadGame();
+}
+
 void GameController::handleGame()
 {
     if (!isPlaying && !isGameOver)
@@ -336,6 +350,7 @@ void GameController::handleGame()
         ui->playButton->setText("Pause");
         if (isBackgroundMusic)
             player->play();
+        ui->restartButton->setVisible(true);
     }
     else if(isPlaying && !isGameOver)
     {
@@ -353,6 +368,7 @@ void GameController::handleGame()
         nextTileScene->clear();
         boardScene->clear();
         reloadGame();
+        ui->restartButton->setVisible(true);
     }
 }
 
@@ -400,6 +416,8 @@ void GameController::generation()
             timer->start(gameInterval);
         }
     }else{
+        ui->restartButton->setVisible(false);
+        ui->playButton->setFocus();
         isPlaying = false;
         isGameOver = true;
         player->stop();
@@ -429,6 +447,7 @@ void GameController::switchHoldTile()
     holdTileScene->clear();
     holdTile = tempTile;
     holdTile->setYPos(0);
+    holdTile->setXPos(4);
     drawHoldTile(holdTile);
 }
 
@@ -500,7 +519,6 @@ void GameController::keyPressEvent(QKeyEvent * event)
         if (board->isRotationValid(activeTile))
         {
             activeTile->rotate();
-
 
             if (rotateSound->state() == QMediaPlayer::PlayingState && isGameSounds)
             {

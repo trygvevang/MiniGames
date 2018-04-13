@@ -8,6 +8,7 @@ MainMenu::MainMenu(QWidget *parent) : QWidget(parent), ui(new Ui::MainMenuUi)
     tetrisGame = new GameController;
     ui->setupUi(this);
     this->setWindowTitle("Mini Games");
+    ui->tabWidget->setStyleSheet("QTabBar::tab { height: 30px; width: 100px; }");
     connect(ui->tetrisButton,         SIGNAL(clicked()), this, SLOT(handleTetris()));
     connect(ui->exitButton,           SIGNAL(clicked()), this, SLOT(handleExit()));
     connect(ui->button2048,           SIGNAL(clicked()), this, SLOT(handle2048()));
