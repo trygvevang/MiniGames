@@ -275,13 +275,8 @@ void GameController::setupGame(){
     gameInterval = 1000;
     softDropSpeed = 100;
     isSoftDrop = false;
-    highscores = loadScores();
 
-    QString highscoreText;
-    if (highscores.size() > 0)
-        highscoreText = QStringLiteral("Highscore: %1").arg(highscores.front().score);
-    else
-        highscoreText = "Highscore: 0";
+    QString highscoreText = QStringLiteral("Highscore: %1").arg(highScore);
     ui->scoreLabel->setText("Score: 0");
     ui->highscoreLabel->setText(highscoreText);
     ui->levelLabel->setText("Level: 1");
@@ -512,19 +507,25 @@ void GameController::calculateScore(int rows){
 
 void GameController::saveHighscore()
 {
-    if (highscores.size() == 0 || score > highscores.front().score)
+    if (score > highScore)
     {
-        string playername;
-        if (ui->playerName->text() == "")
-        {
-            playername = "Unnamed player";
-        }
-        else playername = ui->playerName->text().toStdString();
         saveGame(playername, score);
     }
 }
 
+void GameController::setSettings(bool isBackgroundMusic, bool isGameSounds, string playername)
+{
+    this->isBackgroundMusic = isBackgroundMusic;
+    this->isGameSounds = isGameSounds;
+    this->playername = playername;
+}
 
+void GameController::setHighscore(int highscore)
+{
+    this->highScore = highscore;
+    QString highscoreText = QStringLiteral("Highscore: %1").arg(highScore);
+    ui->highscoreLabel->setText(highscoreText);
+}
 
 void GameController::handleMenuSettings()
 {
