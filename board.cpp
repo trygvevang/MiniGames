@@ -64,7 +64,7 @@ bool Board::isVerticalMoveValid(Tile * tile)
     return isValid;
 }
 
-void Board::quickPlace(Tile * tile){
+void Board::slamTile(Tile * tile){
     while(isVerticalMoveValid(tile)){
         tile->setYPos(tile->getYPos() + 1);
     }

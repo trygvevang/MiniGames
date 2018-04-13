@@ -40,6 +40,7 @@ public:
     void drawBoard(); // draws the gameboard
     void drawActiveTileOnBoard();
     void drawGhostTile();
+    void drawHoldTile(Tile * nextHoldTile);
     void updateView();
     Tile * chooseNextTile();
     void initGame();
@@ -53,6 +54,7 @@ public:
     void drawGameOver();
     void setSettings(bool isBackgroundMusic, bool isGameSounds, string playername);
     void setHighscore(int highscore);
+    void switchHoldTile();
     
 public slots:
     void handleGame();
@@ -66,6 +68,7 @@ private:
     Ui::Tetris * ui;
     QGraphicsScene * boardScene;
     QGraphicsScene * nextTileScene;
+    QGraphicsScene * holdTileScene;
     QTimer * timer;
     QMediaPlaylist * playlist;
     QMediaPlayer * player;
@@ -79,12 +82,14 @@ private:
     Tile * nextTile;
     Tile * ghostTile;
     Tile * nextGhostTile;
+    Tile * holdTile;
 
     int score;
     int highScore;
     bool isPlaying;
     bool isGameOver;
     bool isSoftDrop;
+    bool holdTileGen; //switchHoldTile can only be pressed once per placeTileOnBoard
     int softDropSpeed;
     int gameInterval;
     int level;
