@@ -10,8 +10,10 @@ GameController::GameController(QWidget *parent) : QWidget(parent), ui(new Ui::Te
     ui->graphicsView->setFocus();
     boardScene = new QGraphicsScene(this);
     nextTileScene = new QGraphicsScene(this);
+    holdTileScene = new QGraphicsScene(this);
     ui->graphicsView->setScene(boardScene);
     ui->graphicsView_2->setScene(nextTileScene);
+    ui->graphicsView_hold->setScene(holdTileScene);
 
     boardScene->setSceneRect(0, 0, 300, 600);
     nextTileScene->setSceneRect(0, 0, 150, 150);
@@ -122,6 +124,35 @@ void GameController::drawGhostTile(){
             }
         }
     }
+}
+
+void GameController::drawHoldTile(Tile * nextHoldTile)
+{
+    int tileSize = ui->graphicsView_hold->width()/5;
+    int viewHeight = ui->graphicsView_hold->height();
+    int viewWidth = ui->graphicsView_hold->width();
+    int tileHeightOffset = (viewHeight - (nextHoldTile->getShape().size() * tileSize))/2;
+    int tileWidthOffset = (viewWidth - (nextHoldTile->getShape()[0].size() * tileSize))/2;
+
+
+    for (unsigned int i = 0; i < nextHoldTile->getShape().size(); i++)
+        {
+            for (unsigned int j = 0; j < nextHoldTile->getShape()[0].size(); j++)
+            {
+                if (nextHoldTile->getShape()[i][j] != 0)
+                {
+                    QGraphicsRectItem * rect = new QGraphicsRectItem();
+                    rect->setRect(j * tileSize + tileWidthOffset, i * tileSize + tileHeightOffset, tileSize, tileSize);
+
+                    QBrush brush(Qt::SolidPattern);
+                    const QColor color(setRectColor(nextHoldTile->getShape()[i][j]));
+                    brush.setColor(color);
+                    rect->setBrush(brush);
+
+                    holdTileScene->addItem(rect);
+                }
+            }
+        }
 }
 
 void GameController::drawActiveTileOnBoard()
@@ -275,6 +306,7 @@ void GameController::setupGame(){
     gameInterval = 1000;
     softDropSpeed = 100;
     isSoftDrop = false;
+    holdTileGen = false;
     highscores = loadScores();
 
     QString highscoreText;
@@ -286,6 +318,8 @@ void GameController::setupGame(){
     ui->highscoreLabel->setText(highscoreText);
     ui->levelLabel->setText("Level: 1");
 
+    holdTile = NULL;
+    holdTileScene->clear();
     drawNextTile();
     drawBoard();
     drawActiveTileOnBoard();
@@ -359,6 +393,7 @@ void GameController::generation()
                     rowDeletedSound->play();
                 }
             }
+            holdTileGen = false;
             delete ghostTile;
             delete activeTile;
             activeTile = nextTile;
@@ -385,14 +420,24 @@ void GameController::generation()
     }
 }
 
-void GameController::parseProps()
+void GameController::switchHoldTile()
 {
-
-}
-
-void GameController::writeProps()
-{
-
+    holdTileGen = true;
+    Tile * tempTile = activeTile;
+    if(holdTile != NULL)
+        activeTile = holdTile;
+    else
+    {
+        delete ghostTile;
+        activeTile = nextTile;
+        ghostTile = nextGhostTile;
+        nextTile = chooseNextTile();
+        nextTileScene->clear();
+        drawNextTile();
+    }
+    holdTileScene->clear();
+    holdTile = tempTile;
+    drawHoldTile(holdTile);
 }
 
 
@@ -474,6 +519,11 @@ void GameController::keyPressEvent(QKeyEvent * event)
                 rotateSound->play();
             }
         }
+    }
+    else if (event->key() == Qt::Key_C)
+    {
+        if (!holdTileGen) //Checks to see if switchHoldTile was pressed once this "round"
+            switchHoldTile();
     }
     updateView();
 }
