@@ -9,8 +9,8 @@ class Board
 {
 public:
     //Size of the board.
-    static const int ROWS = 20;
-    static const int COLS = 10;
+    static constexpr int ROWS = 20;
+    static constexpr int COLS = 10;
 
 
     Board();
