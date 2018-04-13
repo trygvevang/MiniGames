@@ -27,7 +27,6 @@ GameController::GameController(QWidget *parent) : QWidget(parent), ui(new Ui::Te
     connect(ui->restartButton, SIGNAL(clicked()), this, SLOT(handleRestart()));
     connect(ui->menuSettingsButton, SIGNAL(clicked()), this, SLOT(handleMenuSettings()));
 
-
     playlist = new QMediaPlaylist();
     player = new QMediaPlayer();
     rowDeletedSound = new QMediaPlayer();
@@ -418,6 +417,7 @@ void GameController::generation()
         }
     }else{
         ui->restartButton->setVisible(false);
+        ui->playButton->setFocus();
         isPlaying = false;
         isGameOver = true;
         player->stop();
@@ -447,6 +447,7 @@ void GameController::switchHoldTile()
     holdTileScene->clear();
     holdTile = tempTile;
     holdTile->setYPos(0);
+    holdTile->setXPos(4);
     drawHoldTile(holdTile);
 }
 
