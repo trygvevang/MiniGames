@@ -146,7 +146,7 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>10</x>
      <y>410</y>
      <width>131</width>
      <height>20</height>
@@ -162,7 +162,7 @@
   <widget class="QCheckBox" name="playGameSounds">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>10</x>
      <y>430</y>
      <width>151</width>
      <height>20</height>
@@ -178,8 +178,8 @@
   <widget class="QLineEdit" name="playerName">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>520</y>
+     <x>10</x>
+     <y>530</y>
      <width>150</width>
      <height>21</height>
     </rect>
@@ -191,10 +191,10 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>500</y>
+     <x>10</x>
+     <y>490</y>
      <width>150</width>
-     <height>16</height>
+     <height>41</height>
     </rect>
    </property>
    <property name="font">
@@ -258,6 +258,19 @@
     <enum>Qt::ScrollBarAlwaysOff</enum>
    </property>
   </widget>
+  <widget class="QPushButton" name="menuSettingsButton">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>590</y>
+     <width>150</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Back to menu</string>
+   </property>
+  </widget>
   <zorder>highscoreLabel</zorder>
   <zorder>playButton</zorder>
   <zorder>nextTileBoard</zorder>
@@ -269,6 +282,7 @@
   <zorder>label</zorder>
   <zorder>levelLabel</zorder>
   <zorder>graphicsView_2</zorder>
+  <zorder>menuSettingsButton</zorder>
  </widget>
  <resources/>
  <connections/>
