@@ -19,6 +19,6 @@ struct Game
 };
 
 void saveGame(string playername, int score);
-list<Game> loadScores();
+list<Game> loadScores(string filePath);
 
 #endif // IOGAME_H

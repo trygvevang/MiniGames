@@ -174,72 +174,6 @@
     <string>Play</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="playGameMusic">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>570</y>
-     <width>131</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Enable music</string>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="playGameSounds">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>550</y>
-     <width>151</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Enable game sounds</string>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="playerName">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>530</y>
-     <width>150</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
-  <widget class="QLabel" name="levelLabel">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>80</y>
-     <width>200</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>18</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Level: </string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="menuSettingsButton">
    <property name="geometry">
     <rect>
@@ -306,9 +240,6 @@
   <zorder>nextTileBoard</zorder>
   <zorder>board</zorder>
   <zorder>scoreLabel</zorder>
-  <zorder>playGameMusic</zorder>
-  <zorder>playGameSounds</zorder>
-  <zorder>playerName</zorder>
   <zorder>levelLabel</zorder>
   <zorder>menuSettingsButton</zorder>
   <zorder>label_2</zorder>

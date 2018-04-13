@@ -13,13 +13,13 @@ void saveGame(string playername, int score)
     outstream.close();
 }
 
-list<Game> loadScores()
+list<Game> loadScores(string filePath)
 {
     list<Game> games;
     std::ifstream instream;
     string::size_type sz; // alias of size_t
 
-    instream.open("highscores.csv", std::ios_base::in);
+    instream.open(filePath, std::ios_base::in);
 
     if (instream.is_open())
     {

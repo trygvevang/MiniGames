@@ -52,6 +52,8 @@ public:
     void keyReleaseEvent(QKeyEvent *event); //Handling key releases from user
     void saveHighscore();
     void drawGameOver();
+    void setSettings(bool isBackgroundMusic, bool isGameSounds, string playername);
+    void setHighscore(int highscore);
     void switchHoldTile();
     
 public slots:
@@ -81,20 +83,24 @@ private:
     Tile * ghostTile;
     Tile * nextGhostTile;
     Tile * holdTile;
+
     int score;
     int highScore;
     bool isPlaying;
     bool isGameOver;
+    bool isSoftDrop;
     bool holdTileGen; //switchHoldTile can only be pressed once per placeTileOnBoard
     int softDropSpeed;
     int gameInterval;
     int level;
-    list<Game> highscores; // struct Game is defined in IOgame
     int rowsCompleted;
-    bool isSoftDrop;
 
     QString setRectColor(int value);
     void calculateScore(int rows);
+
+    bool isBackgroundMusic;
+    bool isGameSounds;
+    string playername;
 };
 
 #endif // GAMECONTROLLER_H

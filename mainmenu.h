@@ -7,7 +7,9 @@
 #include <QBrush>
 #include <QColor>
 #include <QString>
+#include <string>
 #include "ui_mainmenu.h"
+#include "iogame.h"
 #include "gamecontroller.h"
 
 
@@ -24,6 +26,7 @@ class MainMenu : public QWidget
 public:
     MainMenu(QWidget *parent = 0);
     ~MainMenu();
+    void setSettings();
 
 public slots:
     void handleTetris();
@@ -33,10 +36,13 @@ public slots:
 
 private:
     Ui::MainMenuUi * ui;
-
     GameController *tetrisGame;
+    list<Game> tetrisHighscores; // struct Game is defined in IOgame
+    bool isBackgroundMusic;
+    bool isGameSounds;
+    string playername;
 
-
+    void fetchHighscores();
 };
 
 

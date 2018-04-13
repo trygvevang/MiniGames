@@ -40,9 +40,6 @@ GameController::GameController(QWidget *parent) : QWidget(parent), ui(new Ui::Te
     slamTileSound->setMedia(QUrl("qrc:/sounds/Sound/slam-tile.wav"));
     rotateSound->setMedia(QUrl("qrc:/sounds/Sound/rotate.wav"));
     gameOverSound->setMedia(QUrl("qrc:/sounds/Sound/game_over.wav"));
-
-
-
 }
 
 void GameController::drawNextTile()
@@ -309,11 +306,7 @@ void GameController::setupGame(){
     holdTileGen = false;
     highscores = loadScores();
 
-    QString highscoreText;
-    if (highscores.size() > 0)
-        highscoreText = QStringLiteral("Highscore: %1").arg(highscores.front().score);
-    else
-        highscoreText = "Highscore: 0";
+    QString highscoreText = QStringLiteral("Highscore: %1").arg(highScore);
     ui->scoreLabel->setText("Score: 0");
     ui->highscoreLabel->setText(highscoreText);
     ui->levelLabel->setText("Level: 1");
@@ -327,13 +320,12 @@ void GameController::setupGame(){
 }
 
 void GameController::reloadGame(){
+    saveHighscore();
     setupGame();
     if (gameOverSound->state() == QMediaPlayer::PlayingState)
     {
-        gameOverSound->setPosition(0);
         gameOverSound->stop();
     }
-    //TODO: prase/write to file
 }
 void GameController::handleGame()
 {
@@ -343,7 +335,7 @@ void GameController::handleGame()
         ui->board->setFocus();
         isPlaying = true;
         ui->playButton->setText("Pause");
-        if (ui->playGameMusic->isChecked())
+        if (isBackgroundMusic)
             player->play();
     }
     else if(isPlaying && !isGameOver)
@@ -357,7 +349,7 @@ void GameController::handleGame()
         isPlaying = true;
         isGameOver = false;
         ui->playButton->setText("Pause");
-        if (ui->playGameMusic->isChecked())
+        if (isBackgroundMusic)
             player->play();
         nextTileScene->clear();
         boardScene->clear();
@@ -384,11 +376,11 @@ void GameController::generation()
                 QString scoreText = QStringLiteral("Score: %1").arg(score);
                 ui->scoreLabel->setText(scoreText);
 
-                if (rowDeletedSound->state() == QMediaPlayer::PlayingState && ui->playGameSounds->isChecked())
+                if (rowDeletedSound->state() == QMediaPlayer::PlayingState && isGameSounds)
                 {
                     rowDeletedSound->setPosition(0);
                 }
-                else if ((rowDeletedSound->state() == QMediaPlayer::PausedState || rowDeletedSound->state() == QMediaPlayer::StoppedState) && ui->playGameSounds->isChecked())
+                else if ((rowDeletedSound->state() == QMediaPlayer::PausedState || rowDeletedSound->state() == QMediaPlayer::StoppedState) && isGameSounds)
                 {
                     rowDeletedSound->play();
                 }
@@ -412,7 +404,7 @@ void GameController::generation()
         isPlaying = false;
         isGameOver = true;
         player->stop();
-        if(ui->playGameSounds->isChecked())
+        if(isGameSounds)
             gameOverSound->play();
         drawGameOver();
         timer->stop();
@@ -495,11 +487,11 @@ void GameController::keyPressEvent(QKeyEvent * event)
         // set tile on the lowest possible y pos
         board->slamTile(activeTile);
         generation();
-        if (slamTileSound->state() == QMediaPlayer::PlayingState && ui->playGameSounds->isChecked())
+        if (slamTileSound->state() == QMediaPlayer::PlayingState && isGameSounds)
         {
             slamTileSound->setPosition(0);
         }
-        else if ((slamTileSound->state() == QMediaPlayer::PausedState || slamTileSound->state() == QMediaPlayer::StoppedState) && ui->playGameSounds->isChecked())
+        else if ((slamTileSound->state() == QMediaPlayer::PausedState || slamTileSound->state() == QMediaPlayer::StoppedState) && isGameSounds)
         {
             slamTileSound->play();
         }
@@ -511,11 +503,11 @@ void GameController::keyPressEvent(QKeyEvent * event)
             activeTile->rotate();
 
 
-            if (rotateSound->state() == QMediaPlayer::PlayingState && ui->playGameSounds->isChecked())
+            if (rotateSound->state() == QMediaPlayer::PlayingState && isGameSounds)
             {
                 rotateSound->setPosition(0);
             }
-            else if ((rotateSound->state() == QMediaPlayer::PausedState || rotateSound->state() == QMediaPlayer::StoppedState) && ui->playGameSounds->isChecked())
+            else if ((rotateSound->state() == QMediaPlayer::PausedState || rotateSound->state() == QMediaPlayer::StoppedState) && isGameSounds)
             {
                 rotateSound->play();
             }
@@ -563,19 +555,26 @@ void GameController::calculateScore(int rows){
 
 void GameController::saveHighscore()
 {
-    if (highscores.size() == 0 || score > highscores.front().score)
+    if (score > highScore)
     {
-        string playername;
-        if (ui->playerName->text() == "")
-        {
-            playername = "Unnamed player";
-        }
-        else playername = ui->playerName->text().toStdString();
         saveGame(playername, score);
+        highScore = score;
     }
 }
 
+void GameController::setSettings(bool isBackgroundMusic, bool isGameSounds, string playername)
+{
+    this->isBackgroundMusic = isBackgroundMusic;
+    this->isGameSounds = isGameSounds;
+    this->playername = playername;
+}
 
+void GameController::setHighscore(int highscore)
+{
+    this->highScore = highscore;
+    QString highscoreText = QStringLiteral("Highscore: %1").arg(highScore);
+    ui->highscoreLabel->setText(highscoreText);
+}
 
 void GameController::handleMenuSettings()
 {
