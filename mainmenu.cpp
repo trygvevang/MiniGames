@@ -68,32 +68,42 @@ void MainMenu::setSettings()
 
 void MainMenu::showTopTen()
 {
-    // TODO: if there are no highscores show it
-    int i = 0;
-    for (Game g : tetrisHighscores)
+    if (tetrisHighscores.size() > 0)
     {
-        if (i < 10)
+        int i = 0;
+        for (Game g : tetrisHighscores)
         {
+            if (i < 10)
+            {
+                QLabel * game = new QLabel();
+                QFont f("Arial", 16, QFont::Bold);
+                QString text = QStringLiteral("%1: %2").arg(QString::fromStdString(g.playername)).arg(g.score);
+                game->setText(text);
+                game->setFont(f);
+                ui->topTenTetrisLayout->addWidget(game);
+            }
+            else break;
+            i++;
+        }
+        for(;i < 10;i++){
             QLabel * game = new QLabel();
             QFont f("Arial", 16, QFont::Bold);
-            QString text = QStringLiteral("Player: %1, score: %2").arg(QString::fromStdString(g.playername)).arg(g.score);
+            QString text = QStringLiteral("");
             game->setText(text);
             game->setFont(f);
-            game->move(10, (i * ui->topTenTetris->height()/10));
             ui->topTenTetrisLayout->addWidget(game);
         }
-        else break;
-        i++;
     }
-    /*
-    QLabel * gameOverLabel = new QLabel();
-    QFont f( "Arial", 40, QFont::Bold);
-    gameOverLabel->setText("Game Over");
-    gameOverLabel->setFont(f);
-    gameOverLabel->move((width/2)-(gameOverLabel->sizeHint().width()/2), (height/2)-(gameOverLabel->sizeHint().height()/2));
-    gameOverLabel->setStyleSheet("background-color: rgba(255, 255, 255, 0); color: black;");
-    boardScene->addWidget(gameOverLabel);
-    */
+    else
+    {
+        QLabel * message = new QLabel();
+        QFont f("Arial", 16, QFont::Bold);
+        message->setText("No highscores yet.");
+        message->setFont(f);
+        ui->topTenTetrisLayout->addWidget(message);
+    }
+
+    // TODO top ten scores for 2048
 }
 
 MainMenu::~MainMenu()
