@@ -103,7 +103,7 @@ void GameController::drawGhostTile(){
     int boardWidth = ui->graphicsView->width()/board->COLS;
     int boardHeight = ui->graphicsView->height()/board->ROWS;
     ghostTile->setYPos(activeTile->getYPos());
-    board->quickPlace(ghostTile); //Move ghost tile to final position
+    board->slamTile(ghostTile); //Move ghost tile to final position
     for (unsigned int i = 0; i < ghostTile->getShape().size(); i++)
     {
         for (unsigned int j = 0; j < ghostTile->getShape()[0].size(); j++)
@@ -303,7 +303,7 @@ void GameController::setupGame(){
     ghostTile = nextGhostTile;
     nextTile = chooseNextTile();
     board = new Board();
-    gameInterval = 1000;
+    gameInterval = (pow(0.8-((level-1)*0.007), (level-1))*1000);
     softDropSpeed = 100;
     isSoftDrop = false;
     holdTileGen = false;
@@ -437,6 +437,7 @@ void GameController::switchHoldTile()
     }
     holdTileScene->clear();
     holdTile = tempTile;
+    holdTile->setYPos(0);
     drawHoldTile(holdTile);
 }
 
@@ -492,7 +493,7 @@ void GameController::keyPressEvent(QKeyEvent * event)
     else if (event->key() == Qt::Key_Space)
     {
         // set tile on the lowest possible y pos
-        board->quickPlace(activeTile);
+        board->slamTile(activeTile);
         generation();
         if (slamTileSound->state() == QMediaPlayer::PlayingState && ui->playGameSounds->isChecked())
         {
@@ -551,7 +552,7 @@ void GameController::calculateScore(int rows){
     rowsCompleted += rows;
     if(rowsCompleted >= 10){
         level++;
-        gameInterval -= 30;
+        gameInterval = (pow(0.8-((level-1)*0.007), ((level-1)))*1000); //(0.8-((Level-1)*0.007))(Level-1)
         rowsCompleted = rowsCompleted - 10;
 
         QString levelText = QStringLiteral("Level: %1").arg(level);
