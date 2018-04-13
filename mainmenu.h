@@ -26,9 +26,9 @@ public:
     ~MainMenu();
 
 public slots:
-    void btnTetris();
-    void btn2048();
-    void btnExit();
+    void handleTetris();
+    void handle2048();
+    void handleExit();
     void showMainMenu();
 
 private:

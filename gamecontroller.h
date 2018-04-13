@@ -55,7 +55,7 @@ public:
 public slots:
     void handleGame();
     void generation();
-    void toMainMenu();
+    void handleMenuSettings();
 
 signals:
     bool gameClosed();

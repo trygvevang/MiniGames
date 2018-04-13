@@ -7,24 +7,24 @@ MainMenu::MainMenu(QWidget *parent) : QWidget(parent), ui(new Ui::MainMenuUi)
     tetrisGame = new GameController;
     ui->setupUi(this);
     this->setWindowTitle("Mini Games");
-    connect(ui->btn_tetris,     SIGNAL(clicked()), this, SLOT(btnTetris()));
-    connect(ui->btn_exit,       SIGNAL(clicked()), this, SLOT(btnExit()));
-    connect(ui->btn_2048,       SIGNAL(clicked()), this, SLOT(btn2048()));
+    connect(ui->tetrisButton,     SIGNAL(clicked()), this, SLOT(handleTetris()));
+    connect(ui->exitButton,       SIGNAL(clicked()), this, SLOT(handleExit()));
+    connect(ui->button2048,       SIGNAL(clicked()), this, SLOT(handle2048()));
     QObject::connect(tetrisGame, SIGNAL(gameClosed()), this, SLOT(showMainMenu()));
 }
 
-void MainMenu::btnTetris()
+void MainMenu::handleTetris()
 {
     tetrisGame->show();
     this->hide();
 }
 
-void MainMenu::btn2048()
+void MainMenu::handle2048()
 {
 
 }
 
-void MainMenu::btnExit()
+void MainMenu::handleExit()
 {
     this->close();
 }

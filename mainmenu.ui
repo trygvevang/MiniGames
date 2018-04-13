@@ -28,11 +28,17 @@
    <property name="currentIndex">
     <number>0</number>
    </property>
+   <property name="iconSize">
+    <size>
+     <width>16</width>
+     <height>16</height>
+    </size>
+   </property>
    <widget class="QWidget" name="tabGames">
     <attribute name="title">
      <string>Menu</string>
     </attribute>
-    <widget class="QLabel" name="label_header">
+    <widget class="QLabel" name="headerLabel">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -65,7 +71,7 @@
       <string>Mini Games</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_tetris">
+    <widget class="QPushButton" name="tetrisButton">
      <property name="geometry">
       <rect>
        <x>125</x>
@@ -86,7 +92,7 @@
       <string>Tetris</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_2048">
+    <widget class="QPushButton" name="button2048">
      <property name="geometry">
       <rect>
        <x>325</x>
@@ -107,7 +113,7 @@
       <string>2048</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="btn_exit">
+    <widget class="QPushButton" name="exitButton">
      <property name="geometry">
       <rect>
        <x>225</x>

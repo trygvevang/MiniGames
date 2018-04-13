@@ -258,7 +258,7 @@
     <enum>Qt::ScrollBarAlwaysOff</enum>
    </property>
   </widget>
-  <widget class="QPushButton" name="btnExit">
+  <widget class="QPushButton" name="menuSettingsButton">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -282,7 +282,7 @@
   <zorder>label</zorder>
   <zorder>levelLabel</zorder>
   <zorder>graphicsView_2</zorder>
-  <zorder>btnExit</zorder>
+  <zorder>menuSettingsButton</zorder>
  </widget>
  <resources/>
  <connections/>
