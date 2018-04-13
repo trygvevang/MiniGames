@@ -270,7 +270,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Hold</string>
+    <string>Hold tile</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">
