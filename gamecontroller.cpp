@@ -570,7 +570,7 @@ void GameController::saveHighscore()
 {
     if (score > highScore)
     {
-        saveGame(playername, score);
+        saveGameScore(playername, score);
         highScore = score;
     }
 }

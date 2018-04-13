@@ -27,11 +27,11 @@ public:
     MainMenu(QWidget *parent = 0);
     ~MainMenu();
     void setSettings();
-    void showTopTen();
+    void showTopTenGameScores();
 
 public slots:
-    void handleTetris();
-    void handle2048();
+    void handleTetris(); // Starts or resumes Tetris game
+    void handle2048(); // Starts or resumes 2048 game
     void handleExit();
     void showMainMenu();
 
@@ -39,11 +39,11 @@ private:
     Ui::MainMenuUi * ui;
     GameController *tetrisGame;
     list<Game> tetrisHighscores; // struct Game is defined in IOgame
-    bool isBackgroundMusic;
-    bool isGameSounds;
+    bool isBackgroundMusic; // Flag stating if background music is to be played
+    bool isGameSounds; // Flag stating if game sounds are to be played
     string playername;
 
-    void fetchHighscores();
+    void getGameHighscores();
 };
 
 

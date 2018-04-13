@@ -4,7 +4,7 @@
 
 MainMenu::MainMenu(QWidget *parent) : QWidget(parent), ui(new Ui::MainMenuUi)
 {
-    fetchHighscores();
+    getGameHighscores();
     tetrisGame = new GameController;
     ui->setupUi(this);
     this->setWindowTitle("Mini Games");
@@ -13,13 +13,13 @@ MainMenu::MainMenu(QWidget *parent) : QWidget(parent), ui(new Ui::MainMenuUi)
     connect(ui->exitButton,           SIGNAL(clicked()), this, SLOT(handleExit()));
     connect(ui->button2048,           SIGNAL(clicked()), this, SLOT(handle2048()));
     QObject::connect(tetrisGame, SIGNAL(gameClosed()), this, SLOT(showMainMenu()));
-    showTopTen();
+    showTopTenGameScores();
 }
 
 // Get highscores for Tetris and 2048
-void MainMenu::fetchHighscores()
+void MainMenu::getGameHighscores()
 {
-    tetrisHighscores = loadScores("highscores.csv");
+    tetrisHighscores = loadGameScores("tetris_highscores.csv");
     // TODO: fetch highscores for 2048
 }
 
@@ -66,7 +66,7 @@ void MainMenu::setSettings()
     else playername = ui->playerName->text().toStdString();
 }
 
-void MainMenu::showTopTen()
+void MainMenu::showTopTenGameScores()
 {
     if (tetrisHighscores.size() > 0)
     {
