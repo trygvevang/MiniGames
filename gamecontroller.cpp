@@ -24,7 +24,9 @@ GameController::GameController(QWidget *parent) : QWidget(parent), ui(new Ui::Te
 
     connect(ui->playButton, SIGNAL(clicked()), this, SLOT(handleGame()));
     connect(timer, SIGNAL(timeout()), this, SLOT(generation()));
+    connect(ui->restartButton, SIGNAL(clicked()), this, SLOT(handleRestart()));
     connect(ui->menuSettingsButton, SIGNAL(clicked()), this, SLOT(handleMenuSettings()));
+
 
     playlist = new QMediaPlaylist();
     player = new QMediaPlayer();
@@ -326,6 +328,19 @@ void GameController::reloadGame(){
         gameOverSound->stop();
     }
 }
+
+void GameController::handleRestart()
+{
+    timer->stop();
+    player->stop();
+    isPlaying = false;
+    isGameOver = false;
+    ui->playButton->setText("Play");
+    nextTileScene->clear();
+    boardScene->clear();
+    reloadGame();
+}
+
 void GameController::handleGame()
 {
     if (!isPlaying && !isGameOver)
@@ -336,6 +351,7 @@ void GameController::handleGame()
         ui->playButton->setText("Pause");
         if (isBackgroundMusic)
             player->play();
+        ui->restartButton->setVisible(true);
     }
     else if(isPlaying && !isGameOver)
     {
@@ -353,6 +369,7 @@ void GameController::handleGame()
         nextTileScene->clear();
         boardScene->clear();
         reloadGame();
+        ui->restartButton->setVisible(true);
     }
 }
 
@@ -400,6 +417,7 @@ void GameController::generation()
             timer->start(gameInterval);
         }
     }else{
+        ui->restartButton->setVisible(false);
         isPlaying = false;
         isGameOver = true;
         player->stop();
@@ -501,7 +519,6 @@ void GameController::keyPressEvent(QKeyEvent * event)
         {
             activeTile->rotate();
 
-
             if (rotateSound->state() == QMediaPlayer::PlayingState && isGameSounds)
             {
                 rotateSound->setPosition(0);
@@ -548,6 +565,7 @@ void GameController::calculateScore(int rows){
 
         QString levelText = QStringLiteral("Level: %1").arg(level);
         ui->levelLabel->setText(levelText);
+        qDebug() << levelText;
     }
 
 }
