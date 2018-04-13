@@ -26,12 +26,12 @@ class MainMenu : public QWidget
 public:
     MainMenu(QWidget *parent = 0);
     ~MainMenu();
+    void setSettings();
 
 public slots:
     void handleTetris();
     void handle2048();
     void handleExit();
-    void setSettings();
     void showMainMenu();
 
 private:

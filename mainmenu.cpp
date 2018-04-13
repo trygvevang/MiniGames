@@ -11,7 +11,6 @@ MainMenu::MainMenu(QWidget *parent) : QWidget(parent), ui(new Ui::MainMenuUi)
     connect(ui->tetrisButton,         SIGNAL(clicked()), this, SLOT(handleTetris()));
     connect(ui->exitButton,           SIGNAL(clicked()), this, SLOT(handleExit()));
     connect(ui->button2048,           SIGNAL(clicked()), this, SLOT(handle2048()));
-    connect(ui->saveSettingsButton,   SIGNAL(clicked()), this, SLOT(setSettings()));
     QObject::connect(tetrisGame, SIGNAL(gameClosed()), this, SLOT(showMainMenu()));
     setSettings();
 }
@@ -25,6 +24,7 @@ void MainMenu::fetchHighscores()
 
 void MainMenu::handleTetris()
 {
+    setSettings();
     tetrisGame->setSettings(isBackgroundMusic, isGameSounds, playername);
 
     if (tetrisHighscores.size() > 0)
