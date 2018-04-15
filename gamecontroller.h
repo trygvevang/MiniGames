@@ -10,6 +10,7 @@
 #include <QString>
 #include <QMediaPlaylist>
 #include <QMediaPlayer>
+#include <QRandomGenerator>
 #include <random>
 #include <list>
 #include "ui_tetris.h"
@@ -85,6 +86,8 @@ private:
     Tile * nextGhostTile;
     Tile * holdTile;
 
+    QRandomGenerator rand;
+
     int score;
     int highScore;
     bool isPlaying;
@@ -95,7 +98,7 @@ private:
     int gameInterval;
     int level;
     int rowsCompleted;
-
+    vector<int> randomBag;
     QString setRectColor(int value);
     void calculateScore(int rows);
 
