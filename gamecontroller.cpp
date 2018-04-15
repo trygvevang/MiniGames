@@ -335,11 +335,12 @@ void GameController::handleRestart()
     reloadGame();
 }
 
+
 void GameController::handleGame()
 {
     if (!isPlaying && !isGameOver)
     {
-        timer->start(gameInterval);
+        timer->start(3000);
         ui->board->setFocus();
         isPlaying = true;
         ui->playButton->setText("Pause");
@@ -354,7 +355,7 @@ void GameController::handleGame()
         ui->playButton->setText("Resume");
         backgroundMusic->pause();
     }else{
-        timer->start(gameInterval);
+        timer->start(3000);
         isPlaying = true;
         isGameOver = false;
         ui->playButton->setText("Pause");
