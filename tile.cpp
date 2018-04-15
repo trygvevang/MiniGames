@@ -30,31 +30,18 @@ void Point::setY(int y)
 
 Tile::Tile()
 {
+    // Start position is first row, sixth column
     Point point(0, 5);
     position = point;
 }
 
+/*
+    Calls getRotatedShape() whichs returns shape of tile rotated clockwise 90 degrees,
+    and set the shape to it. Member function is only to be called if rotaion is valid.
+*/
 void Tile::rotate()
-{
-    vector<vector<int>> shape = getShape();
-    vector<vector<int>> rotatedShape (0);
-
-    // Fill rotatedShape with as many rows as there are columns in shape
-    for (unsigned int i = 0; i < shape[0].size(); i++)
-    {
-        rotatedShape.push_back({});
-    }
-
-    // Rotate clockwise
-    for (int i = shape.size() - 1; i >= 0; i--)
-    {
-        for (unsigned int j = 0; j < shape[0].size(); j++)
-        {
-            rotatedShape[j].push_back(shape[i][j]);
-        }
-    }
-
-    setShape(rotatedShape);
+{ 
+    setShape(getRotatedShape());
 }
 
 Point Tile::getCenterPoint()
@@ -97,13 +84,13 @@ vector<vector<int>> Tile::getRotatedShape() const
     vector<vector<int>> shape = getShape();
     vector<vector<int>> rotatedShape (0);
 
-    // Fill rotatedShape with as many rows as there are columns in shape
+    // Rotated shape has as many rows as there are columns in shape
     for (unsigned int i = 0; i < shape[0].size(); i++)
     {
         rotatedShape.push_back({});
     }
 
-    // Rotate clockwise
+    // Rotate clockwise 90 degrees
     for (int i = shape.size() - 1; i >= 0; i--)
     {
         for (unsigned int j = 0; j < shape[0].size(); j++)

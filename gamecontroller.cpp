@@ -29,7 +29,7 @@ GameController::GameController(QWidget *parent) : QWidget(parent), ui(new Ui::Te
     connect(ui->menuSettingsButton, SIGNAL(clicked()), this, SLOT(handleMenuSettings()));
 
     playlist = new QMediaPlaylist();
-    player = new QMediaPlayer();
+    backgroundMusic = new QMediaPlayer();
     rowDeletedSound = new QMediaPlayer();
     slamTileSound = new QMediaPlayer();
     rotateSound = new QMediaPlayer();
@@ -37,7 +37,7 @@ GameController::GameController(QWidget *parent) : QWidget(parent), ui(new Ui::Te
 
     playlist->addMedia(QUrl("qrc:/sounds/Sound/tetris_ukulele.mp3"));
     playlist->setPlaybackMode(QMediaPlaylist::Loop);
-    player->setPlaylist(playlist);
+    backgroundMusic->setPlaylist(playlist);
     rowDeletedSound->setMedia(QUrl("qrc:/sounds/Sound/full-row.mp3"));
     slamTileSound->setMedia(QUrl("qrc:/sounds/Sound/slam-tile.wav"));
     rotateSound->setMedia(QUrl("qrc:/sounds/Sound/rotate.wav"));
@@ -53,6 +53,7 @@ void GameController::drawNextTile()
     int tileWidthOffset = (viewWidth - (nextTile->getShape()[0].size() * tileSize))/2;
 
 
+    // Draw each rectangle of next tile
     for (unsigned int i = 0; i < nextTile->getShape().size(); i++)
         {
             for (unsigned int j = 0; j < nextTile->getShape()[0].size(); j++)
@@ -99,10 +100,13 @@ void GameController::drawBoard()
 }
 
 void GameController::drawGhostTile(){
-    int boardWidth = ui->graphicsView->width()/board->COLS;
-    int boardHeight = ui->graphicsView->height()/board->ROWS;
     ghostTile->setYPos(activeTile->getYPos());
     board->slamTile(ghostTile); //Move ghost tile to final position
+
+    int boardWidth = ui->graphicsView->width()/board->COLS;
+    int boardHeight = ui->graphicsView->height()/board->ROWS;
+
+    // Draw each rectangle of ghost tile
     for (unsigned int i = 0; i < ghostTile->getShape().size(); i++)
     {
         for (unsigned int j = 0; j < ghostTile->getShape()[0].size(); j++)
@@ -133,7 +137,7 @@ void GameController::drawHoldTile(Tile * nextHoldTile)
     int tileHeightOffset = (viewHeight - (nextHoldTile->getShape().size() * tileSize))/2;
     int tileWidthOffset = (viewWidth - (nextHoldTile->getShape()[0].size() * tileSize))/2;
 
-
+    // Draw each tile of tile to be held
     for (unsigned int i = 0; i < nextHoldTile->getShape().size(); i++)
         {
             for (unsigned int j = 0; j < nextHoldTile->getShape()[0].size(); j++)
@@ -242,9 +246,6 @@ Tile* GameController::chooseNextTile()
             }
             if(isUnique) randomBag.push_back(randomIndex);
         }
-        for(std::vector<int>::const_iterator i = randomBag.begin(); i != randomBag.end(); ++i){
-            qDebug() << *i << ' ';
-        }
     }
     Tile* tile;
     switch (randomBag.back()) {
@@ -297,7 +298,6 @@ void GameController::setupGame(){
     nextTile = chooseNextTile();
     board = new Board();
     gameInterval = (pow(0.8-((level-1)*0.007), (level-1))*1000);
-    softDropSpeed = 100;
     isSoftDrop = false;
     holdTileGen = false;
     QString highscoreText = QStringLiteral("Highscore: %1").arg(highScore);
@@ -326,7 +326,7 @@ void GameController::reloadGame(){
 void GameController::handleRestart()
 {
     timer->stop();
-    player->stop();
+    backgroundMusic->stop();
     isPlaying = false;
     isGameOver = false;
     ui->playButton->setText("Play");
@@ -344,7 +344,7 @@ void GameController::handleGame()
         isPlaying = true;
         ui->playButton->setText("Pause");
         if (isBackgroundMusic)
-            player->play();
+            backgroundMusic->play();
         ui->restartButton->setVisible(true);
     }
     else if(isPlaying && !isGameOver)
@@ -352,14 +352,14 @@ void GameController::handleGame()
         timer->stop();
         isPlaying = false;
         ui->playButton->setText("Resume");
-        player->pause();
+        backgroundMusic->pause();
     }else{
         timer->start(gameInterval);
         isPlaying = true;
         isGameOver = false;
         ui->playButton->setText("Pause");
         if (isBackgroundMusic)
-            player->play();
+            backgroundMusic->play();
         nextTileScene->clear();
         boardScene->clear();
         reloadGame();
@@ -371,7 +371,8 @@ void GameController::generation()
 {
 
     // Next genereation
-    if (!board->isGameOver(activeTile)){
+    if (!board->isGameOver(activeTile))
+    {
         if (board->isVerticalMoveValid(activeTile))
         {
             activeTile->setYPos(activeTile->getYPos() + 1);
@@ -405,17 +406,22 @@ void GameController::generation()
             drawNextTile();
         }
         updateView();
-        if(isSoftDrop && gameInterval > softDropSpeed){
-            timer->start(softDropSpeed);
-        }else{
+        if(isSoftDrop && gameInterval > SOFT_DROP_SPEED)
+        {
+            timer->start(SOFT_DROP_SPEED);
+        }
+        else
+        {
             timer->start(gameInterval);
         }
-    }else{
+    }
+    else
+    {
         ui->restartButton->setVisible(false);
         ui->playButton->setFocus();
         isPlaying = false;
         isGameOver = true;
-        player->stop();
+        backgroundMusic->stop();
         if(isGameSounds)
             gameOverSound->play();
         drawGameOver();
@@ -468,22 +474,26 @@ void GameController::keyReleaseEvent(QKeyEvent *event)
 
 void GameController::keyPressEvent(QKeyEvent * event)
 {
-    if(!isPlaying && event->key() == Qt::Key_P){
+    if(!isPlaying && event->key() == Qt::Key_P)
+    {
         handleGame();
         return;
     }
-    if(!isPlaying){
+    if(!isPlaying)
+    {
         return;
     }
     else if (event->key() == Qt::Key_Right || event->key() == Qt::Key_D)
     {
-        if (board->isHorizontalMoveValid(activeTile, 1)){
+        if (board->isHorizontalMoveValid(activeTile, 1))
+        {
             activeTile->setXPos(activeTile->getXPos() + 1);
         }
     }
     else if (event->key() == Qt::Key_Left || event->key() == Qt::Key_A)
     {
-        if (board->isHorizontalMoveValid(activeTile, -1)){
+        if (board->isHorizontalMoveValid(activeTile, -1))
+        {
             activeTile->setXPos(activeTile->getXPos() - 1);
         }
     }
@@ -492,7 +502,8 @@ void GameController::keyPressEvent(QKeyEvent * event)
         if(!isSoftDrop) generation();
         isSoftDrop = true;
     }
-    else if (event->key() == Qt::Key_P){
+    else if (event->key() == Qt::Key_P)
+    {
         handleGame();
     }
     else if (event->key() == Qt::Key_Space)
@@ -554,11 +565,14 @@ void GameController::calculateScore(int rows){
     }
     score += (level)*genScore;
     rowsCompleted += rows;
-    if(rowsCompleted >= 10){
+
+    if(rowsCompleted >= 10)
+    {
         level++;
-        gameInterval = (pow(0.8-((level-1)*0.007), ((level-1)))*1000); //(0.8-((Level-1)*0.007))(Level-1)
+        gameInterval = (pow(0.8-((level-1)*0.007), ((level-1)))*1000);
         rowsCompleted = rowsCompleted - 10;
 
+        // Update score text in GUI
         QString levelText = QStringLiteral("Level: %1").arg(level);
         ui->levelLabel->setText(levelText);
     }
@@ -569,7 +583,7 @@ void GameController::saveHighscore()
 {
     if (score > highScore)
     {
-        saveGame(playername, score);
+        saveGameScore(playername, score);
         highScore = score;
     }
 }

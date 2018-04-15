@@ -115,7 +115,7 @@ bool Board::isRotationValid(Tile * tile)
 int Board::updateBoard(Tile * tile)
 {
     setTileOnBoard(tile);
-    vector<int> fullRows = checkFullRows(tile);
+    vector<int> fullRows = findFullRows(tile);
     deleteRows(fullRows);
     return fullRows.size();
 }
@@ -157,7 +157,7 @@ bool Board::setTileOnBoard(Tile * tile)
     return true;
 }
 
-vector<int> Board::checkFullRows(Tile * tile)
+vector<int> Board::findFullRows(Tile * tile)
 {
     bool isRowFull;
     vector<int> fullRows;

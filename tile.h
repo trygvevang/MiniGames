@@ -22,7 +22,7 @@ class Tile
 public:
     Tile();
     virtual ~Tile();
-    virtual void rotate() = 0;
+    virtual void rotate() = 0; // Making Tile an abstract class
     virtual vector<vector<int>> getShape() const;
     vector<vector<int>> getRotatedShape() const;
     Point getCenterPoint();

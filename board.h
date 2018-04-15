@@ -33,7 +33,7 @@ private:
 
 
     bool setTileOnBoard(Tile * tile);
-    vector<int> checkFullRows(Tile * tile);
+    vector<int> findFullRows(Tile * tile);
     void deleteRows(vector<int> rowNumbers);
 };
 

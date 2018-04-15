@@ -1,6 +1,6 @@
 #ifndef GAMECONTROLLER_H
 #define GAMECONTROLLER_H
-#include <QTimer> // one "generation" in active game should last one second
+#include <QTimer>
 #include <QKeyEvent>
 #include <QGraphicsScene>
 #include <QGraphicsRectItem>
@@ -47,8 +47,6 @@ public:
     void initGame();
     void reloadGame();
     void setupGame();
-    void parseProps();
-    void writeProps();
     void keyPressEvent(QKeyEvent * event); // Handling key input from user
     void keyReleaseEvent(QKeyEvent *event); //Handling key releases from user
     void saveHighscore();
@@ -67,18 +65,22 @@ signals:
     bool gameClosed();
 
 private:
+    // Graphical user interface
     Ui::Tetris * ui;
     QGraphicsScene * boardScene;
     QGraphicsScene * nextTileScene;
     QGraphicsScene * holdTileScene;
     QTimer * timer;
+
+    // Sounds
     QMediaPlaylist * playlist;
-    QMediaPlayer * player;
+    QMediaPlayer * backgroundMusic;
     QMediaPlayer * rowDeletedSound;
     QMediaPlayer * slamTileSound;
     QMediaPlayer * rotateSound;
     QMediaPlayer * gameOverSound;
 
+    // Board and tiles
     Board * board;
     Tile * activeTile;
     Tile * nextTile;
@@ -86,25 +88,30 @@ private:
     Tile * nextGhostTile;
     Tile * holdTile;
 
-    QRandomGenerator rand;
 
+    QRandomGenerator rand;
+    
+    // Miscellaneous game data
     int score;
     int highScore;
     bool isPlaying;
     bool isGameOver;
     bool isSoftDrop;
     bool holdTileGen; //switchHoldTile can only be pressed once per placeTileOnBoard
-    int softDropSpeed;
-    int gameInterval;
+    static constexpr int SOFT_DROP_SPEED = 100; // 100 ms
+    int gameInterval; // interval between vertical movements
     int level;
     int rowsCompleted;
     vector<int> randomBag;
-    QString setRectColor(int value);
-    void calculateScore(int rows);
 
+    // Settings
     bool isBackgroundMusic;
     bool isGameSounds;
     string playername;
+
+    // Private helper functions
+    QString setRectColor(int value);
+    void calculateScore(int rows);
 };
 
 #endif // GAMECONTROLLER_H
