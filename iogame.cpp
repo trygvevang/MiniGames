@@ -1,19 +1,24 @@
 #include "iogame.h"
 #include <QDebug>
+
+/*
+    Comparator to determin if a struct Game is larger than another Game.
+    Is to be used when sorting games in descending order.
+*/
 bool compareGamesDesc (const Game& lhs, const Game& rhs)
 {
     return lhs.score > rhs.score;
 }
 
-void saveGame(string playername, int score)
+void saveGameScore(string playername, int score)
 {
     ofstream outstream;
-    outstream.open("highscores.csv", ios_base::out | ios_base::app);
+    outstream.open("tetris_highscores.csv", ios_base::out | ios_base::app);
     outstream << playername << ";" << score << "\r\n";
     outstream.close();
 }
 
-list<Game> loadScores(string filePath)
+list<Game> loadGameScores(string filePath)
 {
     list<Game> games;
     std::ifstream instream;
@@ -42,7 +47,7 @@ list<Game> loadScores(string filePath)
     }
     instream.close();
 
-    //sort games descending on score
+    //sort games in descending descending order using the comparator "compareGameDesc"
     games.sort(compareGamesDesc);
     return games;
 }
