@@ -234,56 +234,52 @@ QString GameController::setRectColor(int value)
 
 Tile* GameController::chooseNextTile()
 {
-    QRandomGenerator rand = QRandomGenerator::securelySeeded();
-    int randomIndex = (rand.operator ()() % 7);
-
-    if (randomIndex == 0)
-    {
-        ITile * iTile = new ITile();
+    rand = QRandomGenerator::securelySeeded();
+    int randomIndex;
+    if(randomBag.size() < 1){
+        while(randomBag.size() < 7){
+            bool isUnique = true;
+            randomIndex = (rand.operator ()() % 7);
+            foreach (int t, randomBag) {
+                if(randomIndex == t)
+                    isUnique = false;
+            }
+            if(isUnique) randomBag.push_back(randomIndex);
+        }
+    }
+    Tile* tile;
+    switch (randomBag.back()) {
+    case 0:
+        tile = new ITile();
         nextGhostTile = new ITile();
-        return iTile;
-    }
-    else if (randomIndex == 1)
-    {
-        JTile * jTile = new JTile();
+        break;
+    case 1:
+        tile = new JTile();
         nextGhostTile = new JTile();
-        return jTile;
-    }
-    else if (randomIndex == 2)
-    {
-        LTile * lTile = new LTile();
-        nextGhostTile = new LTile();
-
-        return lTile;
-    }
-    else if (randomIndex == 3)
-    {
-        OTile * oTile = new OTile();
+        break;
+    case 2:
+        tile = new OTile();
         nextGhostTile = new OTile();
-
-        return oTile;
-    }
-    else if (randomIndex == 4)
-    {
-        STile * sTile = new STile();
+        break;
+    case 3:
+        tile = new LTile();
+        nextGhostTile = new LTile();
+        break;
+    case 4:
+        tile = new STile();
         nextGhostTile = new STile();
-
-        return sTile;
-    }
-    else if (randomIndex == 5)
-    {
-        TTile * tTile = new TTile();
+        break;
+    case 5:
+        tile = new TTile();
         nextGhostTile = new TTile();
-
-        return tTile;
-    }
-    else
-    {
-        ZTile * zTile = new ZTile();
+        break;
+    default:
+        tile = new ZTile();
         nextGhostTile = new ZTile();
-
-        return zTile;
+        break;
     }
+    randomBag.pop_back();
+    return tile;
 }
 
 void GameController::initGame()
@@ -304,7 +300,6 @@ void GameController::setupGame(){
     gameInterval = (pow(0.8-((level-1)*0.007), (level-1))*1000);
     isSoftDrop = false;
     holdTileGen = false;
-
     QString highscoreText = QStringLiteral("Highscore: %1").arg(highScore);
     ui->scoreLabel->setText("Score: 0");
     ui->highscoreLabel->setText(highscoreText);
@@ -319,6 +314,7 @@ void GameController::setupGame(){
 }
 
 void GameController::reloadGame(){
+    randomBag.clear();
     saveHighscore();
     setupGame();
     if (gameOverSound->state() == QMediaPlayer::PlayingState)

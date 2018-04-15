@@ -10,6 +10,7 @@
 #include <QString>
 #include <QMediaPlaylist>
 #include <QMediaPlayer>
+#include <QRandomGenerator>
 #include <random>
 #include <list>
 #include "ui_tetris.h"
@@ -87,6 +88,9 @@ private:
     Tile * nextGhostTile;
     Tile * holdTile;
 
+
+    QRandomGenerator rand;
+    
     // Miscellaneous game data
     int score;
     int highScore;
@@ -98,6 +102,7 @@ private:
     int gameInterval; // interval between vertical movements
     int level;
     int rowsCompleted;
+    vector<int> randomBag;
 
     // Settings
     bool isBackgroundMusic;
