@@ -15,15 +15,15 @@
 #include <list>
 #include "ui_tetris.h"
 #include "iogame.h"
-#include "tile.h"
-#include "itile.h"
-#include "jtile.h"
-#include "ltile.h"
-#include "otile.h"
-#include "stile.h"
-#include "ttile.h"
-#include "ztile.h"
-#include "board.h"
+#include "../model/tile.h"
+#include "../model/itile.h"
+#include "../model/jtile.h"
+#include "../model/ltile.h"
+#include "../model/otile.h"
+#include "../model/stile.h"
+#include "../model/ttile.h"
+#include "../model/ztile.h"
+#include "../model/board.h"
 
 namespace Ui
 {
