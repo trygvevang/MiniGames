@@ -54,12 +54,13 @@ public:
     void setSettings(bool isBackgroundMusic, bool isGameSounds, string playername);
     void setHighscore(int highscore);
     void switchHoldTile();
-    
+
 public slots:
     void handleGame();
     void generation();
     void handleMenuSettings();
     void handleRestart();
+
 
 signals:
     bool gameClosed();
@@ -90,7 +91,7 @@ private:
 
 
     QRandomGenerator rand;
-    
+
     // Miscellaneous game data
     int score;
     int highScore;
