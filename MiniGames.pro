@@ -29,9 +29,11 @@ SOURCES += \
     tetris/model/stile.cpp \
     tetris/model/itile.cpp \
     tetris/model/board.cpp \
-    tetris/controller/gamecontroller.cpp \
+    tetris/controller/tetriscontroller.cpp \
     iogame.cpp \
-    mainmenu.cpp
+    mainmenu.cpp \
+    controller2048.cpp \
+    board2048.cpp
 HEADERS += \  
     tetris/model/tile.h \
     tetris/model/jtile.h \
@@ -42,13 +44,16 @@ HEADERS += \
     tetris/model/stile.h \
     tetris/model/itile.h \
     tetris/model/board.h \
-    tetris/controller/gamecontroller.h \
+    tetris/controller/tetriscontroller.h \
     iogame.h \
-    mainmenu.h
+    mainmenu.h \
+    controller2048.h \
+    board2048.h
 
 FORMS += \
-    tetris/view/tetris.ui \
-    mainmenu.ui
+    mainmenu.ui \
+    2048.ui \
+    tetris/view/tetris.ui
 
 RESOURCES += \
     resources.qrc

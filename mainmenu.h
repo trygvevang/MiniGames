@@ -10,8 +10,8 @@
 #include <string>
 #include "ui_mainmenu.h"
 #include "iogame.h"
-#include "tetris/controller/gamecontroller.h"
-
+#include "controller2048.h"
+#include "tetris/controller/tetriscontroller.h"
 
 namespace Ui
 {
@@ -37,7 +37,8 @@ public slots:
 
 private:
     Ui::MainMenuUi * ui;
-    GameController *tetrisGame;
+    TetrisController *tetrisGame;
+    Controller2048 *game2048;
     list<Game> tetrisHighscores; // struct Game is defined in IOgame
     bool isBackgroundMusic; // Flag stating if background music is to be played
     bool isGameSounds; // Flag stating if game sounds are to be played
