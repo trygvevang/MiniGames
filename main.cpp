@@ -1,7 +1,6 @@
 #include <QApplication>
 #include <QGraphicsScene>
 #include <QGraphicsView>
-#include "tetriscontroller.h"
 #include "mainmenu.h"
 
 using namespace std;

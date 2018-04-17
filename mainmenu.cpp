@@ -1,6 +1,4 @@
 #include "mainmenu.h"
-#include "tetriscontroller.h"
-#include "controller2048.h"
 #include <QDebug>
 
 MainMenu::MainMenu(QWidget *parent) : QWidget(parent), ui(new Ui::MainMenuUi)

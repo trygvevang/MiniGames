@@ -4,6 +4,7 @@
 #include <QKeyEvent>
 #include <QGraphicsScene>
 #include <QGraphicsRectItem>
+#include <QTimer>
 #include <QBrush>
 #include <QColor>
 #include <QString>
@@ -14,15 +15,15 @@
 #include <list>
 #include "ui_tetris.h"
 #include "iogame.h"
-#include "tile.h"
-#include "itile.h"
-#include "jtile.h"
-#include "ltile.h"
-#include "otile.h"
-#include "stile.h"
-#include "ttile.h"
-#include "ztile.h"
-#include "board.h"
+#include "../model/tile.h"
+#include "../model/itile.h"
+#include "../model/jtile.h"
+#include "../model/ltile.h"
+#include "../model/otile.h"
+#include "../model/stile.h"
+#include "../model/ttile.h"
+#include "../model/ztile.h"
+#include "../model/board.h"
 
 namespace Ui
 {
@@ -30,12 +31,12 @@ class Tetris;
 }
 using namespace std;
 
-class TetrisController : public QWidget
+class GameController : public QWidget
 {
     Q_OBJECT
 public:
-    TetrisController(QWidget *parent = 0);
-    ~TetrisController();
+    GameController(QWidget *parent = 0);
+    ~GameController();
     void drawNextTile(); // draws the board with next tile
     void drawBoard(); // draws the gameboard
     void drawActiveTileOnBoard();

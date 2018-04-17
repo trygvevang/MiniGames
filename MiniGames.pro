@@ -20,40 +20,40 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-    tile.cpp \
-    jtile.cpp \
-    ltile.cpp \
-    otile.cpp \
-    ttile.cpp \
-    ztile.cpp \
-    stile.cpp \
-    itile.cpp \
-    board.cpp \
-    tetriscontroller.cpp \
+    tetris/model/tile.cpp \
+    tetris/model/jtile.cpp \
+    tetris/model/ltile.cpp \
+    tetris/model/otile.cpp \
+    tetris/model/ttile.cpp \
+    tetris/model/ztile.cpp \
+    tetris/model/stile.cpp \
+    tetris/model/itile.cpp \
+    tetris/model/board.cpp \
+    tetris/controller/tetriscontroller.cpp \
     iogame.cpp \
     mainmenu.cpp \
     controller2048.cpp \
     board2048.cpp
 HEADERS += \  
-    tile.h \
-    jtile.h \
-    ltile.h \
-    otile.h \
-    ttile.h \
-    ztile.h \
-    stile.h \
-    itile.h \
-    board.h \
+    tetris/model/tile.h \
+    tetris/model/jtile.h \
+    tetris/model/ltile.h \
+    tetris/model/otile.h \
+    tetris/model/ttile.h \
+    tetris/model/ztile.h \
+    tetris/model/stile.h \
+    tetris/model/itile.h \
+    tetris/model/board.h \
+    tetris/controller/tetriscontroller.h \
     iogame.h \
     mainmenu.h \
-    tetriscontroller.h \
     controller2048.h \
     board2048.h
 
 FORMS += \
-    tetris.ui \
     mainmenu.ui \
-    2048.ui
+    2048.ui \
+    tetris/view/tetris.ui
 
 RESOURCES += \
     resources.qrc
