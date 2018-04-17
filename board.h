@@ -32,6 +32,7 @@ private:
     vector<vector<int>> board;
 
 
+
     bool setTileOnBoard(Tile * tile);
     vector<int> findFullRows(Tile * tile);
     void deleteRows(vector<int> rowNumbers);

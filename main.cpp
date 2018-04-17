@@ -1,7 +1,7 @@
 #include <QApplication>
 #include <QGraphicsScene>
 #include <QGraphicsView>
-#include "gamecontroller.h"
+#include "tetriscontroller.h"
 #include "mainmenu.h"
 
 using namespace std;

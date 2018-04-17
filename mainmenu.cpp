@@ -1,11 +1,13 @@
 #include "mainmenu.h"
-#include "gamecontroller.h"
+#include "tetriscontroller.h"
+#include "controller2048.h"
 #include <QDebug>
 
 MainMenu::MainMenu(QWidget *parent) : QWidget(parent), ui(new Ui::MainMenuUi)
 {
     getGameHighscores();
-    tetrisGame = new GameController;
+    game2048 = new Controller2048;
+    tetrisGame = new TetrisController;
     ui->setupUi(this);
     this->setWindowTitle("Mini Games");
     ui->tabWidget->setStyleSheet("QTabBar::tab { height: 30px; width: 100px; }");
@@ -13,6 +15,7 @@ MainMenu::MainMenu(QWidget *parent) : QWidget(parent), ui(new Ui::MainMenuUi)
     connect(ui->exitButton,           SIGNAL(clicked()), this, SLOT(handleExit()));
     connect(ui->button2048,           SIGNAL(clicked()), this, SLOT(handle2048()));
     QObject::connect(tetrisGame, SIGNAL(gameClosed()), this, SLOT(showMainMenu()));
+    QObject::connect(game2048,   SIGNAL(gameClosed()), this, SLOT(showMainMenu()));
     showTopTenGameScores();
 }
 
@@ -41,7 +44,8 @@ void MainMenu::handleTetris()
 
 void MainMenu::handle2048()
 {
-
+    game2048->show();
+    this->hide();
 }
 
 void MainMenu::handleExit()

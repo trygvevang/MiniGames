@@ -4,7 +4,6 @@
 #include <QKeyEvent>
 #include <QGraphicsScene>
 #include <QGraphicsRectItem>
-#include <QTimer>
 #include <QBrush>
 #include <QColor>
 #include <QString>
@@ -31,12 +30,12 @@ class Tetris;
 }
 using namespace std;
 
-class GameController : public QWidget
+class TetrisController : public QWidget
 {
     Q_OBJECT
 public:
-    GameController(QWidget *parent = 0);
-    ~GameController();
+    TetrisController(QWidget *parent = 0);
+    ~TetrisController();
     void drawNextTile(); // draws the board with next tile
     void drawBoard(); // draws the gameboard
     void drawActiveTileOnBoard();
