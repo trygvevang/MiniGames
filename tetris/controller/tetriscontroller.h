@@ -10,7 +10,6 @@
 #include <QMediaPlaylist>
 #include <QMediaPlayer>
 #include <QRandomGenerator>
-#include <random>
 #include <list>
 #include "ui_tetris.h"
 #include "iogame.h"
@@ -36,10 +35,11 @@ class TetrisController : public QWidget
 public:
     TetrisController(QWidget *parent = 0);
     ~TetrisController();
-    void drawSmallViewTile(Tile *tile, QGraphicsView *gView, QGraphicsScene *scene); // draws the board with next tile
+    void drawSmallViewTile(Tile *tile, QGraphicsView *gView, QGraphicsScene *scene); // draws the "next tile"-board and "hold tile"-board with its respective tile
     void drawBoard(); // draws the gameboard
-    void drawTileOnBoard(Tile *tile, bool isOpacity);
-    void drawGhostTile();
+    void drawTileOnBoard(Tile *tile, bool isOpacity); // draws active tile on gameboard
+    void drawGhostTile(); // draws lowest valid y-position of active tile on gameboard according to its x-position
+    void drawGameOver(); // draws game over on top of gameboard
     void updateView();
     Tile * chooseNextTile();
     void reloadGame();
@@ -47,17 +47,15 @@ public:
     void keyPressEvent(QKeyEvent * event); // Handling key input from user
     void keyReleaseEvent(QKeyEvent *event); //Handling key releases from user
     void saveHighscore();
-    void drawGameOver();
     void setSettings(bool isBackgroundMusic, bool isGameSounds, string playername);
     void setHighscore(int highscore);
     void switchHoldTile();
 
 public slots:
-    void handleGame();
-    void generation();
+    void handleGame(); // Handles game when pressing play/pause-button
+    void generation(); // When QTimer times out
     void handleMenuSettings();
     void handleRestart();
-
 
 signals:
     bool gameClosed();
@@ -85,7 +83,6 @@ private:
     Tile * ghostTile;
     Tile * nextGhostTile;
     Tile * holdTile;
-
 
     QRandomGenerator rand;
 

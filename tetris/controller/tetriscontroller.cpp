@@ -1,9 +1,5 @@
 #include "tetriscontroller.h"
 #include <QDebug>
-#include <QRandomGenerator>
-#include <sys/time.h>
-#include <cmath>
-
 
 TetrisController::TetrisController(QWidget *parent) : QWidget(parent), ui(new Ui::Tetris)
 {
@@ -33,7 +29,7 @@ TetrisController::TetrisController(QWidget *parent) : QWidget(parent), ui(new Ui
     connect(ui->restartButton, SIGNAL(clicked()), this, SLOT(handleRestart()));
     connect(ui->menuSettingsButton, SIGNAL(clicked()), this, SLOT(handleMenuSettings()));
 
-    //Instantiate each media player
+    //Instantiate each media player used to play background music and game sounds
     playlist = new QMediaPlaylist();
     backgroundMusic = new QMediaPlayer();
     rowDeletedSound = new QMediaPlayer();
@@ -60,7 +56,7 @@ void TetrisController::drawSmallViewTile(Tile *tile, QGraphicsView *gView, QGrap
     int tileWidthOffset = (viewWidth - (tile->getShape()[0].size() * tileSize))/2;
 
 
-    // Draw each rectangle of next tile
+    // Draw each rectangle of tile
     for (unsigned int i = 0; i < tile->getShape().size(); i++)
         {
             for (unsigned int j = 0; j < tile->getShape()[0].size(); j++)
@@ -107,7 +103,8 @@ void TetrisController::drawBoard()
     }
 }
 
-void TetrisController::drawGhostTile(){
+void TetrisController::drawGhostTile()
+{
     ghostTile->setYPos(activeTile->getYPos());
     board->slamTile(ghostTile); //Move ghost tile to final position
 
@@ -141,8 +138,8 @@ void TetrisController::drawTileOnBoard(Tile *tile, bool isOpacity)
     }
 }
 
-void TetrisController::drawGameOver(){
-
+void TetrisController::drawGameOver()
+{
     int width = ui->boardView->width();
     int height = ui->boardView->height();
 
@@ -172,7 +169,8 @@ void TetrisController::drawGameOver(){
 QString TetrisController::setRectColor(int value)
 {
     QString color;
-    switch (value) {
+    switch (value)
+    {
     case 1:
         color = "#00ffff";
         break;
@@ -198,12 +196,13 @@ QString TetrisController::setRectColor(int value)
     return color;
 }
 
-Tile* TetrisController::chooseNextTile()
+Tile * TetrisController::chooseNextTile()
 {
     rand = QRandomGenerator::securelySeeded();
     int randomTileNumber;
     bool isUnique;
-    if(randomBag.empty()){ //If bag of tiles is empty, generate a new bag with one of each tile
+    if(randomBag.empty()) // If bag of tiles is empty, generate a new bag with one of each tile
+    {
         while(randomBag.size() < 7)
         {
             isUnique = true;
@@ -218,11 +217,14 @@ Tile* TetrisController::chooseNextTile()
         }
     }
 
-    //Look at the last tile in the vector
-    //Return a new tile of the correct type
-    //Also generate the next ghost tile
+    /*
+        Look at the last tile in the vector
+        Return a new tile of the correct type
+        Also generate the next ghost tile
+    */
     Tile* tile;
-    switch (randomBag.back()) {
+    switch (randomBag.back())
+    {
     case 0:
         tile = new ITile();
         nextGhostTile = new ITile();
@@ -256,18 +258,22 @@ Tile* TetrisController::chooseNextTile()
     return tile;
 }
 
-void TetrisController::setupGame(){
+void TetrisController::setupGame()
+{
     score = 0;
     level = 1; // starting level = 1
     rowsCompleted = 0;
     isGameOver = false;
+
     activeTile = chooseNextTile();
     ghostTile = nextGhostTile;
     nextTile = chooseNextTile();
     board = new Board();
+
     gameInterval = (pow(0.8-((level-1)*0.007), (level-1))*1000);
     isSoftDrop = false;
     holdTileGen = false;
+
     QString highscoreText = QStringLiteral("Highscore: %1").arg(highScore);
     ui->scoreLabel->setText("Score: 0");
     ui->highscoreLabel->setText(highscoreText);
@@ -281,7 +287,8 @@ void TetrisController::setupGame(){
     drawGhostTile();
 }
 
-void TetrisController::reloadGame(){
+void TetrisController::reloadGame()
+{
     randomBag.clear();
     saveHighscore();
     setupGame();
@@ -322,7 +329,9 @@ void TetrisController::handleGame()
         isPlaying = false;
         ui->playButton->setText("Resume");
         backgroundMusic->pause();
-    }else{
+    }
+    else
+    {
         timer->start(3000);
         isPlaying = true;
         isGameOver = false;
@@ -428,6 +437,7 @@ void TetrisController::updateView()
     ghostTile->setXPos(activeTile->getXPos());
     ghostTile->setShape(activeTile->getShape());
     boardScene->clear();
+
     drawBoard();
     drawTileOnBoard(activeTile, false);
     drawGhostTile();
@@ -507,15 +517,17 @@ void TetrisController::keyPressEvent(QKeyEvent * event)
     }
     else if (event->key() == Qt::Key_C)
     {
-        if (!holdTileGen) //Checks to see if switchHoldTile was pressed once this "round"
+        if (!holdTileGen) // Checks to see if switchHoldTile was pressed once this "round"
             switchHoldTile();
     }
     updateView();
 }
 
-void TetrisController::calculateScore(int rows){
+void TetrisController::calculateScore(int rows)
+{
     int genScore;
-    switch (rows) {
+    switch (rows)
+    {
     case 1:
         genScore = 40;
         break;

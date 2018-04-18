@@ -12,11 +12,9 @@ public:
     static constexpr int ROWS = 20;
     static constexpr int COLS = 10;
 
-
     Board();
     ~Board();
 
-    //Member functions to be implemented
     int updateBoard(Tile * tile);
     bool isHorizontalMoveValid(Tile * tile, int direction);
     bool isVerticalMoveValid(Tile * tile);
@@ -27,11 +25,8 @@ public:
     //Getters and setters
     vector<vector<int>> getBoard();
 private:
-    //The board is created like this: [ROWS][COLS]
-    //Which means that ROWS is always the first loop
+    //[ROWS][COLS] which means that ROWS is always refered to in the first loop
     vector<vector<int>> board;
-
-
 
     bool setTileOnBoard(Tile * tile);
     vector<int> findFullRows(Tile * tile);

@@ -7,9 +7,7 @@ OTile::OTile() : Tile()
         {4, 4}
     };
 
-    Point center(0, 0);
     setShape(shape);
-    setCenterPoint(center);
     setXPos(getXPos() - 1);
 }
 

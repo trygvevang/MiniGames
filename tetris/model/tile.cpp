@@ -23,11 +23,6 @@ void Point::setY(int y)
     this->y = y;
 }
 
-
-/*
-    Define non-abstract member functions of class Tile
-*/
-
 Tile::Tile()
 {
     // Start position is first row, sixth column
@@ -42,16 +37,6 @@ Tile::Tile()
 void Tile::rotate()
 { 
     setShape(getRotatedShape());
-}
-
-Point Tile::getCenterPoint()
-{
-    return CENTER_POINT;
-}
-
-void Tile::setCenterPoint(Point center)
-{
-    CENTER_POINT = center;
 }
 
 int Tile::getXPos()

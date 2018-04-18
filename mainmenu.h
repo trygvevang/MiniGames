@@ -37,9 +37,9 @@ public slots:
 
 private:
     Ui::MainMenuUi * ui;
-    TetrisController *tetrisGame;
-    Controller2048 *game2048;
-    list<Game> tetrisHighscores; // struct Game is defined in IOgame
+    TetrisController * tetrisGame;
+    Controller2048 * game2048;
+    list<Game> tetrisHighscores; // Struct Game is defined in IOgame
     bool isBackgroundMusic; // Flag stating if background music is to be played
     bool isGameSounds; // Flag stating if game sounds are to be played
     string playername;

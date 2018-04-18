@@ -25,8 +25,6 @@ public:
     virtual void rotate() = 0; // Making Tile an abstract class
     virtual vector<vector<int>> getShape() const;
     vector<vector<int>> getRotatedShape() const;
-    Point getCenterPoint();
-    virtual void setCenterPoint(Point center);
     int getXPos();
     int getYPos();
     virtual void setShape(vector<vector<int>> shape);
@@ -35,7 +33,6 @@ public:
 
 private:
     vector<vector<int>> shape;
-    Point CENTER_POINT{}; // Center point on tile. Determines what point rotation is to revolve around.
     Point position{}; // Position of tile on board
 };
 

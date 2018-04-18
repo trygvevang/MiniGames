@@ -5,7 +5,8 @@
 Board::Board()
 {
     board.resize(ROWS);
-    for(unsigned r = 0; r < board.size(); r++){
+    for(unsigned r = 0; r < board.size(); r++)
+    {
         board[r].resize(COLS);
     }
 }
@@ -16,16 +17,23 @@ bool Board::isHorizontalMoveValid(Tile * tile, int direction) // if positive dir
     int xPos;
     int yPos;
     vector<vector<int>> shape = tile->getShape();
-    for(unsigned r = 0; r < shape.size(); r++){
-        for(unsigned c = 0; c < shape[r].size(); c++){
-            if(shape[r][c] != 0){
+    for(unsigned r = 0; r < shape.size(); r++)
+    {
+        for(unsigned c = 0; c < shape[r].size(); c++)
+        {
+            if(shape[r][c] != 0)
+            {
                 xPos = tile->getXPos() + c;
                 yPos = tile->getYPos() + r;
-                if(direction > 0){
+                if(direction > 0)
+                {
                     xPos++;
-                }else{
+                }
+                else
+                {
                     xPos--;
                 }
+
                 if(xPos < 0 || xPos >= COLS || board[yPos][xPos] != 0)
                     return false;
             }
@@ -64,14 +72,14 @@ bool Board::isVerticalMoveValid(Tile * tile)
     return isValid;
 }
 
-void Board::slamTile(Tile * tile){
-    while(isVerticalMoveValid(tile)){
+void Board::slamTile(Tile * tile)
+{
+    while(isVerticalMoveValid(tile))
+    {
         tile->setYPos(tile->getYPos() + 1);
     }
 }
 
-
-// This method will not work yet. If tile is on edge of board and rotates, what then?
 bool Board::isRotationValid(Tile * tile)
 {
     vector<vector<int>> rotatedShape = tile->getRotatedShape();
@@ -163,7 +171,8 @@ vector<int> Board::findFullRows(Tile * tile)
     vector<int> fullRows;
     for(unsigned int r = tile->getYPos(); r < tile->getYPos() + tile->getShape().size(); r++){
         isRowFull = true;
-        for (unsigned int c = 0; c < board[r].size(); c++) {
+        for (unsigned int c = 0; c < board[r].size(); c++)
+        {
             if (board[r][c] == 0) {
                 isRowFull = false;
             }
@@ -177,7 +186,8 @@ vector<int> Board::findFullRows(Tile * tile)
 
 void Board::deleteRows(vector<int> rowNumbers)
 {
-    for(unsigned int i = 0; i < rowNumbers.size(); i++){
+    for(unsigned int i = 0; i < rowNumbers.size(); i++)
+    {
         unsigned rowToDelete = rowNumbers[i];
         if (board.size() > rowToDelete)
         {
@@ -194,7 +204,8 @@ vector<vector<int>> Board::getBoard(){
 
 
 //Destructor
-Board::~Board(){
+Board::~Board()
+{
     this->board.clear();
     this->board.shrink_to_fit();
 }
