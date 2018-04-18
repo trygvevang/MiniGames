@@ -40,7 +40,7 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="QGraphicsView" name="graphicsView">
+   <widget class="QGraphicsView" name="boardView">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -90,7 +90,7 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
-   <widget class="QGraphicsView" name="graphicsView_2">
+   <widget class="QGraphicsView" name="nextTileView">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -225,7 +225,7 @@
     <string>Next tile</string>
    </property>
   </widget>
-  <widget class="QGraphicsView" name="graphicsView_hold">
+  <widget class="QGraphicsView" name="holdTileView">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -274,7 +274,7 @@
   <zorder>menuSettingsButton</zorder>
   <zorder>label_2</zorder>
   <zorder>label_3</zorder>
-  <zorder>graphicsView_hold</zorder>
+  <zorder>holdTileView</zorder>
   <zorder>levelLabel</zorder>
   <zorder>restartButton</zorder>
  </widget>
