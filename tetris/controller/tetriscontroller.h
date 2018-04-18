@@ -42,7 +42,6 @@ public:
     void drawGhostTile();
     void updateView();
     Tile * chooseNextTile();
-    void initGame();
     void reloadGame();
     void setupGame();
     void keyPressEvent(QKeyEvent * event); // Handling key input from user
