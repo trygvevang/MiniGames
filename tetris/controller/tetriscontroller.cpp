@@ -8,19 +8,19 @@
 TetrisController::TetrisController(QWidget *parent) : QWidget(parent), ui(new Ui::Tetris)
 {
     ui->setupUi(this);
-    ui->graphicsView->setFocus();
+    ui->boardView->setFocus();
     boardScene = new QGraphicsScene(this);
     nextTileScene = new QGraphicsScene(this);
     holdTileScene = new QGraphicsScene(this);
-    ui->graphicsView->setScene(boardScene);
-    ui->graphicsView_2->setScene(nextTileScene);
-    ui->graphicsView_hold->setScene(holdTileScene);
+    ui->boardView->setScene(boardScene);
+    ui->nextTileView->setScene(nextTileScene);
+    ui->holdTileView->setScene(holdTileScene);
 
     boardScene->setSceneRect(0, 0, 300, 600);
     nextTileScene->setSceneRect(0, 0, 150, 150);
 
-    ui->graphicsView->setSceneRect(boardScene->sceneRect());
-    ui->graphicsView_2->setSceneRect(nextTileScene->sceneRect());
+    ui->boardView->setSceneRect(boardScene->sceneRect());
+    ui->nextTileView->setSceneRect(nextTileScene->sceneRect());
     initGame();
 
     connect(ui->playButton, SIGNAL(clicked()), this, SLOT(handleGame()));
@@ -44,31 +44,31 @@ TetrisController::TetrisController(QWidget *parent) : QWidget(parent), ui(new Ui
     gameOverSound->setMedia(QUrl("qrc:/sounds/Sound/game_over.wav"));
 }
 
-void TetrisController::drawNextTile()
+void TetrisController::drawSmallViewTile(Tile *tile, QGraphicsView *gView, QGraphicsScene *scene)
 {
-    int tileSize = ui->graphicsView_2->width()/5;
-    int viewHeight = ui->graphicsView_2->height();
-    int viewWidth = ui->graphicsView_2->width();
-    int tileHeightOffset = (viewHeight - (nextTile->getShape().size() * tileSize))/2;
-    int tileWidthOffset = (viewWidth - (nextTile->getShape()[0].size() * tileSize))/2;
+    int tileSize = gView->width()/5;
+    int viewHeight = gView->height();
+    int viewWidth = gView->width();
+    int tileHeightOffset = (viewHeight - (tile->getShape().size() * tileSize))/2;
+    int tileWidthOffset = (viewWidth - (tile->getShape()[0].size() * tileSize))/2;
 
 
     // Draw each rectangle of next tile
-    for (unsigned int i = 0; i < nextTile->getShape().size(); i++)
+    for (unsigned int i = 0; i < tile->getShape().size(); i++)
         {
-            for (unsigned int j = 0; j < nextTile->getShape()[0].size(); j++)
+            for (unsigned int j = 0; j < tile->getShape()[0].size(); j++)
             {
-                if (nextTile->getShape()[i][j] != 0)
+                if (tile->getShape()[i][j] != 0)
                 {
                     QGraphicsRectItem * rect = new QGraphicsRectItem();
                     rect->setRect(j * tileSize + tileWidthOffset, i * tileSize + tileHeightOffset, tileSize, tileSize);
 
                     QBrush brush(Qt::SolidPattern);
-                    const QColor color(setRectColor(nextTile->getShape()[i][j]));
+                    const QColor color(setRectColor(tile->getShape()[i][j]));
                     brush.setColor(color);
                     rect->setBrush(brush);
 
-                    nextTileScene->addItem(rect);
+                    scene->addItem(rect);
                 }
             }
         }
@@ -76,8 +76,8 @@ void TetrisController::drawNextTile()
 
 void TetrisController::drawBoard()
 {
-    int boardWidth = ui->graphicsView->width()/board->COLS;
-    int boardHeight = ui->graphicsView->height()/board->ROWS;
+    int boardWidth = ui->boardView->width()/board->COLS;
+    int boardHeight = ui->boardView->height()/board->ROWS;
     for (int i = 0; i < board->ROWS; i++)
     {
         for (int j = 0; j < board->COLS; j++)
@@ -103,8 +103,8 @@ void TetrisController::drawGhostTile(){
     ghostTile->setYPos(activeTile->getYPos());
     board->slamTile(ghostTile); //Move ghost tile to final position
 
-    int boardWidth = ui->graphicsView->width()/board->COLS;
-    int boardHeight = ui->graphicsView->height()/board->ROWS;
+    int boardWidth = ui->boardView->width()/board->COLS;
+    int boardHeight = ui->boardView->height()/board->ROWS;
 
     // Draw each rectangle of ghost tile
     for (unsigned int i = 0; i < ghostTile->getShape().size(); i++)
@@ -129,39 +129,10 @@ void TetrisController::drawGhostTile(){
     }
 }
 
-void TetrisController::drawHoldTile(Tile * nextHoldTile)
-{
-    int tileSize = ui->graphicsView_hold->width()/5;
-    int viewHeight = ui->graphicsView_hold->height();
-    int viewWidth = ui->graphicsView_hold->width();
-    int tileHeightOffset = (viewHeight - (nextHoldTile->getShape().size() * tileSize))/2;
-    int tileWidthOffset = (viewWidth - (nextHoldTile->getShape()[0].size() * tileSize))/2;
-
-    // Draw each tile of tile to be held
-    for (unsigned int i = 0; i < nextHoldTile->getShape().size(); i++)
-        {
-            for (unsigned int j = 0; j < nextHoldTile->getShape()[0].size(); j++)
-            {
-                if (nextHoldTile->getShape()[i][j] != 0)
-                {
-                    QGraphicsRectItem * rect = new QGraphicsRectItem();
-                    rect->setRect(j * tileSize + tileWidthOffset, i * tileSize + tileHeightOffset, tileSize, tileSize);
-
-                    QBrush brush(Qt::SolidPattern);
-                    const QColor color(setRectColor(nextHoldTile->getShape()[i][j]));
-                    brush.setColor(color);
-                    rect->setBrush(brush);
-
-                    holdTileScene->addItem(rect);
-                }
-            }
-        }
-}
-
 void TetrisController::drawActiveTileOnBoard()
 {
-    int boardWidth = ui->graphicsView->width()/board->COLS;
-    int boardHeight = ui->graphicsView->height()/board->ROWS;
+    int boardWidth = ui->boardView->width()/board->COLS;
+    int boardHeight = ui->boardView->height()/board->ROWS;
     for (unsigned int i = 0; i < activeTile->getShape().size(); i++)
     {
         for (unsigned int j = 0; j < activeTile->getShape()[0].size(); j++)
@@ -184,8 +155,8 @@ void TetrisController::drawActiveTileOnBoard()
 
 void TetrisController::drawGameOver(){
 
-    int width = ui->graphicsView->width();
-    int height = ui->graphicsView->height();
+    int width = ui->boardView->width();
+    int height = ui->boardView->height();
     QGraphicsRectItem * gameOverRect = new QGraphicsRectItem();
     gameOverRect->setRect(0, 0, width, height);
     QBrush brush(Qt::SolidPattern);
@@ -307,7 +278,7 @@ void TetrisController::setupGame(){
 
     holdTile = NULL;
     holdTileScene->clear();
-    drawNextTile();
+    drawSmallViewTile(nextTile, ui->nextTileView, nextTileScene);
     drawBoard();
     drawActiveTileOnBoard();
     drawGhostTile();
@@ -404,7 +375,7 @@ void TetrisController::generation()
             ghostTile = nextGhostTile;
             nextTile = chooseNextTile();
             nextTileScene->clear();
-            drawNextTile();
+            drawSmallViewTile(nextTile, ui->nextTileView, nextTileScene);
         }
         updateView();
         if(isSoftDrop && gameInterval > SOFT_DROP_SPEED)
@@ -444,13 +415,13 @@ void TetrisController::switchHoldTile()
         ghostTile = nextGhostTile;
         nextTile = chooseNextTile();
         nextTileScene->clear();
-        drawNextTile();
+        drawSmallViewTile(nextTile, ui->nextTileView, nextTileScene);
     }
     holdTileScene->clear();
     holdTile = tempTile;
     holdTile->setYPos(0);
     holdTile->setXPos(4);
-    drawHoldTile(holdTile);
+    drawSmallViewTile(holdTile, ui->holdTileView, holdTileScene);
 }
 
 

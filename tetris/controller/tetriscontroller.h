@@ -36,11 +36,10 @@ class TetrisController : public QWidget
 public:
     TetrisController(QWidget *parent = 0);
     ~TetrisController();
-    void drawNextTile(); // draws the board with next tile
+    void drawSmallViewTile(Tile *tile, QGraphicsView *gView, QGraphicsScene *scene); // draws the board with next tile
     void drawBoard(); // draws the gameboard
     void drawActiveTileOnBoard();
     void drawGhostTile();
-    void drawHoldTile(Tile * nextHoldTile);
     void updateView();
     Tile * chooseNextTile();
     void initGame();
