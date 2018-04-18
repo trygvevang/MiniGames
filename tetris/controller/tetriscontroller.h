@@ -38,7 +38,7 @@ public:
     ~TetrisController();
     void drawSmallViewTile(Tile *tile, QGraphicsView *gView, QGraphicsScene *scene); // draws the board with next tile
     void drawBoard(); // draws the gameboard
-    void drawActiveTileOnBoard();
+    void drawTileOnBoard(Tile *tile, bool isOpacity);
     void drawGhostTile();
     void updateView();
     Tile * chooseNextTile();

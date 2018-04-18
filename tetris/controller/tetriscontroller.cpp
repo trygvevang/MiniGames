@@ -103,47 +103,25 @@ void TetrisController::drawGhostTile(){
     ghostTile->setYPos(activeTile->getYPos());
     board->slamTile(ghostTile); //Move ghost tile to final position
 
-    int boardWidth = ui->boardView->width()/board->COLS;
-    int boardHeight = ui->boardView->height()/board->ROWS;
-
-    // Draw each rectangle of ghost tile
-    for (unsigned int i = 0; i < ghostTile->getShape().size(); i++)
-    {
-        for (unsigned int j = 0; j < ghostTile->getShape()[0].size(); j++)
-        {
-            if (ghostTile->getShape()[i][j] != 0)
-            {
-                QGraphicsRectItem * rect = new QGraphicsRectItem();
-                rect->setRect((j + ghostTile->getXPos()) * boardWidth , (i + ghostTile->getYPos()) * boardHeight, boardWidth, boardHeight);
-
-                QBrush brush(Qt::SolidPattern);
-                QColor color(setRectColor(ghostTile->getShape()[i][j]));
-                color.setAlpha(100);
-                const QColor constColor = color;
-                brush.setColor(constColor);
-                rect->setBrush(brush);
-
-                boardScene->addItem(rect);
-            }
-        }
-    }
+    drawTileOnBoard(ghostTile, true);
 }
 
-void TetrisController::drawActiveTileOnBoard()
+void TetrisController::drawTileOnBoard(Tile *tile, bool isOpacity)
 {
-    int boardWidth = ui->boardView->width()/board->COLS;
-    int boardHeight = ui->boardView->height()/board->ROWS;
-    for (unsigned int i = 0; i < activeTile->getShape().size(); i++)
+    int cellWidth = ui->boardView->width()/board->COLS;
+    int cellHeight = ui->boardView->height()/board->ROWS;
+    for (unsigned int i = 0; i < tile->getShape().size(); i++)
     {
-        for (unsigned int j = 0; j < activeTile->getShape()[0].size(); j++)
+        for (unsigned int j = 0; j < tile->getShape()[0].size(); j++)
         {
-            if (activeTile->getShape()[i][j] != 0)
+            if (tile->getShape()[i][j] != 0)
             {
                 QGraphicsRectItem * rect = new QGraphicsRectItem();
-                rect->setRect((j + activeTile->getXPos()) * boardWidth , (i + activeTile->getYPos()) * boardHeight, boardWidth, boardHeight);
+                rect->setRect((j + tile->getXPos()) * cellWidth , (i + tile->getYPos()) * cellHeight, cellWidth, cellHeight);
 
                 QBrush brush(Qt::SolidPattern);
-                const QColor color(setRectColor(activeTile->getShape()[i][j]));
+                QColor color(setRectColor(tile->getShape()[i][j]));
+                if(isOpacity) color.setAlpha(100);
                 brush.setColor(color);
                 rect->setBrush(brush);
 
@@ -280,7 +258,7 @@ void TetrisController::setupGame(){
     holdTileScene->clear();
     drawSmallViewTile(nextTile, ui->nextTileView, nextTileScene);
     drawBoard();
-    drawActiveTileOnBoard();
+    drawTileOnBoard(activeTile, false);
     drawGhostTile();
 }
 
@@ -432,7 +410,7 @@ void TetrisController::updateView()
     ghostTile->setShape(activeTile->getShape());
     boardScene->clear();
     drawBoard();
-    drawActiveTileOnBoard();
+    drawTileOnBoard(activeTile, false);
     drawGhostTile();
 }
 
