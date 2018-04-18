@@ -20,6 +20,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
+    iogame.cpp \
+    mainmenu.cpp \
     tetris/model/tile.cpp \
     tetris/model/jtile.cpp \
     tetris/model/ltile.cpp \
@@ -30,11 +32,11 @@ SOURCES += \
     tetris/model/itile.cpp \
     tetris/model/board.cpp \
     tetris/controller/tetriscontroller.cpp \
-    iogame.cpp \
-    mainmenu.cpp \
-    controller2048.cpp \
-    board2048.cpp
+    2048/controller/controller2048.cpp \
+    2048/model/board2048.cpp
 HEADERS += \  
+    iogame.h \
+    mainmenu.h \
     tetris/model/tile.h \
     tetris/model/jtile.h \
     tetris/model/ltile.h \
@@ -45,15 +47,13 @@ HEADERS += \
     tetris/model/itile.h \
     tetris/model/board.h \
     tetris/controller/tetriscontroller.h \
-    iogame.h \
-    mainmenu.h \
-    controller2048.h \
-    board2048.h
+    2048/controller/controller2048.h \
+    2048/model/board2048.h
 
 FORMS += \
     mainmenu.ui \
-    2048.ui \
-    tetris/view/tetris.ui
+    tetris/view/tetris.ui \
+    2048/view/2048.ui
 
 RESOURCES += \
     resources.qrc

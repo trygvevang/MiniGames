@@ -10,7 +10,7 @@
 #include <QMediaPlaylist>
 #include <QMediaPlayer>
 #include "ui_2048.h"
-#include "board2048.h"
+#include "../model/board2048.h"
 
 namespace Ui
 {

@@ -10,7 +10,7 @@
 #include <string>
 #include "ui_mainmenu.h"
 #include "iogame.h"
-#include "controller2048.h"
+#include "2048/controller/controller2048.h"
 #include "tetris/controller/tetriscontroller.h"
 
 namespace Ui
