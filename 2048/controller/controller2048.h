@@ -44,6 +44,7 @@ private:
     int score;
     int highScore;
 
+    QString setRectColor(int value);
 };
 
 #endif // CONTROLLER2048_H
