@@ -45,6 +45,7 @@ private:
     string playername;
     int score;
     int highScore;
+    bool gameOver;
 
     bool isGameSounds;
 

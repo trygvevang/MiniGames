@@ -27,6 +27,7 @@ void Controller2048::setupGame()
 {
     board = new Board2048;
     score = 0;
+    gameOver = false;
     QString scoreText = QStringLiteral("Score: %1").arg(score);
     ui->scoreLabel->setText(scoreText);
     drawBoard();
@@ -89,8 +90,7 @@ void Controller2048::drawGameOver()
 
 void Controller2048::keyPressEvent(QKeyEvent * event)
 {
-    if (!board->isGameOver())
-    {
+    if(!gameOver){
         // 1 = left, 2 = down, 3 = right, 4 = up
         if (event->key() == Qt::Key_A || event->key() == Qt::Key_Left)
         {
@@ -109,7 +109,6 @@ void Controller2048::keyPressEvent(QKeyEvent * event)
             handleRound(4);
         }
     }
-
 }
 
 void Controller2048::handleRound(int direction)
@@ -136,6 +135,7 @@ void Controller2048::handleRound(int direction)
     else if(roundScore < 0) //Game over
     {
         qDebug() << "Game over";
+        gameOver = true;
         drawGameOver();
         return;
     }
