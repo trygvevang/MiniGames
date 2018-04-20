@@ -7,6 +7,7 @@
         <file>Sound/full-row.mp3</file>
         <file>Sound/rotate.wav</file>
         <file>Sound/game_over.wav</file>
+        <file>Sound/waterdrop.wav</file>
     </qresource>
     <qresource prefix="/images">
         <file>Images/TetrisLogo.png</file>
