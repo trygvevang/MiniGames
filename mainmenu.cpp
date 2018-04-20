@@ -68,9 +68,12 @@ void MainMenu::showMainMenu()
 
 void MainMenu::setSettings()
 {
+    // Pattern: match any letter in norwegian alphabet including digit, '-' or '_'. Can include, but not start with ' ' or '!'.
+    QRegExp pattern("^[a-zA-Z0-9æøåÆØÅ_-]+[a-z A-Z0-9æøåÆØÅ!_-]*$");
     isBackgroundMusic = ui->playBGMusic->isChecked();
     isGameSounds = ui->playGameSounds->isChecked();
-    if (ui->playerName->text() == "")
+
+    if (ui->playerName->text() == "" || !pattern.exactMatch(ui->playerName->text()))
     {
         playername = "Unnamed player";
     }
@@ -79,6 +82,7 @@ void MainMenu::setSettings()
 
 void MainMenu::showTopTenGameScores()
 {
+    // Tetris highscores
     if (tetrisHighscores.size() > 0)
     {
         int i = 0;
@@ -114,6 +118,7 @@ void MainMenu::showTopTenGameScores()
         ui->topTenTetrisLayout->addWidget(message);
     }
 
+    // 2048 highscores
     if (highscores2048.size() > 0)
     {
         int i = 0;
@@ -148,8 +153,6 @@ void MainMenu::showTopTenGameScores()
         message->setFont(f);
         ui->topTen2048Layout->addWidget(message);
     }
-
-    // TODO top ten scores for 2048
 }
 
 MainMenu::~MainMenu()

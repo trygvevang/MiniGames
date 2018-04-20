@@ -15,8 +15,10 @@ Controller2048::Controller2048(QWidget *parent) : QWidget(parent), ui(new Ui::UI
     ui->boardView->setSceneRect(boardScene->sceneRect());
 
     moveSound = new QMediaPlayer();
+    gameOverSound = new QMediaPlayer();
 
     moveSound->setMedia(QUrl("qrc:/sounds/Sound/waterdrop.wav"));
+    gameOverSound->setMedia(QUrl("qrc:/sounds/Sound/game_over.wav"));
 
     connect(ui->backToMenuButton, SIGNAL(clicked()), this, SLOT(handleMenuSettings()));
     connect(ui->resetButton, SIGNAL(clicked()), this, SLOT(handleRestart()));
@@ -28,6 +30,12 @@ void Controller2048::setupGame()
     board = new Board2048;
     score = 0;
     gameOver = false;
+
+    if (gameOverSound->state() == QMediaPlayer::PlayingState)
+    {
+        gameOverSound->stop();
+    }
+
     QString scoreText = QStringLiteral("Score: %1").arg(score);
     ui->scoreLabel->setText(scoreText);
     drawBoard();
@@ -134,7 +142,8 @@ void Controller2048::handleRound(int direction)
     }
     else if(roundScore < 0) //Game over
     {
-        qDebug() << "Game over";
+        if (isGameSounds)
+            gameOverSound->play();
         gameOver = true;
         drawGameOver();
         return;
@@ -179,5 +188,8 @@ void Controller2048::setHighscore(int highscore)
 Controller2048::~Controller2048()
 {
     saveHighscore();
+    delete board;
+    delete moveSound;
+    delete gameOverSound;
 }
 

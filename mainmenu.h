@@ -7,6 +7,7 @@
 #include <QBrush>
 #include <QColor>
 #include <QString>
+#include <QRegExp>
 #include <string>
 #include "ui_mainmenu.h"
 #include "iogame.h"

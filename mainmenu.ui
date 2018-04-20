@@ -140,9 +140,9 @@
     <widget class="QLabel" name="label">
      <property name="geometry">
       <rect>
-       <x>150</x>
+       <x>130</x>
        <y>530</y>
-       <width>300</width>
+       <width>351</width>
        <height>20</height>
       </rect>
      </property>
@@ -152,7 +152,7 @@
       </font>
      </property>
      <property name="text">
-      <string>2018 is the year the game was created</string>
+      <string>Created spring of 2018 by Trygve Vang and Jesper Nylend</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -178,6 +178,22 @@
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>360</x>
+       <y>160</y>
+       <width>91</width>
+       <height>111</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="resources.qrc">:/images/Images/tile2048.png</pixmap>
      </property>
     </widget>
    </widget>

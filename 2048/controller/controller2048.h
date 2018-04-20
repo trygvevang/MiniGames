@@ -50,6 +50,7 @@ private:
     bool isGameSounds;
 
     QMediaPlayer * moveSound;
+    QMediaPlayer * gameOverSound;
 
     void handleRound(int direction);
     void drawGameOver();
