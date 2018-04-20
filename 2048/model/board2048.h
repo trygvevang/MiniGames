@@ -28,7 +28,7 @@ private:
     QRandomGenerator rand;
 
     void merge(int direction);
-    void move(int direction);
+    bool move(int direction);
     void spawnTile();
     void updateAvailableIndexes();
     void removeIndexFromAvailable(int valueIndex);

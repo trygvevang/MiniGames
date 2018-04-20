@@ -29,9 +29,11 @@ bool Board2048::round(int direction) // 1 = left, 2 = down, 3 = right, 4 = up
     if (!isGameOver())
     {
         merge(direction);
-        move(direction);
-        updateAvailableIndexes();
-        spawnTile();
+        if(move(direction))
+        {
+            updateAvailableIndexes();
+            spawnTile();
+        }
         // Should also check if there is available move after spawning tile. Could be done by returning the index of newly spawned tile an evaluate its neighbors
         return true;
     }
@@ -46,21 +48,22 @@ vector<vector<int>> Board2048::getBoard()
 // Private member functions
 void Board2048::merge(int direction)
 {
-    if (direction % 2 != 0) // Left or right
+    if (direction == 1) // Left
     {
         for (int row = 0; row < BOARD_SIZE; row++)
         {
-            for (int col = BOARD_SIZE - 1; col >= 0; col--)
+            for (int col = 0; col < BOARD_SIZE; col++)
             {
                 if (board[row][col] != 0)
                 {
                     // Check to see if have to merge
-                    for (int colToCheck = col - 1; colToCheck >= 0; colToCheck--)
+                    for (int colToCheck = col+1; colToCheck < BOARD_SIZE; colToCheck++)
                     {
                         if (board[row][colToCheck] == board[row][col])
                         {
-                            board[row][col] *= 2;
-                            board[row][colToCheck] = 0;
+                            board[row][colToCheck] *= 2;
+                            board[row][col] = 0;
+                            col = colToCheck;
                             break;
                         }
                         else if (board[row][colToCheck] != 0)
@@ -70,11 +73,36 @@ void Board2048::merge(int direction)
             }
         }
     }
-    else // Down or up
+    else if(direction == 3) //Right
     {
-        for (int row = BOARD_SIZE - 1; row >= 0; row--)
+        for (int row = 0; row < BOARD_SIZE; row++)
         {
-            for (int col = 0; col < BOARD_SIZE; col++)
+            for (int col = BOARD_SIZE-1; col >= 0; col--)
+            {
+                if (board[row][col] != 0)
+                {
+                    // Check to see if have to merge
+                    for (int colToCheck = col - 1; colToCheck >= 0; colToCheck--)
+                    {
+                        if (board[row][colToCheck] == board[row][col])
+                        {
+                            board[row][colToCheck] *= 2;
+                            board[row][col] = 0;
+                            col = colToCheck;
+                            break;
+                        }
+                        else if (board[row][colToCheck] != 0)
+                            break;
+                    }
+                }
+            }
+        }
+    }
+    else if(direction == 2) // Down
+    {
+        for (int col = 0; col < BOARD_SIZE; col++)
+        {
+            for (int row = BOARD_SIZE - 1; row >= 0; row--)
             {
                 if (board[row][col] != 0)
                 {
@@ -83,8 +111,34 @@ void Board2048::merge(int direction)
                     {
                         if (board[rowToCheck][col] == board[row][col])
                         {
-                            board[row][col] *= 2;
-                            board[rowToCheck][col] = 0;
+                            board[rowToCheck][col] *= 2;
+                            board[row][col] = 0;
+                            row = rowToCheck;
+                            break;
+                        }
+                        else if (board[rowToCheck][col] != 0)
+                            break;
+                    }
+                }
+            }
+        }
+    }
+    else if(direction == 4) // Up
+    {
+        for (int col = 0; col < BOARD_SIZE; col++)
+        {
+                for (int row = 0; row < BOARD_SIZE; row++)
+            {
+                if (board[row][col] != 0)
+                {
+                    // Check to see if have to merge
+                    for (int rowToCheck = row + 1; rowToCheck < BOARD_SIZE; rowToCheck++)
+                    {
+                        if (board[rowToCheck][col] == board[row][col])
+                        {
+                            board[rowToCheck][col] *= 2;
+                            board[row][col] = 0;
+                            row = rowToCheck;
                             break;
                         }
                         else if (board[rowToCheck][col] != 0)
@@ -96,8 +150,9 @@ void Board2048::merge(int direction)
     }
 }
 
-void Board2048::move(int direction)
+bool Board2048::move(int direction)
 {
+    bool moved = false;
     switch (direction) {
     case 1:
         // Move left
@@ -111,13 +166,19 @@ void Board2048::move(int direction)
                     {
                         if (board[row][colToCheck] != 0)
                         {
-                            board[row][colToCheck + 1] = board[row][col];
+                            int temp = board[row][col];
                             board[row][col] = 0;
+                            board[row][colToCheck + 1] = temp;
+                            if (colToCheck+1 != col)
+                                moved = true;
+                            break;
                         }
-                        else if (colToCheck == 0)
+                        else if (colToCheck == 0 && board[row][colToCheck] == 0)
                         {
                             board[row][colToCheck] = board[row][col];
                             board[row][col] = 0;
+                            moved = true;
+                            break;
                         }
                     }
                 }
@@ -136,13 +197,19 @@ void Board2048::move(int direction)
                     {
                         if (board[rowToCheck][col] != 0)
                         {
-                            board[rowToCheck - 1][col] = board[row][col];
+                            int temp = board[row][col];
                             board[row][col] = 0;
+                            board[rowToCheck - 1][col] = temp;
+                            if(rowToCheck-1 != row)
+                                moved = true;
+                            break;
                         }
-                        else if (rowToCheck == BOARD_SIZE - 1)
+                        else if (rowToCheck == BOARD_SIZE - 1 && board[rowToCheck][col] == 0)
                         {
                             board[rowToCheck][col] = board[row][col];
                             board[row][col] = 0;
+                            moved = true;
+                            break;
                         }
                     }
                 }
@@ -161,15 +228,20 @@ void Board2048::move(int direction)
                     {
                         if (board[row][colToCheck] != 0)
                         {
-                            board[row][colToCheck - 1] = board[row][col];
+                            int temp = board[row][col];
                             board[row][col] = 0;
+                            board[row][colToCheck - 1] = temp;
+                            if (colToCheck-1 != col)
+                                moved = true;
+                            break;
                         }
-                        else if (colToCheck == BOARD_SIZE - 1)
+                        else if (colToCheck == BOARD_SIZE - 1 && board[row][colToCheck] == 0)
                         {
                             board[row][colToCheck] = board[row][col];
                             board[row][col] = 0;
+                            moved = true;
+                            break;
                         }
-
                     }
                 }
             }
@@ -187,13 +259,19 @@ void Board2048::move(int direction)
                     {
                         if (board[rowToCheck][col] != 0)
                         {
-                            board[rowToCheck + 1][col] = board[row][col];
+                            int temp = board[row][col];
                             board[row][col] = 0;
+                            board[rowToCheck + 1][col] = temp;
+                            if(rowToCheck+1 != row)
+                                moved = true;
+                            break;
                         }
-                        else if (rowToCheck == 0)
+                        else if (rowToCheck == 0 && board[rowToCheck][col] == 0)
                         {
                             board[rowToCheck][col] = board[row][col];
                             board[row][col] = 0;
+                            moved = true;
+                            break;
                         }
                     }
                 }
@@ -201,6 +279,7 @@ void Board2048::move(int direction)
         }
         break;
     }
+    return moved;
 }
 
 void Board2048::updateAvailableIndexes()
