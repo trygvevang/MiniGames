@@ -31,7 +31,7 @@ public:
     void keyPressEvent(QKeyEvent * event);
     void setupGame();
     void saveHighscore();
-    void setSettings(string playername);
+    void setSettings(bool isGameSounds, string playername);
     void setHighscore(int highScore);
 
 public slots:
@@ -44,10 +44,14 @@ signals:
 private:
     Ui::UI2048 * ui;
     QGraphicsScene * boardScene;
-    Board2048 *board;
+    Board2048 * board;
     string playername;
     int score;
     int highScore;
+
+    bool isGameSounds;
+
+    QMediaPlayer * moveSound;
 
     void handleRound(int direction);
 };

@@ -43,7 +43,7 @@ void MainMenu::handleTetris()
 void MainMenu::handle2048()
 {
     setSettings();
-    game2048->setSettings(playername);
+    game2048->setSettings(isGameSounds, playername);
     if (highscores2048.size() > 0)
     {
         game2048->setHighscore(highscores2048.front().score);

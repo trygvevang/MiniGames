@@ -14,6 +14,10 @@ Controller2048::Controller2048(QWidget *parent) : QWidget(parent), ui(new Ui::UI
     boardScene->setSceneRect(0,0,350,350);
     ui->boardView->setSceneRect(boardScene->sceneRect());
 
+    moveSound = new QMediaPlayer();
+
+    moveSound->setMedia(QUrl("qrc:/sounds/Sound/waterdrop.wav"));
+
     connect(ui->backToMenuButton, SIGNAL(clicked()), this, SLOT(handleMenuSettings()));
     connect(ui->resetButton, SIGNAL(clicked()), this, SLOT(handleRestart()));
     setupGame();
@@ -80,6 +84,18 @@ void Controller2048::keyPressEvent(QKeyEvent * event)
 
 void Controller2048::handleRound(int direction)
 {
+    if(score >= 0)
+    {
+        //play tunes
+        if (moveSound->state() == QMediaPlayer::PlayingState && isGameSounds)
+        {
+            moveSound->setPosition(0);
+        }
+        else if ((moveSound->state() == QMediaPlayer::PausedState || moveSound->state() == QMediaPlayer::StoppedState) && isGameSounds)
+        {
+            moveSound->play();
+        }
+    }
     score += board->round(direction);
     QString scoreText = QStringLiteral("Score: %1").arg(score);
     ui->scoreLabel->setText(scoreText);
@@ -106,9 +122,10 @@ void Controller2048::saveHighscore()
     }
 }
 
-void Controller2048::setSettings(string playername)
+void Controller2048::setSettings(bool isGameSounds, string playername)
 {
     this->playername = playername;
+    this->isGameSounds = isGameSounds;
 }
 
 void Controller2048::setHighscore(int highscore)
