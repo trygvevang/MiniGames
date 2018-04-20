@@ -36,6 +36,12 @@ void Controller2048::setupGame()
         gameOverSound->stop();
     }
 
+    if (score > highScore)
+    {
+        QString highscoreText = QStringLiteral("Highscore: %1").arg(score);
+        ui->scoreLabel->setText(highscoreText);
+        highScore = score;
+    }
     QString scoreText = QStringLiteral("Score: %1").arg(score);
     ui->scoreLabel->setText(scoreText);
     drawBoard();

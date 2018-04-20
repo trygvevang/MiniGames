@@ -10,8 +10,9 @@ MainMenu::MainMenu(QWidget *parent) : QWidget(parent), ui(new Ui::MainMenuUi)
     this->setWindowTitle("Mini Games");
     ui->tabWidget->setStyleSheet("QTabBar::tab { height: 30px; width: 100px; }");
     connect(ui->tetrisButton,         SIGNAL(clicked()), this, SLOT(handleTetris()));
-    connect(ui->exitButton,           SIGNAL(clicked()), this, SLOT(handleExit()));
     connect(ui->button2048,           SIGNAL(clicked()), this, SLOT(handle2048()));
+    connect(ui->deleteScoresButton,   SIGNAL(clicked()), this, SLOT(handleDeleteScores()));
+    connect(ui->exitButton,           SIGNAL(clicked()), this, SLOT(handleExit()));
     QObject::connect(tetrisGame, SIGNAL(gameClosed()), this, SLOT(showMainMenu()));
     QObject::connect(game2048,   SIGNAL(gameClosed()), this, SLOT(showMainMenu()));
     showTopTenGameScores();
@@ -55,6 +56,15 @@ void MainMenu::handle2048()
     this->hide();
 }
 
+void MainMenu::handleDeleteScores()
+{
+    remove("tetris_highscores.csv");
+    remove("highscore_2048.csv");
+    tetrisHighscores.clear();
+    highscores2048.clear();
+    showTopTenGameScores();
+}
+
 void MainMenu::handleExit()
 {
     this->close();
@@ -82,6 +92,10 @@ void MainMenu::setSettings()
 
 void MainMenu::showTopTenGameScores()
 {
+    // Clear any previous data in layout
+    clearLayout(ui->topTenTetrisLayout);
+    clearLayout(ui->topTen2048Layout);
+
     // Tetris highscores
     if (tetrisHighscores.size() > 0)
     {
@@ -153,6 +167,16 @@ void MainMenu::showTopTenGameScores()
         message->setFont(f);
         ui->topTen2048Layout->addWidget(message);
     }
+}
+
+void MainMenu::clearLayout(QVBoxLayout * layout)
+{
+    QLayoutItem * item;
+    while ((item = layout->takeAt(0)))
+    {
+        delete item->widget();
+    }
+    delete item;
 }
 
 MainMenu::~MainMenu()

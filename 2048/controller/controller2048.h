@@ -27,7 +27,7 @@ public:
     Controller2048(QWidget *parent = 0);
     ~Controller2048();
 
-    void keyPressEvent(QKeyEvent * event);
+    void keyPressEvent(QKeyEvent * event); // Handles key input from user
     void setSettings(bool isGameSounds, string playername);
     void setHighscore(int highScore);
 
@@ -39,16 +39,21 @@ signals:
     bool gameClosed();
 
 private:
+    // Graphical user interface
     Ui::UI2048 * ui;
     QGraphicsScene * boardScene;
+
+    // Miscellaneous game data
     Board2048 * board;
-    string playername;
     int score;
     int highScore;
     bool gameOver;
 
+    // Settings
+    string playername;
     bool isGameSounds;
 
+    // Game sounds
     QMediaPlayer * moveSound;
     QMediaPlayer * gameOverSound;
 

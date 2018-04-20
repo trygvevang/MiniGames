@@ -33,6 +33,7 @@ public:
 public slots:
     void handleTetris(); // Starts or resumes Tetris game
     void handle2048(); // Starts or resumes 2048 game
+    void handleDeleteScores();
     void handleExit();
     void showMainMenu();
 
@@ -47,6 +48,7 @@ private:
     string playername;
 
     void getGameHighscores();
+    void clearLayout(QVBoxLayout * layout);
 };
 
 
