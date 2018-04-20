@@ -43,6 +43,8 @@ private:
     Board2048 *board;
     int score;
     int highScore;
+
+    void handleRound(int direction);
 };
 
 #endif // CONTROLLER2048_H

@@ -31,7 +31,7 @@ private:
     void move(int direction);
     void spawnTile();
     void updateAvailableIndexes();
-    void removeIndexFromAvailable(int row, int column);
+    void removeIndexFromAvailable(int valueIndex);
     void addIndexToAvailable(int row, int column);
 };
 
