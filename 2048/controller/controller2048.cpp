@@ -35,13 +35,19 @@ void Controller2048::drawBoard()
         for(int c = 0; c < board->BOARD_SIZE; c++){
             QGraphicsRectItem * rect = new QGraphicsRectItem();
             rect->setRect(c*cellWidth, r*cellHeight, cellWidth, cellHeight);
-            if(board->getBoard()[r][c] != 0){
-                QBrush brush(Qt::SolidPattern);
-                const QColor color(setRectColor(board->getBoard()[r][c]));
-                brush.setColor(color);
-                rect->setBrush(brush);
-            }
+
             boardScene->addItem(rect);
+            QLabel *rectValue = new QLabel;
+
+            if(board->getBoard()[r][c] != 0)
+            {
+                rectValue->setGeometry(c*cellWidth, r*cellHeight, cellWidth, cellHeight);
+                QString path = ":/images/Images/tile" + QString::number(board->getBoard()[r][c]) + ".png";
+                QPixmap pix(path);
+                rectValue->setPixmap(pix);
+
+                boardScene->addWidget(rectValue);
+            }
         }
     }
 }
@@ -85,36 +91,6 @@ void Controller2048::handleMenuSettings()
 {
     emit gameClosed();
     this->close();
-}
-
-QString Controller2048::setRectColor(int value)
-{
-    QString color;
-    switch (value)
-    {
-    case 2:
-        color = "#00ffff";
-        break;
-    case 4:
-        color = "#0000ff";
-        break;
-    case 8:
-        color = "#ffa500";
-        break;
-    case 16:
-        color = "#FFF504";
-        break;
-    case 32:
-        color = "#00D11B";
-        break;
-    case 64:
-        color = "#551A8B";
-        break;
-    default:
-        color = "#ff0000";
-        break;
-    }
-    return color;
 }
 
 Controller2048::~Controller2048()
