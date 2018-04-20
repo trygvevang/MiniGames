@@ -54,11 +54,6 @@ void Controller2048::drawBoard()
     }
 }
 
-unsigned GetNumberOfDigits (unsigned i)
-{
-    return i > 0 ? (int) log10 ((double) i) + 1 : 1;
-}
-
 void Controller2048::keyPressEvent(QKeyEvent * event)
 {
     if (!board->isGameOver())
