@@ -34,7 +34,7 @@
     <string>Highscore:</string>
    </property>
   </widget>
-  <widget class="QLabel" name="headerLabel">
+  <widget class="QLabel" name="scoreLabel">
    <property name="geometry">
     <rect>
      <x>10</x>

@@ -24,20 +24,20 @@ bool Board2048::isGameOver()
 }
 
 // If return true game is not over, else game over
-bool Board2048::round(int direction) // 1 = left, 2 = down, 3 = right, 4 = up
+int Board2048::round(int direction) // 1 = left, 2 = down, 3 = right, 4 = up
 {
     if (!isGameOver())
     {
-        merge(direction);
+        int score = merge(direction);
         if(move(direction))
         {
             updateAvailableIndexes();
             spawnTile();
         }
         // Should also check if there is available move after spawning tile. Could be done by returning the index of newly spawned tile an evaluate its neighbors
-        return true;
+        return score;
     }
-    return false;
+    return -1; // if game over, return a negative score
 }
 
 vector<vector<int>> Board2048::getBoard()
@@ -46,8 +46,9 @@ vector<vector<int>> Board2048::getBoard()
 }
 
 // Private member functions
-void Board2048::merge(int direction)
+int Board2048::merge(int direction)
 {
+    int score = 0;
     if (direction == 1) // Left
     {
         for (int row = 0; row < BOARD_SIZE; row++)
@@ -62,6 +63,7 @@ void Board2048::merge(int direction)
                         if (board[row][colToCheck] == board[row][col])
                         {
                             board[row][colToCheck] *= 2;
+                            score += board[row][colToCheck];
                             board[row][col] = 0;
                             col = colToCheck;
                             break;
@@ -87,6 +89,7 @@ void Board2048::merge(int direction)
                         if (board[row][colToCheck] == board[row][col])
                         {
                             board[row][colToCheck] *= 2;
+                            score += board[row][colToCheck];
                             board[row][col] = 0;
                             col = colToCheck;
                             break;
@@ -112,6 +115,7 @@ void Board2048::merge(int direction)
                         if (board[rowToCheck][col] == board[row][col])
                         {
                             board[rowToCheck][col] *= 2;
+                            score += board[rowToCheck][col];
                             board[row][col] = 0;
                             row = rowToCheck;
                             break;
@@ -137,6 +141,7 @@ void Board2048::merge(int direction)
                         if (board[rowToCheck][col] == board[row][col])
                         {
                             board[rowToCheck][col] *= 2;
+                            score += board[rowToCheck][col];
                             board[row][col] = 0;
                             row = rowToCheck;
                             break;
@@ -148,6 +153,7 @@ void Board2048::merge(int direction)
             }
         }
     }
+    return score;
 }
 
 bool Board2048::move(int direction)

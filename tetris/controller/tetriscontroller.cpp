@@ -564,7 +564,7 @@ void TetrisController::saveHighscore()
 {
     if (score > highScore)
     {
-        saveGameScore(playername, score);
+        saveGameScore(playername, score, "tetris_highscores.csv");
         highScore = score;
     }
 }

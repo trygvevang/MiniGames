@@ -40,6 +40,7 @@ private:
     TetrisController * tetrisGame;
     Controller2048 * game2048;
     list<Game> tetrisHighscores; // Struct Game is defined in IOgame
+    list<Game> highscores2048;
     bool isBackgroundMusic; // Flag stating if background music is to be played
     bool isGameSounds; // Flag stating if game sounds are to be played
     string playername;

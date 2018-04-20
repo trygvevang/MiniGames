@@ -10,10 +10,10 @@ bool compareGamesDesc (const Game& lhs, const Game& rhs)
     return lhs.score > rhs.score;
 }
 
-void saveGameScore(string playername, int score)
+void saveGameScore(string playername, int score, string path)
 {
     ofstream outstream;
-    outstream.open("tetris_highscores.csv", ios_base::out | ios_base::app);
+    outstream.open(path, ios_base::out | ios_base::app);
     outstream << playername << ";" << score << "\r\n";
     outstream.close();
 }

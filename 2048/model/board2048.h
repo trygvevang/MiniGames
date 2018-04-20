@@ -12,7 +12,7 @@ public:
     Board2048();
 
     bool isGameOver();
-    bool round(int direction); // 1 = left, 2 = down, 3 = right, 4 = up
+    int round(int direction); // 1 = left, 2 = down, 3 = right, 4 = up
     vector<vector<int>> getBoard();
 
     static constexpr int BOARD_SIZE = 4;
@@ -27,7 +27,7 @@ private:
     vector<int> availableIndexes;
     QRandomGenerator rand;
 
-    void merge(int direction);
+    int merge(int direction);
     bool move(int direction);
     void spawnTile();
     void updateAvailableIndexes();

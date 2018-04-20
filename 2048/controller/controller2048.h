@@ -11,6 +11,7 @@
 #include <QMediaPlayer>
 #include "ui_2048.h"
 #include "../model/board2048.h"
+#include "iogame.h"
 
 namespace Ui
 {
@@ -29,6 +30,9 @@ public:
     void drawBoard();
     void keyPressEvent(QKeyEvent * event);
     void setupGame();
+    void saveHighscore();
+    void setSettings(string playername);
+    void setHighscore(int highScore);
 
 public slots:
     void handleRestart();
@@ -41,6 +45,7 @@ private:
     Ui::UI2048 * ui;
     QGraphicsScene * boardScene;
     Board2048 *board;
+    string playername;
     int score;
     int highScore;
 

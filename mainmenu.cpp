@@ -21,7 +21,7 @@ MainMenu::MainMenu(QWidget *parent) : QWidget(parent), ui(new Ui::MainMenuUi)
 void MainMenu::getGameHighscores()
 {
     tetrisHighscores = loadGameScores("tetris_highscores.csv");
-    // TODO: fetch highscores for 2048
+    highscores2048 = loadGameScores("highscore_2048.csv");
 }
 
 void MainMenu::handleTetris()
@@ -42,6 +42,15 @@ void MainMenu::handleTetris()
 
 void MainMenu::handle2048()
 {
+    setSettings();
+    game2048->setSettings(playername);
+    if (highscores2048.size() > 0)
+    {
+        game2048->setHighscore(highscores2048.front().score);
+    }
+    else
+        game2048->setHighscore(0);
+
     game2048->show();
     this->hide();
 }
@@ -105,10 +114,46 @@ void MainMenu::showTopTenGameScores()
         ui->topTenTetrisLayout->addWidget(message);
     }
 
+    if (highscores2048.size() > 0)
+    {
+        int i = 0;
+        for (Game g : highscores2048)
+        {
+            if (i < 10)
+            {
+                QLabel * game = new QLabel();
+                QFont f("Arial", 16, QFont::Bold);
+                QString text = QStringLiteral("%1: %2").arg(QString::fromStdString(g.playername)).arg(g.score);
+                game->setText(text);
+                game->setFont(f);
+                ui->topTen2048Layout->addWidget(game);
+            }
+            else break;
+            i++;
+        }
+        for(;i < 10;i++){
+            QLabel * game = new QLabel();
+            QFont f("Arial", 16, QFont::Bold);
+            QString text = QStringLiteral("");
+            game->setText(text);
+            game->setFont(f);
+            ui->topTen2048Layout->addWidget(game);
+        }
+    }
+    else
+    {
+        QLabel * message = new QLabel();
+        QFont f("Arial", 16, QFont::Bold);
+        message->setText("No highscores yet.");
+        message->setFont(f);
+        ui->topTen2048Layout->addWidget(message);
+    }
+
     // TODO top ten scores for 2048
 }
 
 MainMenu::~MainMenu()
 {
     delete tetrisGame;
+    delete game2048;
 }

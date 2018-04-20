@@ -18,7 +18,7 @@ struct Game
     Game(string playername, int score): playername(playername), score(score) {}
 };
 
-void saveGameScore(string playername, int score);
+void saveGameScore(string playername, int score, string path);
 list<Game> loadGameScores(string filePath);
 
 #endif // IOGAME_H
