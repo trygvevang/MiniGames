@@ -48,8 +48,6 @@ void Controller2048::drawBoard()
 
                 boardScene->addWidget(rectValue);
             }
-
-
         }
     }
 }
@@ -88,36 +86,6 @@ void Controller2048::handleMenuSettings()
 {
     emit gameClosed();
     this->close();
-}
-
-QString Controller2048::setRectColor(int value)
-{
-    QString color;
-    switch (value)
-    {
-    case 2:
-        color = "#00ffff";
-        break;
-    case 4:
-        color = "#0000ff";
-        break;
-    case 8:
-        color = "#ffa500";
-        break;
-    case 16:
-        color = "#FFF504";
-        break;
-    case 32:
-        color = "#00D11B";
-        break;
-    case 64:
-        color = "#551A8B";
-        break;
-    default:
-        color = "#ff0000";
-        break;
-    }
-    return color;
 }
 
 Controller2048::~Controller2048()
