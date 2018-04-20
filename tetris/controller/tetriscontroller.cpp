@@ -307,6 +307,7 @@ void TetrisController::handleRestart()
     ui->playButton->setText("Play");
     nextTileScene->clear();
     boardScene->clear();
+    saveHighscore();
     reloadGame();
 }
 

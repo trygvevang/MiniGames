@@ -20,7 +20,23 @@ Board2048::Board2048()
 
 bool Board2048::isGameOver()
 {
-    return availableIndexes.size() == 0;
+    if(availableIndexes.size() > 0)
+        return false;
+    return !isMergeable();
+
+}
+
+bool Board2048::isMergeable()
+{
+    for(int r = 0; r < BOARD_SIZE - 1; r++)
+    {
+        for(int c = 0; c < BOARD_SIZE - 1; c++)
+        {
+            if(board[r][c] == board[r][c+1] || board[r][c] == board[r+1][c])
+                return true;
+        }
+    }
+    return false;
 }
 
 // If return true game is not over, else game over
@@ -33,11 +49,12 @@ int Board2048::round(int direction) // 1 = left, 2 = down, 3 = right, 4 = up
         {
             updateAvailableIndexes();
             spawnTile();
+
+            return score > 1 ? score : 1;
         }
-        // Should also check if there is available move after spawning tile. Could be done by returning the index of newly spawned tile an evaluate its neighbors
-        return score;
+        return 0; // can not move any tiles
     }
-    return -1; // if game over, return a negative score
+    return -1; // if game over, return negative 2
 }
 
 vector<vector<int>> Board2048::getBoard()

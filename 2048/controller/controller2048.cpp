@@ -27,6 +27,8 @@ void Controller2048::setupGame()
 {
     board = new Board2048;
     score = 0;
+    QString scoreText = QStringLiteral("Score: %1").arg(score);
+    ui->scoreLabel->setText(scoreText);
     drawBoard();
 }
 
@@ -84,7 +86,8 @@ void Controller2048::keyPressEvent(QKeyEvent * event)
 
 void Controller2048::handleRound(int direction)
 {
-    if(score >= 0)
+    int roundScore = board->round(direction);
+    if(roundScore >= 1)
     {
         //play tunes
         if (moveSound->state() == QMediaPlayer::PlayingState && isGameSounds)
@@ -95,14 +98,17 @@ void Controller2048::handleRound(int direction)
         {
             moveSound->play();
         }
+
+        if(roundScore > 1)
+            score += roundScore;
     }
-    score += board->round(direction);
     QString scoreText = QStringLiteral("Score: %1").arg(score);
     ui->scoreLabel->setText(scoreText);
     drawBoard();
 }
 void Controller2048::handleRestart()
 {
+    saveHighscore();
     delete board;
     setupGame();
 }

@@ -33,6 +33,7 @@ private:
     void updateAvailableIndexes();
     void removeIndexFromAvailable(int valueIndex);
     void addIndexToAvailable(int row, int column);
+    bool isMergeable();
 };
 
 #endif // BOARD2048_H
