@@ -1,4 +1,5 @@
 #include "controller2048.h"
+#include <cmath>
 
 Controller2048::Controller2048(QWidget *parent) : QWidget(parent), ui(new Ui::UI2048)
 {
@@ -34,15 +35,28 @@ void Controller2048::drawBoard()
         for(int c = 0; c < board->BOARD_SIZE; c++){
             QGraphicsRectItem * rect = new QGraphicsRectItem();
             rect->setRect(c*cellWidth, r*cellHeight, cellWidth, cellHeight);
-            if(board->getBoard()[r][c] != 0){
-                QBrush brush(Qt::SolidPattern);
-                const QColor color(setRectColor(board->getBoard()[r][c]));
-                brush.setColor(color);
-                rect->setBrush(brush);
-            }
+
             boardScene->addItem(rect);
+            QLabel *rectValue = new QLabel;
+
+            if(board->getBoard()[r][c] != 0)
+            {
+                rectValue->setGeometry(c*cellWidth, r*cellHeight, cellWidth, cellHeight);
+                QString path = ":/images/Images/tile" + QString::number(board->getBoard()[r][c]) + ".png";
+                QPixmap pix(path);
+                rectValue->setPixmap(pix);
+
+                boardScene->addWidget(rectValue);
+            }
+
+
         }
     }
+}
+
+unsigned GetNumberOfDigits (unsigned i)
+{
+    return i > 0 ? (int) log10 ((double) i) + 1 : 1;
 }
 
 void Controller2048::keyPressEvent(QKeyEvent * event)

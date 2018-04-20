@@ -8,7 +8,18 @@
         <file>Sound/rotate.wav</file>
         <file>Sound/game_over.wav</file>
     </qresource>
-    <qresource prefix="/">
+    <qresource prefix="/images">
         <file>Images/TetrisLogo.png</file>
+        <file>Images/tile2.png</file>
+        <file>Images/tile4.png</file>
+        <file>Images/tile8.png</file>
+        <file>Images/tile16.png</file>
+        <file>Images/tile32.png</file>
+        <file>Images/tile64.png</file>
+        <file>Images/tile128.png</file>
+        <file>Images/tile256.png</file>
+        <file>Images/tile512.png</file>
+        <file>Images/tile1024.png</file>
+        <file>Images/tile2048.png</file>
     </qresource>
 </RCC>
