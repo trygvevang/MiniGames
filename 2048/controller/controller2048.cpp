@@ -1,4 +1,5 @@
 #include "controller2048.h"
+#include <QDebug>
 
 Controller2048::Controller2048(QWidget *parent) : QWidget(parent), ui(new Ui::UI2048)
 {
@@ -26,6 +27,7 @@ void Controller2048::setupGame()
 
 void Controller2048::drawBoard()
 {
+    boardScene->clear();
     int cellHeight = (ui->boardView->height())/board->BOARD_SIZE;
     int cellWidth = (ui->boardView->width())/board->BOARD_SIZE;
 
@@ -35,7 +37,7 @@ void Controller2048::drawBoard()
             rect->setRect(c*cellWidth, r*cellHeight, cellWidth, cellHeight);
             if(board->getBoard()[r][c] != 0){
                 QBrush brush(Qt::SolidPattern);
-                const QColor color(100,100,100, 255);
+                const QColor color(setRectColor(board->getBoard()[r][c]));
                 brush.setColor(color);
                 rect->setBrush(brush);
             }
@@ -46,9 +48,34 @@ void Controller2048::drawBoard()
 
 void Controller2048::keyPressEvent(QKeyEvent * event)
 {
+    if (!board->isGameOver())
+    {
+        // 1 = left, 2 = down, 3 = right, 4 = up
+        if (event->key() == Qt::Key_A || event->key() == Qt::Key_Left)
+        {
+            handleRound(1);
+        }
+        else if (event->key() == Qt::Key_S || event->key() == Qt::Key_Down)
+        {
+            handleRound(2);
+        }
+        else if (event->key() == Qt::Key_D || event->key() == Qt::Key_Right)
+        {
+            handleRound(3);
+        }
+        else if (event->key() == Qt::Key_W || event->key() == Qt::Key_Up)
+        {
+            handleRound(4);
+        }
+    }
 
 }
 
+void Controller2048::handleRound(int direction)
+{
+    board->round(direction);
+    drawBoard();
+}
 void Controller2048::handleRestart()
 {
 
@@ -60,6 +87,35 @@ void Controller2048::handleMenuSettings()
     this->close();
 }
 
+QString Controller2048::setRectColor(int value)
+{
+    QString color;
+    switch (value)
+    {
+    case 2:
+        color = "#00ffff";
+        break;
+    case 4:
+        color = "#0000ff";
+        break;
+    case 8:
+        color = "#ffa500";
+        break;
+    case 16:
+        color = "#FFF504";
+        break;
+    case 32:
+        color = "#00D11B";
+        break;
+    case 64:
+        color = "#551A8B";
+        break;
+    default:
+        color = "#ff0000";
+        break;
+    }
+    return color;
+}
 
 Controller2048::~Controller2048()
 {

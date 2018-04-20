@@ -1,32 +1,41 @@
 #include "board2048.h"
-
+#include <QDebug>
 Board2048::Board2048()
 {
+    // Generate a board with BOARD_SIZE * BOARD_SIZE number of elements
     board.resize(BOARD_SIZE);
     for(unsigned r = 0; r < board.size(); r++){
         board[r].resize(BOARD_SIZE);
     }
+
+    // Every index up to BOARD_SIZE * BOARD_SIZE is available indexes initially
+    for (unsigned index = 0; index < BOARD_SIZE * BOARD_SIZE; index++)
+    {
+        availableIndexes.push_back(index);
+    }
+
+    spawnTile();
+    spawnTile();
 }
 
-void Board2048::spawnTile()
+bool Board2048::isGameOver()
 {
-    rand = QRandomGenerator::securelySeeded();
-    bool isSpawned = false;
-    int randomRow, randomCol, randomDigit;
-    while(!isSpawned){
-        randomRow = rand.operator ()() % BOARD_SIZE;
-        randomCol = rand.operator ()() % BOARD_SIZE;
-        randomDigit = rand.operator ()() % 10;
-        for(int r = 0; r < BOARD_SIZE; r++){
-            for(int c = 0; c < BOARD_SIZE; c++){
-                if(board[randomRow][randomCol] == 0)
-                {
-                    board[randomRow][randomCol] = randomDigit < 9 ? 2 : 4;
-                    isSpawned = true;
-                }
-            }
-        }
+    return availableIndexes.size() == 0;
+}
+
+// If return true game is not over, else game over
+bool Board2048::round(int direction) // 1 = left, 2 = down, 3 = right, 4 = up
+{
+    if (!isGameOver())
+    {
+        merge(direction);
+        move(direction);
+        updateAvailableIndexes();
+        spawnTile();
+        // Should also check if there is available move after spawning tile. Could be done by returning the index of newly spawned tile an evaluate its neighbors
+        return true;
     }
+    return false;
 }
 
 vector<vector<int>> Board2048::getBoard()
@@ -34,4 +43,207 @@ vector<vector<int>> Board2048::getBoard()
     return board;
 }
 
+// Private member functions
+void Board2048::merge(int direction)
+{
+    if (direction % 2 != 0) // Left or right
+    {
+        for (int row = 0; row < BOARD_SIZE; row++)
+        {
+            for (int col = BOARD_SIZE - 1; col >= 0; col--)
+            {
+                if (board[row][col] != 0)
+                {
+                    // Check to see if have to merge
+                    for (int colToCheck = col - 1; colToCheck >= 0; colToCheck--)
+                    {
+                        if (board[row][colToCheck] == board[row][col])
+                        {
+                            board[row][col] *= 2;
+                            board[row][colToCheck] = 0;
+                            break;
+                        }
+                        else if (board[row][colToCheck] != 0)
+                            break;
+                    }
+                }
+            }
+        }
+    }
+    else // Down or up
+    {
+        for (int row = BOARD_SIZE - 1; row >= 0; row--)
+        {
+            for (int col = 0; col < BOARD_SIZE; col++)
+            {
+                if (board[row][col] != 0)
+                {
+                    // Check to see if have to merge
+                    for (int rowToCheck = row - 1; rowToCheck >= 0; rowToCheck--)
+                    {
+                        if (board[rowToCheck][col] == board[row][col])
+                        {
+                            board[row][col] *= 2;
+                            board[rowToCheck][col] = 0;
+                            break;
+                        }
+                        else if (board[rowToCheck][col] != 0)
+                            break;
+                    }
+                }
+            }
+        }
+    }
+}
 
+void Board2048::move(int direction)
+{
+    switch (direction) {
+    case 1:
+        // Move left
+        for (int row = 0; row < BOARD_SIZE; row++)
+        {
+            for (int col = 0; col < BOARD_SIZE; col++)
+            {
+                if (board[row][col] != 0)
+                {
+                    for (int colToCheck = col - 1; colToCheck >= 0; colToCheck--)
+                    {
+                        if (board[row][colToCheck] != 0)
+                        {
+                            board[row][colToCheck + 1] = board[row][col];
+                            board[row][col] = 0;
+                        }
+                        else if (colToCheck == 0)
+                        {
+                            board[row][colToCheck] = board[row][col];
+                            board[row][col] = 0;
+                        }
+                    }
+                }
+            }
+        }
+        break;
+    case 2:
+        // Move down
+        for (int row = BOARD_SIZE - 1; row >= 0; row--)
+        {
+            for (int col = 0; col < BOARD_SIZE; col++)
+            {
+                if (board[row][col] != 0)
+                {
+                    for (int rowToCheck = row + 1; rowToCheck < BOARD_SIZE; rowToCheck++)
+                    {
+                        if (board[rowToCheck][col] != 0)
+                        {
+                            board[rowToCheck - 1][col] = board[row][col];
+                            board[row][col] = 0;
+                        }
+                        else if (rowToCheck == BOARD_SIZE - 1)
+                        {
+                            board[rowToCheck][col] = board[row][col];
+                            board[row][col] = 0;
+                        }
+                    }
+                }
+            }
+        }
+        break;
+    case 3:
+        // Move right
+        for (int row = 0; row < BOARD_SIZE; row++)
+        {
+            for (int col = BOARD_SIZE - 1; col >= 0; col--)
+            {
+                if (board[row][col] != 0)
+                {
+                    for (int colToCheck = col + 1; colToCheck < BOARD_SIZE; colToCheck++)
+                    {
+                        if (board[row][colToCheck] != 0)
+                        {
+                            board[row][colToCheck - 1] = board[row][col];
+                            board[row][col] = 0;
+                        }
+                        else if (colToCheck == BOARD_SIZE - 1)
+                        {
+                            board[row][colToCheck] = board[row][col];
+                            board[row][col] = 0;
+                        }
+
+                    }
+                }
+            }
+        }
+        break;
+    default:
+        // Move up
+        for (int row = 0; row < BOARD_SIZE; row++)
+        {
+            for (int col = 0; col < BOARD_SIZE; col++)
+            {
+                if (board[row][col] != 0)
+                {
+                    for (int rowToCheck = row - 1; rowToCheck >= 0; rowToCheck--)
+                    {
+                        if (board[rowToCheck][col] != 0)
+                        {
+                            board[rowToCheck + 1][col] = board[row][col];
+                            board[row][col] = 0;
+                        }
+                        else if (rowToCheck == 0)
+                        {
+                            board[rowToCheck][col] = board[row][col];
+                            board[row][col] = 0;
+                        }
+                    }
+                }
+            }
+        }
+        break;
+    }
+}
+
+void Board2048::updateAvailableIndexes()
+{
+    vector<int> updatedAvailable;
+    for (int row = 0; row < BOARD_SIZE; row++)
+    {
+        for (int col = 0; col < BOARD_SIZE; col++)
+        {
+            if (board[row][col] == 0)
+            {
+                int index = row * 4 + col;
+                updatedAvailable.push_back(index);
+            }
+        }
+    }
+    availableIndexes = updatedAvailable;
+}
+
+void Board2048::spawnTile()
+{
+    rand = QRandomGenerator::securelySeeded();
+    int index = (rand.operator ()() % availableIndexes.size());
+    int randomIndex = availableIndexes[index];
+    int probability = (rand.operator ()() % 100);
+    int randomValue = probability >= 90 ? 4 : 2; // There is a 10 % probability of the tile spawning being 4
+    int row = randomIndex / BOARD_SIZE;
+    int column = randomIndex % BOARD_SIZE;
+
+    board[row][column] = randomValue;
+    removeIndexFromAvailable(randomIndex);
+}
+
+void Board2048::removeIndexFromAvailable(int valueIndex)
+{
+    //int valueIndex = row * 4 + column;
+    vector<int>::iterator position = find(availableIndexes.begin(), availableIndexes.end(), valueIndex);
+    if (position != availableIndexes.end())
+        availableIndexes.erase(position);
+}
+
+void Board2048::addIndexToAvailable(int row, int column)
+{
+    int valueIndex = row * 4 + column;
+    availableIndexes.push_back(valueIndex);
+}
