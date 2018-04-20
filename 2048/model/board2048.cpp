@@ -1,5 +1,5 @@
 #include "board2048.h"
-
+#include <QDebug>
 Board2048::Board2048()
 {
     // Generate a board with BOARD_SIZE * BOARD_SIZE number of elements
@@ -223,21 +223,23 @@ void Board2048::updateAvailableIndexes()
 void Board2048::spawnTile()
 {
     rand = QRandomGenerator::securelySeeded();
-    int randomIndex = (rand.operator ()() % availableIndexes.size());
+    int index = (rand.operator ()() % availableIndexes.size());
+    int randomIndex = availableIndexes[index];
     int probability = (rand.operator ()() % 100);
     int randomValue = probability >= 90 ? 4 : 2; // There is a 10 % probability of the tile spawning being 4
     int row = randomIndex / BOARD_SIZE;
     int column = randomIndex % BOARD_SIZE;
 
     board[row][column] = randomValue;
-    removeIndexFromAvailable(row, column);
+    removeIndexFromAvailable(randomIndex);
 }
 
-void Board2048::removeIndexFromAvailable(int row, int column)
+void Board2048::removeIndexFromAvailable(int valueIndex)
 {
-    int valueIndex = row * 4 + column;
+    //int valueIndex = row * 4 + column;
     vector<int>::iterator position = find(availableIndexes.begin(), availableIndexes.end(), valueIndex);
-    availableIndexes.erase(position);
+    if (position != availableIndexes.end())
+        availableIndexes.erase(position);
 }
 
 void Board2048::addIndexToAvailable(int row, int column)

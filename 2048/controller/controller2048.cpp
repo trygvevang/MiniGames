@@ -1,4 +1,5 @@
 #include "controller2048.h"
+#include <QDebug>
 
 Controller2048::Controller2048(QWidget *parent) : QWidget(parent), ui(new Ui::UI2048)
 {
@@ -52,24 +53,29 @@ void Controller2048::keyPressEvent(QKeyEvent * event)
         // 1 = left, 2 = down, 3 = right, 4 = up
         if (event->key() == Qt::Key_A || event->key() == Qt::Key_Left)
         {
-            board->round(1);
+            handleRound(1);
         }
         else if (event->key() == Qt::Key_S || event->key() == Qt::Key_Down)
         {
-            board->round(2);
+            handleRound(2);
         }
         else if (event->key() == Qt::Key_D || event->key() == Qt::Key_Right)
         {
-            board->round(3);
+            handleRound(3);
         }
         else if (event->key() == Qt::Key_W || event->key() == Qt::Key_Up)
         {
-            board->round(4);
+            handleRound(4);
         }
-        drawBoard();
     }
+
 }
 
+void Controller2048::handleRound(int direction)
+{
+    board->round(direction);
+    drawBoard();
+}
 void Controller2048::handleRestart()
 {
 

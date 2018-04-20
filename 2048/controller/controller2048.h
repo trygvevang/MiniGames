@@ -44,6 +44,7 @@ private:
     int score;
     int highScore;
 
+    void handleRound(int direction);
     QString setRectColor(int value);
 };
 
