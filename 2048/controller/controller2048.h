@@ -27,10 +27,7 @@ public:
     Controller2048(QWidget *parent = 0);
     ~Controller2048();
 
-    void drawBoard();
     void keyPressEvent(QKeyEvent * event);
-    void setupGame();
-    void saveHighscore();
     void setSettings(bool isGameSounds, string playername);
     void setHighscore(int highScore);
 
@@ -54,6 +51,13 @@ private:
     QMediaPlayer * moveSound;
 
     void handleRound(int direction);
+    void drawGameOver();
+    void setupGame();
+    void drawBoard();
+    void saveHighscore();
+
+
+
 };
 
 #endif // CONTROLLER2048_H

@@ -59,6 +59,34 @@ void Controller2048::drawBoard()
     }
 }
 
+void Controller2048::drawGameOver()
+{
+    int width = ui->boardView->width();
+    int height = ui->boardView->height();
+
+    //Draw background
+    QGraphicsRectItem * gameOverRect = new QGraphicsRectItem();
+    gameOverRect->setRect(0, 0, width, height);
+    QBrush brush(Qt::SolidPattern);
+    QColor color("#838584");
+    color.setAlpha(212);
+    brush.setColor(color);
+    gameOverRect->setBrush(brush);
+
+    //Draw label "Game Over"
+    QLabel * gameOverLabel = new QLabel();
+    QFont f( "Arial", 40, QFont::Bold);
+    gameOverLabel->setText("Game Over");
+    gameOverLabel->setFont(f);
+    gameOverLabel->move((width/2)-(gameOverLabel->sizeHint().width()/2), (height/2)-(gameOverLabel->sizeHint().height()/2));
+    gameOverLabel->setStyleSheet("background-color: rgba(255, 255, 255, 0); color: black;");
+
+
+    //Add items to scene
+    boardScene->addItem(gameOverRect);
+    boardScene->addWidget(gameOverLabel);
+}
+
 void Controller2048::keyPressEvent(QKeyEvent * event)
 {
     if (!board->isGameOver())
@@ -101,10 +129,17 @@ void Controller2048::handleRound(int direction)
 
         if(roundScore > 1)
             score += roundScore;
+        QString scoreText = QStringLiteral("Score: %1").arg(score);
+        ui->scoreLabel->setText(scoreText);
+        drawBoard();
     }
-    QString scoreText = QStringLiteral("Score: %1").arg(score);
-    ui->scoreLabel->setText(scoreText);
-    drawBoard();
+    else if(roundScore < 0) //Game over
+    {
+        qDebug() << "Game over";
+        drawGameOver();
+        return;
+    }
+
 }
 void Controller2048::handleRestart()
 {

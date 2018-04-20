@@ -22,6 +22,8 @@ bool Board2048::isGameOver()
 {
     if(availableIndexes.size() > 0)
         return false;
+    bool gameOver = !isMergeable();
+    qDebug() << "Game over: " << gameOver;
     return !isMergeable();
 
 }
@@ -32,8 +34,17 @@ bool Board2048::isMergeable()
     {
         for(int c = 0; c < BOARD_SIZE - 1; c++)
         {
+            if(c+1 == 3)
+                if(board[r+1][c+1] == board[r][c+1])
+                    return true;
+
+            if(r+1 == 3)
+                if(board[r+1][c+1] == board[r+1][c])
+                    return true;
             if(board[r][c] == board[r][c+1] || board[r][c] == board[r+1][c])
+            {
                 return true;
+            }
         }
     }
     return false;
@@ -54,7 +65,7 @@ int Board2048::round(int direction) // 1 = left, 2 = down, 3 = right, 4 = up
         }
         return 0; // can not move any tiles
     }
-    return -1; // if game over, return negative 2
+    return -1; // if game over, return -1
 }
 
 vector<vector<int>> Board2048::getBoard()
