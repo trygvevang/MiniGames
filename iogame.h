@@ -9,6 +9,8 @@
 #include <vector>
 #include <QString>
 
+
+// IO is implemented by Trygve Vang - s305054
 using namespace std;
 
 struct Game
