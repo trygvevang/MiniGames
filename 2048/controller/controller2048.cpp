@@ -104,7 +104,6 @@ void Controller2048::drawGameOver()
 
 void Controller2048::keyPressEvent(QKeyEvent * event)
 {
-    qDebug() << event->key();
     if(!gameOver){
         // 1 = left, 2 = down, 3 = right, 4 = up
         if (event->key() == Qt::Key_A || event->key() == Qt::Key_Left)
