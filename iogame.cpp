@@ -22,7 +22,7 @@ list<Game> loadGameScores(string filePath)
 {
     list<Game> games;
     std::ifstream instream;
-    string::size_type sz; // alias of size_t
+    string::size_type sz; // alias of size_type
 
     instream.open(filePath, std::ios_base::in);
 
