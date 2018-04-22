@@ -73,7 +73,9 @@ void MainMenu::handleExit()
 
 void MainMenu::showMainMenu()
 {
+    getGameHighscores();
     this->setVisible(true);
+
 }
 
 void MainMenu::setSettings()

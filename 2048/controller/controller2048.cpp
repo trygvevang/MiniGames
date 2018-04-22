@@ -6,7 +6,6 @@ Controller2048::Controller2048(QWidget *parent) : QWidget(parent), ui(new Ui::UI
     ui->setupUi(this);
     ui->boardView->setHorizontalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
     ui->boardView->setVerticalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
-    ui->boardView->setFocus();
     boardScene = new QGraphicsScene(this);
 
     ui->boardView->setScene(boardScene);
@@ -44,6 +43,7 @@ void Controller2048::setupGame()
     }
     QString scoreText = QStringLiteral("Score: %1").arg(score);
     ui->scoreLabel->setText(scoreText);
+    ui->boardFrame->setFocus();
     drawBoard();
 }
 
@@ -174,7 +174,7 @@ void Controller2048::saveHighscore()
     if (score > highScore)
     {
         saveGameScore(playername, score, "highscore_2048.csv");
-        highScore = score;
+        setHighscore(score);
     }
 }
 
