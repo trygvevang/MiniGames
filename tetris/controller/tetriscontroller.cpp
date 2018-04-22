@@ -596,4 +596,20 @@ void TetrisController::handleMenuSettings()
 TetrisController::~TetrisController()
 {
     saveHighscore();
+
+    // Delete sound related pointers
+    delete playlist;
+    delete backgroundMusic;
+    delete rowDeletedSound;
+    delete slamTileSound;
+    delete rotateSound;
+    delete gameOverSound;
+
+    // Delete board and tile pointers
+    delete board;
+    delete activeTile;
+    delete nextTile;
+    delete ghostTile;
+    delete nextGhostTile;
+    delete holdTile;
 }
