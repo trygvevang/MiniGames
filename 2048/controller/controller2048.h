@@ -57,7 +57,7 @@ private:
     QMediaPlayer * moveSound;
     QMediaPlayer * gameOverSound;
 
-    void handleRound(int direction);
+    void handleRound(int direction); // Handles a game round, calling appropriate member functions, checking if game over, playing game sounds
     void drawGameOver();
     void setupGame();
     void drawBoard();

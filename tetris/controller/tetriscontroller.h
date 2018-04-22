@@ -35,18 +35,22 @@ class TetrisController : public QWidget
 public:
     TetrisController(QWidget *parent = 0);
     ~TetrisController();
+
     void drawSmallViewTile(Tile *tile, QGraphicsView *gView, QGraphicsScene *scene); // draws the "next tile"-board and "hold tile"-board with its respective tile
     void drawBoard(); // draws the gameboard
     void drawTileOnBoard(Tile *tile, bool isOpacity); // draws active tile on gameboard
     void drawGhostTile(); // draws lowest valid y-position of active tile on gameboard according to its x-position
     void drawGameOver(); // draws game over on top of gameboard
     void updateView();
-    Tile * chooseNextTile();
+
     void reloadGame();
     void setupGame();
+
     void keyPressEvent(QKeyEvent * event); // Handling key input from user
     void keyReleaseEvent(QKeyEvent *event); //Handling key releases from user
+
     void saveHighscore();
+    Tile * chooseNextTile();
     void setSettings(bool isBackgroundMusic, bool isGameSounds, string playername);
     void setHighscore(int highscore);
     void switchHoldTile();

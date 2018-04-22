@@ -1,5 +1,4 @@
 #include "board.h"
-#include <QDebug>
 
 // Constructor
 Board::Board()
@@ -17,14 +16,14 @@ bool Board::isHorizontalMoveValid(Tile * tile, int direction) // if positive dir
     int xPos;
     int yPos;
     vector<vector<int>> shape = tile->getShape();
-    for(unsigned r = 0; r < shape.size(); r++)
+    for(unsigned row = 0; row < shape.size(); row++)
     {
-        for(unsigned c = 0; c < shape[r].size(); c++)
+        for(unsigned column = 0; column < shape[row].size(); column++)
         {
-            if(shape[r][c] != 0)
+            if(shape[row][column] != 0)
             {
-                xPos = tile->getXPos() + c;
-                yPos = tile->getYPos() + r;
+                xPos = tile->getXPos() + column;
+                yPos = tile->getYPos() + row;
                 if(direction > 0)
                 {
                     xPos++;

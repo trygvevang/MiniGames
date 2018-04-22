@@ -1,5 +1,4 @@
 #include "tetriscontroller.h"
-#include <QDebug>
 
 TetrisController::TetrisController(QWidget *parent) : QWidget(parent), ui(new Ui::Tetris)
 {
@@ -57,17 +56,17 @@ void TetrisController::drawSmallViewTile(Tile *tile, QGraphicsView *gView, QGrap
 
 
     // Draw each rectangle of tile
-    for (unsigned int i = 0; i < tile->getShape().size(); i++)
+    for (unsigned int row = 0; row < tile->getShape().size(); row++)
         {
-            for (unsigned int j = 0; j < tile->getShape()[0].size(); j++)
+            for (unsigned int column = 0; column < tile->getShape()[0].size(); column++)
             {
-                if (tile->getShape()[i][j] != 0)
+                if (tile->getShape()[row][column] != 0)
                 {
                     QGraphicsRectItem * rect = new QGraphicsRectItem();
-                    rect->setRect(j * tileSize + tileWidthOffset, i * tileSize + tileHeightOffset, tileSize, tileSize);
+                    rect->setRect(column * tileSize + tileWidthOffset, row * tileSize + tileHeightOffset, tileSize, tileSize);
 
                     QBrush brush(Qt::SolidPattern);
-                    const QColor color(setRectColor(tile->getShape()[i][j]));
+                    const QColor color(setRectColor(tile->getShape()[row][column]));
                     brush.setColor(color);
                     rect->setBrush(brush);
 
@@ -82,17 +81,17 @@ void TetrisController::drawBoard()
     int cellHeight = ui->boardView->height()/board->ROWS;
     int cellWidth = ui->boardView->width()/board->COLS;
 
-    for (int i = 0; i < board->ROWS; i++)
+    for (int row = 0; row < board->ROWS; row++)
     {
-        for (int j = 0; j < board->COLS; j++)
+        for (int column = 0; column < board->COLS; column++)
         {
             QGraphicsRectItem * rect = new QGraphicsRectItem();
-            rect->setRect(j * cellWidth, i * cellHeight, cellWidth, cellHeight);
+            rect->setRect(column * cellWidth, row * cellHeight, cellWidth, cellHeight);
 
-            if (board->getBoard()[i][j] != 0) //If there is a number other than zero, draw a rectangle with the color respective to the number
+            if (board->getBoard()[row][column] != 0) //If there is a number other than zero, draw a rectangle with the color respective to the number
             {
                 QBrush brush(Qt::SolidPattern);
-                const QColor color(setRectColor(board->getBoard()[i][j]));
+                const QColor color(setRectColor(board->getBoard()[row][column]));
                 brush.setColor(color);
                 rect->setBrush(brush);
             }
@@ -116,18 +115,18 @@ void TetrisController::drawTileOnBoard(Tile *tile, bool isOpacity)
     int cellWidth = ui->boardView->width()/board->COLS;
     int cellHeight = ui->boardView->height()/board->ROWS;
 
-    for (unsigned int i = 0; i < tile->getShape().size(); i++) //Iterate through rows
+    for (unsigned int row = 0; row < tile->getShape().size(); row++) //Iterate through rows
     {
-        for (unsigned int j = 0; j < tile->getShape()[0].size(); j++) //Iterate through columns
+        for (unsigned int column = 0; column < tile->getShape()[0].size(); column++) //Iterate through columns
         {
-            if (tile->getShape()[i][j] != 0)
+            if (tile->getShape()[row][column] != 0)
             {
                 QGraphicsRectItem * rect = new QGraphicsRectItem();
-                rect->setRect((j + tile->getXPos()) * cellWidth , (i + tile->getYPos()) * cellHeight, cellWidth, cellHeight);
+                rect->setRect((column + tile->getXPos()) * cellWidth , (row + tile->getYPos()) * cellHeight, cellWidth, cellHeight);
 
                 //Style rectangle
                 QBrush brush(Qt::SolidPattern);
-                QColor color(setRectColor(tile->getShape()[i][j]));
+                QColor color(setRectColor(tile->getShape()[row][column]));
                 if(isOpacity) color.setAlpha(100);
                 brush.setColor(color);
                 rect->setBrush(brush);
@@ -346,7 +345,7 @@ void TetrisController::handleGame()
     }
 }
 
-void TetrisController::generation()
+void TetrisController::generation() // Generation is defined as each time the timer times out
 {
 
     // Next genereation

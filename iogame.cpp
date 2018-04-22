@@ -1,5 +1,4 @@
 #include "iogame.h"
-#include <QDebug>
 
 /*
     Comparator to determin if a struct Game is larger than another Game.

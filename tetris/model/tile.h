@@ -2,6 +2,7 @@
 #define TILE_H
 #include <vector>
 
+// Struct point defines position of a tile relative to the board
 struct Point {
 private:
     int y;

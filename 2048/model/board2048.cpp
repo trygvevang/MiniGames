@@ -1,14 +1,14 @@
 #include "board2048.h"
-#include <QDebug>
+
 Board2048::Board2048()
 {
-    // Generate a board with BOARD_SIZE * BOARD_SIZE number of elements
+    // Generate a board with (BOARD_SIZE * BOARD_SIZE) number of elements
     board.resize(BOARD_SIZE);
     for(unsigned r = 0; r < board.size(); r++){
         board[r].resize(BOARD_SIZE);
     }
 
-    // Every index up to BOARD_SIZE * BOARD_SIZE is available indexes initially
+    // Every index up to (BOARD_SIZE * BOARD_SIZE) is available indexes initially
     for (unsigned index = 0; index < BOARD_SIZE * BOARD_SIZE; index++)
     {
         availableIndexes.push_back(index);
@@ -19,7 +19,7 @@ Board2048::Board2048()
 }
 
 bool Board2048::isGameOver()
-{
+{ // Game is over if there could not spawn any more tiles and no tiles can be merged
     if(availableIndexes.size() > 0)
         return false;
     return !isMergeable();
@@ -27,7 +27,7 @@ bool Board2048::isGameOver()
 }
 
 bool Board2048::isMergeable()
-{
+{ // Check if there are any tiles on the board that can be merged
     for(int r = 0; r < BOARD_SIZE - 1; r++)
     {
         for(int c = 0; c < BOARD_SIZE - 1; c++)
@@ -71,7 +71,6 @@ vector<vector<int>> Board2048::getBoard()
     return board;
 }
 
-// Private member functions
 int Board2048::merge(int direction)
 {
     int score = 0;
@@ -184,7 +183,7 @@ int Board2048::merge(int direction)
 
 bool Board2048::move(int direction)
 {
-    bool moved = false;
+    bool moved = false; // Flag stating if there are any tiles that were moved
     switch (direction) {
     case 1:
         // Move left
@@ -353,8 +352,7 @@ void Board2048::removeIndexFromAvailable(int valueIndex)
         availableIndexes.erase(position);
 }
 
-void Board2048::addIndexToAvailable(int row, int column)
+Board2048::~Board2048()
 {
-    int valueIndex = row * 4 + column;
-    availableIndexes.push_back(valueIndex);
+
 }

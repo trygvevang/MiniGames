@@ -1,8 +1,8 @@
 #include "controller2048.h"
-#include <QDebug>
 
 Controller2048::Controller2048(QWidget *parent) : QWidget(parent), ui(new Ui::UI2048)
 {
+    // Set up UI
     ui->setupUi(this);
     ui->boardView->setHorizontalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
     ui->boardView->setVerticalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
@@ -13,14 +13,18 @@ Controller2048::Controller2048(QWidget *parent) : QWidget(parent), ui(new Ui::UI
     boardScene->setSceneRect(0,0,350,350);
     ui->boardView->setSceneRect(boardScene->sceneRect());
 
+    // Instansiate and prepare game sounds
     moveSound = new QMediaPlayer();
     gameOverSound = new QMediaPlayer();
 
     moveSound->setMedia(QUrl("qrc:/sounds/Sound/waterdrop.wav"));
     gameOverSound->setMedia(QUrl("qrc:/sounds/Sound/game_over.wav"));
 
+    // Connect buttons to appropriate slot
     connect(ui->backToMenuButton, SIGNAL(clicked()), this, SLOT(handleMenuSettings()));
     connect(ui->resetButton, SIGNAL(clicked()), this, SLOT(handleRestart()));
+
+    // Set up game
     setupGame();
 }
 
@@ -53,18 +57,19 @@ void Controller2048::drawBoard()
     int cellHeight = (ui->boardView->height())/board->BOARD_SIZE;
     int cellWidth = (ui->boardView->width())/board->BOARD_SIZE;
 
-    for(int r = 0; r < board->BOARD_SIZE; r++){
-        for(int c = 0; c < board->BOARD_SIZE; c++){
+    // Drawing grid of tiles. Empty elements are white squares, non-empty ones contains image model
+    for(int row = 0; row < board->BOARD_SIZE; row++){
+        for(int column = 0; column < board->BOARD_SIZE; column++){
             QGraphicsRectItem * rect = new QGraphicsRectItem();
-            rect->setRect(c*cellWidth, r*cellHeight, cellWidth, cellHeight);
+            rect->setRect(column*cellWidth, row*cellHeight, cellWidth, cellHeight);
 
             boardScene->addItem(rect);
             QLabel *rectValue = new QLabel;
 
-            if(board->getBoard()[r][c] != 0)
+            if(board->getBoard()[row][column] != 0)
             {
-                rectValue->setGeometry(c*cellWidth, r*cellHeight, cellWidth, cellHeight);
-                QString path = ":/images/Images/tile" + QString::number(board->getBoard()[r][c]) + ".png";
+                rectValue->setGeometry(column*cellWidth, row*cellHeight, cellWidth, cellHeight);
+                QString path = ":/images/Images/tile" + QString::number(board->getBoard()[row][column]) + ".png";
                 QPixmap pix(path);
                 rectValue->setPixmap(pix);
 
@@ -127,6 +132,7 @@ void Controller2048::keyPressEvent(QKeyEvent * event)
 
 void Controller2048::handleRound(int direction)
 {
+    // If roundScore is above 0 at least one tile was merged, if score was less than 0 game is over
     int roundScore = board->round(direction);
     if(roundScore >= 1)
     {
@@ -194,6 +200,7 @@ void Controller2048::setHighscore(int highscore)
 Controller2048::~Controller2048()
 {
     saveHighscore();
+    // Delete pointers
     delete board;
     delete moveSound;
     delete gameOverSound;
