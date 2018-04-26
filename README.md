@@ -35,7 +35,7 @@ When setting a tile on the board its “shape” is set on the board. The shape 
 ### Features and rules of the game
 The following table shows features in the implementation, and gives a brief description.
 | Feature | Description |
-| ------- | ––––––––––– |
+| --- | --- |
 | Rotate | Rotates the active tile 90 degrees clockwise. |
 | Horizontal move | Moves active tile horizontally on the board. |
 | Hold tile | Holds active tile. Can hold one tile of a time. If tile is already being held, active tile and held tile switches place. |
@@ -52,7 +52,7 @@ The game is over when a new tile cannot be spawned in its normal starting positi
 ### Controls
 The following table shows the controls of the implementation.
 | Key | Feature |
-| --- | ------- |
+| --- | --- |
 | W/Key up | Rotate active tile |
 | A/Key left | Move active tile to the left |
 | D/Key right | Move active tile to the right |
@@ -86,7 +86,7 @@ The game is over when there are no more available elements to spawn a tile and t
 ### Controls
 The following table shows the controls of the implementation.
 | Key | Feature |
-| --- | ------- |
+| --- | --- |
 | W/Key up | Slides tiles to the top of the board, merging all identical pieces. |
 | A/Key left | Slides tiles the the left of the board, merging all identical pieces. |
 | S/Key down | Slides tiles to the bottom of the board, merging all identical pieces. |
