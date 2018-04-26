@@ -34,6 +34,7 @@ When setting a tile on the board its “shape” is set on the board. The shape 
 
 ### Features and rules of the game
 The following table shows features in the implementation, and gives a brief description.
+
 | Feature | Description |
 | --- | --- |
 | Rotate | Rotates the active tile 90 degrees clockwise. |
@@ -51,6 +52,7 @@ The game is over when a new tile cannot be spawned in its normal starting positi
 
 ### Controls
 The following table shows the controls of the implementation.
+
 | Key | Feature |
 | --- | --- |
 | W/Key up | Rotate active tile |
@@ -85,6 +87,7 @@ The game is over when there are no more available elements to spawn a tile and t
 
 ### Controls
 The following table shows the controls of the implementation.
+
 | Key | Feature |
 | --- | --- |
 | W/Key up | Slides tiles to the top of the board, merging all identical pieces. |
